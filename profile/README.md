@@ -60,6 +60,10 @@ At some point, you either live with the constraints, or you start wishing forms 
 - [Short Text](https://github.com/declarativeforms/examples/blob/main/short_text.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/short_text))
 - [Single Select](https://github.com/declarativeforms/examples/blob/main/single_select.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/single_select))
 
+## Connections
+
+- [Airtable](https://github.com/declarativeforms/examples/blob/main/connections_airtable.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/connections_airtable))
+
 ### Other
 
 - [Visible When](https://github.com/declarativeforms/examples/blob/main/visible_when.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/visible_when))
