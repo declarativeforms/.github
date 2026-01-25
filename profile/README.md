@@ -53,6 +53,7 @@ At some point, you either live with the constraints, or you start wishing forms 
 ### Field Types
 
 - [Basic](https://github.com/declarativeforms/examples/blob/main/basic.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/basic))
+- [Advanced](https://github.com/declarativeforms/examples/blob/main/advanced.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/advanced))
 - [Date](https://github.com/declarativeforms/examples/blob/main/date.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/date))
 - [Dropdown](https://github.com/declarativeforms/examples/blob/main/dropdown.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/dropdown))
 - [Email](https://github.com/declarativeforms/examples/blob/main/email.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/email))
@@ -61,7 +62,7 @@ At some point, you either live with the constraints, or you start wishing forms 
 - [Short Text](https://github.com/declarativeforms/examples/blob/main/short_text.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/short_text))
 - [Single Select](https://github.com/declarativeforms/examples/blob/main/single_select.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/single_select))
 
-## Connections
+### Connections
 
 - [Airtable](https://github.com/declarativeforms/examples/blob/main/connections_airtable.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/connections_airtable))
 - [Webhook](https://github.com/declarativeforms/examples/blob/main/connections_webhook.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/connections_webhook))
