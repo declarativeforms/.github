@@ -58,6 +58,7 @@ At some point, you either live with the constraints, or you start wishing forms 
 - [Date](https://github.com/declarativeforms/examples/blob/main/date.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/date))
 - [Dropdown](https://github.com/declarativeforms/examples/blob/main/dropdown.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/dropdown))
 - [Email](https://github.com/declarativeforms/examples/blob/main/email.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/email))
+- [File Upload](https://github.com/declarativeforms/examples/blob/main/file_upload.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/file_upload))
 - [Long Text](https://github.com/declarativeforms/examples/blob/main/long_text.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/long_text))
 - [Multiple Select](https://github.com/declarativeforms/examples/blob/main/multiple_select.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/multiple_select))
 - [Short Text](https://github.com/declarativeforms/examples/blob/main/short_text.yaml) ([Demo](https://app.declarativeforms.com/declarativeforms/examples/short_text))
