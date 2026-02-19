@@ -1,0 +1,113 @@
+---
+title: Validate with min and max
+description: How to set minimum and maximum constraints on field values
+---
+
+The `min` and `max` validators constrain input based on the field type. What they measure depends on the field:
+
+| Field type | `min`/`max` measures |
+|------------|----------------------|
+| `short_text`, `long_text`, `email`, `url` | Character count |
+| `number` | Numeric value |
+| `date` | ISO date string (chronological comparison) |
+| `rating` | Numeric value |
+| `multiple_select` | Number of selected options |
+| `file_upload` | Number of uploaded files |
+
+## Text length
+
+```yaml
+- id: bio
+  type: long_text
+  label: Bio
+  validators:
+    - type: min
+      value: 50
+      message: Bio must be at least 50 characters.
+    - type: max
+      value: 500
+      message: Bio must be 500 characters or fewer.
+```
+
+## Numeric range
+
+```yaml
+- id: age
+  type: number
+  label: Age
+  validators:
+    - type: min
+      value: 18
+      message: You must be at least 18 years old.
+    - type: max
+      value: 120
+```
+
+## Date range
+
+Use ISO 8601 date strings for `min`/`max` on `date` fields:
+
+```yaml
+- id: start_date
+  type: date
+  label: Start date
+  validators:
+    - type: min
+      value: "2025-01-01"
+      message: Start date must be on or after January 1, 2025.
+    - type: max
+      value: "2025-12-31"
+      message: Start date must be within 2025.
+```
+
+## Rating scale bounds
+
+```yaml
+- id: satisfaction
+  type: rating
+  label: Satisfaction score
+  validators:
+    - type: min
+      value: 1
+    - type: max
+      value: 10
+```
+
+## Multiple select count
+
+```yaml
+- id: skills
+  type: multiple_select
+  label: Select your skills (choose 1–3)
+  options: [JavaScript, Python, Go, Rust, Java]
+  validators:
+    - type: min
+      value: 1
+      message: Please select at least one skill.
+    - type: max
+      value: 3
+      message: You can select at most 3 skills.
+```
+
+## File upload count
+
+```yaml
+- id: attachments
+  type: file_upload
+  label: Attachments
+  validators:
+    - type: min
+      value: 1
+      message: Please upload at least one file.
+    - type: max
+      value: 5
+      message: You can upload at most 5 files.
+```
+
+## Custom error messages
+
+All `min`/`max` validators accept an optional `message` field. If omitted, a default message is generated (e.g., "Age must be at least 18.").
+
+## Client-side only
+
+All validators, including `min` and `max`, are enforced **client-side only**. The API does not validate submitted values. Implement server-side validation in your webhook receiver if needed.

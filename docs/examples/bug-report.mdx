@@ -1,0 +1,138 @@
+---
+title: Bug Report Form
+description: A complete bug report form with OTP email verification, file uploads, webhook, and email notification
+---
+
+This example demonstrates a bug report form with:
+- Email OTP verification
+- Dropdown product area selection
+- File upload for screenshots
+- Webhook to your issue tracker
+- Admin email notification with all responses
+
+## YAML
+
+```yaml
+version: 1
+title: Bug Report
+description: Help us improve by reporting what went wrong.
+
+sections:
+  - id: reporter
+    title: About you
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email address
+        otp: true
+        validators:
+          - required
+
+    next: bug_details
+
+  - id: bug_details
+    title: Bug details
+    fields:
+      - id: product_area
+        type: dropdown
+        label: Product area
+        searchable: true
+        options:
+          - API
+          - Dashboard
+          - Forms
+          - Connections
+          - Authentication
+          - Other
+        validators:
+          - required
+
+      - id: severity
+        type: single_select
+        label: Severity
+        options:
+          - Low — cosmetic or minor inconvenience
+          - Medium — affects functionality but has a workaround
+          - High — major functionality broken
+          - Critical — data loss or security issue
+        validators:
+          - required
+
+      - id: summary
+        type: short_text
+        label: One-line summary
+        validators:
+          - required
+          - type: max
+            value: 200
+            message: Keep the summary under 200 characters.
+
+      - id: steps
+        type: long_text
+        label: Steps to reproduce
+        placeholder: |
+          1. Go to...
+          2. Click...
+          3. See error...
+        validators:
+          - required
+
+      - id: expected
+        type: long_text
+        label: Expected behavior
+
+      - id: actual
+        type: long_text
+        label: Actual behavior
+
+      - id: screenshots
+        type: file_upload
+        label: Screenshots or screen recordings (optional)
+        validators:
+          - type: max
+            value: 5
+            message: Please upload at most 5 files.
+
+    next: done
+
+connections:
+  - type: email
+    to: bugs@example.com
+    subject: "Bug report: {{data.summary}}"
+    body: "<p>A new bug report was submitted by {{data.name}} ({{data.email}}).</p>"
+    include_responses: true
+
+  - type: webhook
+    url: https://your-issue-tracker.com/hooks/bugs
+
+completion:
+  title: "Thanks for the report, {{data.name}}!"
+  message: "We've received your bug report and will investigate. You'll hear from us at {{data.email}}."
+```
+
+## How to use this
+
+1. Replace `bugs@example.com` with your team's email address
+2. Replace the webhook URL with your issue tracker's endpoint
+3. Adjust the `product_area` options to match your product
+
+## Field IDs in submission data
+
+| Field ID | Type | Example value |
+|----------|------|---------------|
+| `name` | `string` | `"Jane Smith"` |
+| `email` | `string` | `"jane@example.com"` |
+| `email__otp_token` | `string` | `"eyJ..."` |
+| `product_area` | `string` | `"API"` |
+| `severity` | `string` | `"High — major functionality broken"` |
+| `summary` | `string` | `"Login button unresponsive on mobile"` |
+| `steps` | `string` | `"1. Go to..."` |
+| `expected` | `string` | `"..."` |
+| `actual` | `string` | `"..."` |
+| `screenshots` | `string[]` | `["https://storage.example.com/..."]` |

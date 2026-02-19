@@ -1,0 +1,74 @@
+---
+title: Redirect after submission
+description: How to send users to a URL after completing a form
+---
+
+There are two ways to redirect users after a form submission: using `next` on the final section, or using `completion.button.url`.
+
+## Option 1 — Redirect via `next`
+
+Set the final section's `next` to an external URL. When the user submits that section, they are immediately redirected.
+
+```yaml
+sections:
+  - id: final
+    title: Final step
+    fields:
+      - id: agreement
+        type: single_select
+        label: Do you agree to the terms?
+        options: [Yes, No]
+    next: https://example.com/confirmation
+```
+
+Any URL starting with `https://` is treated as an external redirect rather than a section ID.
+
+## Option 2 — Button on the thank-you page
+
+Add a button to the `completion` block. The user lands on the thank-you page and can click the button to navigate elsewhere.
+
+```yaml
+completion:
+  title: You're all set!
+  message: Your application has been submitted.
+  button:
+    label: Go to your dashboard
+    url: https://app.example.com/dashboard
+```
+
+## Template interpolation in redirect URLs
+
+Both approaches support `{{data.fieldId}}` interpolation in the URL:
+
+```yaml
+# Redirect with submitted data in the URL
+next: "https://app.example.com/users/{{data.user_id}}/welcome"
+```
+
+```yaml
+# Button URL with template variable
+completion:
+  button:
+    label: View your ticket
+    url: "https://support.example.com/tickets/{{data.ticket_id}}"
+```
+
+## Conditional redirect
+
+Use conditional `next` to route users to different URLs based on their answers:
+
+```yaml
+next:
+  - when: "data.plan === 'enterprise'"
+    go: https://example.com/enterprise-welcome
+  - when: "data.plan === 'team'"
+    go: https://example.com/team-welcome
+  - else: https://example.com/welcome
+```
+
+## Choosing between the two approaches
+
+| Approach | Best for |
+|----------|----------|
+| `next: URL` on final section | Immediate redirect—no thank-you page shown |
+| `completion.button.url` | Show a thank-you message, then offer a link |

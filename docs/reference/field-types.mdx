@@ -1,0 +1,367 @@
+---
+title: Field Types Reference
+description: All 17 field types with properties, validator support, and submission values
+---
+
+## Input fields
+
+### `short_text`
+
+Single-line text input.
+
+| Property | Support |
+|----------|---------|
+| `placeholder` | Yes |
+| `validators` | `required`, `pattern`, `min` (char count), `max` (char count) |
+| Submission value | `string` |
+
+```yaml
+- id: name
+  type: short_text
+  label: Full name
+  placeholder: Jane Smith
+  validators:
+    - required
+    - type: max
+      value: 100
+```
+
+---
+
+### `long_text`
+
+Multi-line textarea.
+
+| Property | Support |
+|----------|---------|
+| `placeholder` | Yes |
+| `validators` | `required`, `pattern`, `min` (char count), `max` (char count) |
+| Submission value | `string` |
+
+```yaml
+- id: description
+  type: long_text
+  label: Describe your use case
+  validators:
+    - required
+    - type: min
+      value: 20
+```
+
+---
+
+### `email`
+
+Email address input. Optionally supports OTP verification.
+
+| Property | Support |
+|----------|---------|
+| `placeholder` | Yes |
+| `otp` | Yes — adds a verification step (6-digit code) |
+| `validators` | `required`, `pattern`, `min` (char count), `max` (char count) |
+| Submission value | `string` |
+| OTP token | `{fieldId}__otp_token` (string) — written to submission when `otp: true` |
+
+```yaml
+- id: email
+  type: email
+  label: Email address
+  otp: true
+  validators:
+    - required
+```
+
+---
+
+### `number`
+
+Integer input. Only whole numbers are accepted.
+
+| Property | Support |
+|----------|---------|
+| `placeholder` | Yes |
+| `validators` | `required`, `min` (numeric), `max` (numeric) |
+| Submission value | `string` (the entered integer as a string) |
+
+```yaml
+- id: age
+  type: number
+  label: Age
+  validators:
+    - type: min
+      value: 18
+    - type: max
+      value: 120
+```
+
+---
+
+### `url`
+
+URL input. Expects a valid URL format.
+
+| Property | Support |
+|----------|---------|
+| `placeholder` | Yes |
+| `validators` | `required`, `pattern`, `min` (char count), `max` (char count) |
+| Submission value | `string` |
+
+```yaml
+- id: website
+  type: url
+  label: Your website
+  placeholder: https://example.com
+```
+
+---
+
+### `mobile_number`
+
+Phone/mobile number input.
+
+| Property | Support |
+|----------|---------|
+| `placeholder` | Yes |
+| `validators` | `required`, `pattern` |
+| Submission value | `string` |
+
+```yaml
+- id: phone
+  type: mobile_number
+  label: Mobile number
+  validators:
+    - required
+```
+
+---
+
+### `date`
+
+Date picker input.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required`, `min` (ISO date string), `max` (ISO date string) |
+| Submission value | `string` (ISO 8601 date) |
+
+```yaml
+- id: dob
+  type: date
+  label: Date of birth
+  validators:
+    - required
+    - type: max
+      value: "2006-01-01"
+      message: You must be at least 18 years old.
+```
+
+---
+
+## Selection fields
+
+### `dropdown`
+
+Single selection from a dropdown list. Optionally searchable.
+
+| Property | Support |
+|----------|---------|
+| `options` | Required |
+| `searchable` | Yes — adds a search input to filter options |
+| `validators` | `required` |
+| Submission value | `string` (selected option value) |
+
+```yaml
+- id: country
+  type: dropdown
+  label: Country
+  searchable: true
+  options:
+    - value: us
+      label: United States
+    - value: gb
+      label: United Kingdom
+```
+
+---
+
+### `single_select`
+
+Radio-button style single selection.
+
+| Property | Support |
+|----------|---------|
+| `options` | Required |
+| `validators` | `required` |
+| Submission value | `string` (selected option value) |
+
+```yaml
+- id: plan
+  type: single_select
+  label: Choose a plan
+  options: [Starter, Pro, Enterprise]
+  validators:
+    - required
+```
+
+---
+
+### `multiple_select`
+
+Checkbox-style multi-selection. Optionally searchable.
+
+| Property | Support |
+|----------|---------|
+| `options` | Required |
+| `searchable` | Yes |
+| `validators` | `required`, `min` (selection count), `max` (selection count) |
+| Submission value | `string[]` (array of selected option values) |
+
+```yaml
+- id: features
+  type: multiple_select
+  label: Which features do you use?
+  options: [API, Dashboard, Webhooks, Airtable]
+  validators:
+    - type: min
+      value: 1
+      message: Please select at least one feature.
+```
+
+---
+
+### `rating`
+
+Numeric rating scale with configurable min/max labels.
+
+| Property | Support |
+|----------|---------|
+| `options` | No |
+| `min_label` | Yes — label at the low end of the scale |
+| `max_label` | Yes — label at the high end of the scale |
+| `validators` | `required`, `min` (numeric), `max` (numeric) |
+| Submission value | `string` (selected number as string) |
+
+```yaml
+- id: nps
+  type: rating
+  label: How likely are you to recommend us?
+  min_label: Not at all likely
+  max_label: Extremely likely
+  validators:
+    - required
+    - type: min
+      value: 1
+    - type: max
+      value: 10
+```
+
+---
+
+## Advanced fields
+
+### `address`
+
+Full address with Google Places autocomplete.
+
+| Property | Support |
+|----------|---------|
+| `outputFormat` | `"string"` (default) or `"structured"` |
+| `validators` | `required` |
+| Submission value | `string` or `IStructuredAddress` object |
+
+```yaml
+- id: shipping_address
+  type: address
+  label: Shipping address
+  outputFormat: structured
+```
+
+---
+
+### `address_locality`
+
+City/locality autocomplete.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required` |
+| Submission value | `string` |
+
+---
+
+### `address_region`
+
+State/region autocomplete.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required` |
+| Submission value | `string` |
+
+---
+
+### `address_country`
+
+Country autocomplete.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required` |
+| Submission value | `string` |
+
+---
+
+### `file_upload`
+
+File attachment. All file types accepted; 10 MB limit per file.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required`, `min` (file count), `max` (file count) |
+| Submission value | `string` (URL) for single file; `string[]` (URLs) for multiple files |
+
+```yaml
+- id: attachment
+  type: file_upload
+  label: Supporting document
+  validators:
+    - required
+    - type: max
+      value: 3
+```
+
+---
+
+### `signature`
+
+HTML5 canvas signature. Uploaded as PNG.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required` |
+| Submission value | `string` (URL to PNG file) |
+
+```yaml
+- id: signature
+  type: signature
+  label: Sign here
+  validators:
+    - required
+```
+
+---
+
+### `hidden`
+
+Not visible to the user. Value is set via URL prefill only.
+
+| Property | Support |
+|----------|---------|
+| `validators` | `required` (use with caution) |
+| Submission value | `string` or `null` (if not prefilled) |
+
+```yaml
+- id: utm_source
+  type: hidden
+  label: UTM Source
+```

@@ -1,0 +1,126 @@
+---
+title: Sections and Navigation
+description: How multi-step forms and conditional branching work
+---
+
+Every form has one or more **sections**. Each section is a discrete step in the form flow with its own set of fields.
+
+## Section structure
+
+```yaml
+sections:
+  - id: intro          # unique identifier
+    title: Step 1      # displayed as the section heading
+    fields:            # one or more field definitions
+      - id: name
+        type: short_text
+        label: Your name
+    next: details      # where to go after this section
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier for this section. Used in `next` references. |
+| `title` | `string \| locale map` | Yes | Section heading shown to the user. |
+| `fields` | `Field[]` | Yes | The fields to display in this section. |
+| `next` | `string \| Rule[]` | Yes | Where to navigate after the user completes this section. |
+
+## The `next` property
+
+`next` controls where the form goes after the user submits a section. It can be:
+
+### Static navigation
+
+A plain string pointing to the next section's `id`:
+
+```yaml
+next: contact_details
+```
+
+Or the special value `"done"` to end the form:
+
+```yaml
+next: done
+```
+
+Or an external URL to redirect the user:
+
+```yaml
+next: https://example.com/thank-you
+```
+
+### Conditional navigation
+
+An array of `when/go` rules with a required `else` fallback:
+
+```yaml
+next:
+  - when: "data.plan === 'enterprise'"
+    go: enterprise_details
+  - when: "data.plan === 'team'"
+    go: team_details
+  - else: basic_details
+```
+
+Rules are evaluated **in order**. The first matching `when` condition wins. The `else` rule is required and serves as the fallback.
+
+The `go` value can be a section `id`, `"done"`, or an external URL.
+
+## When expressions
+
+`when` values are JavaScript expressions evaluated against the current form data:
+
+```yaml
+when: "data.role === 'admin'"
+when: "data.age >= 18 && data.country === 'US'"
+when: "['yes', 'maybe'].includes(data.interested)"
+```
+
+The `data` object contains all field values collected so far across all sections.
+
+<Warning>
+`when` expressions are evaluated using `new Function("data", ...)`. They execute arbitrary JavaScript in the browser. Only use values that originate from your own form logic—do not construct `when` expressions from untrusted user input.
+</Warning>
+
+## Single-section forms
+
+A form can have a single section. In that case, `next: done` ends the form immediately after submission.
+
+```yaml
+sections:
+  - id: main
+    title: Feedback
+    fields:
+      - id: comment
+        type: long_text
+        label: Your feedback
+    next: done
+```
+
+## Multi-section forms
+
+Sections reference each other by `id`. The form starts with the first section defined in the `sections` array.
+
+```yaml
+sections:
+  - id: step_1
+    title: About you
+    fields: [...]
+    next: step_2
+
+  - id: step_2
+    title: Your request
+    fields: [...]
+    next: step_3
+
+  - id: step_3
+    title: Review
+    fields: [...]
+    next: done
+```
+
+Section IDs must be **unique** within a form. Referencing a non-existent section ID will result in a navigation error.
+
+## Partial saves between sections
+
+After each section is submitted, the platform saves a **partial** submission record and updates the browser URL with a `submission_id` and `step` parameter. This allows users to resume the form later. See [Submissions](/concepts/submissions) for details.

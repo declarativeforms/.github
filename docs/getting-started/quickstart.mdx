@@ -1,0 +1,90 @@
+---
+title: Quickstart
+description: Create your first form in under 60 seconds
+---
+
+## Prerequisites
+
+- A GitHub account
+- A repository (public or private)
+
+---
+
+## Step 1 — Create a YAML file
+
+Create a file named `feedback.yaml` in the root of your repository:
+
+```yaml
+version: 1
+title: Quick Feedback
+sections:
+  - id: main
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+        validators:
+          - required
+      - id: feedback
+        type: long_text
+        label: What can we improve?
+        validators:
+          - required
+    next: done
+
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/form
+```
+
+The minimum required top-level keys are `version`, `title`, and `sections`. Everything else is optional.
+
+---
+
+## Step 2 — Push to GitHub
+
+Commit and push the file to your repository's `main` branch:
+
+```bash
+git add feedback.yaml
+git commit -m "Add feedback form"
+git push
+```
+
+---
+
+## Step 3 — Open your form
+
+Your form is live immediately at:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/feedback
+```
+
+Replace `{owner}` with your GitHub username or organization, and `{repo}` with your repository name.
+
+For example, if your GitHub username is `acme` and your repository is `forms`:
+
+```
+https://app.declarativeforms.com/acme/forms/feedback
+```
+
+---
+
+## What just happened?
+
+When someone visits your form URL, the platform:
+
+1. Fetches `https://raw.githubusercontent.com/acme/forms/main/feedback.yaml`
+2. Parses and validates the YAML
+3. Renders the form in the browser
+4. On submission, saves the data and fires any configured connections
+
+---
+
+## Next steps
+
+- [Field types reference](/reference/field-types) — see all 16 available field types
+- [Add validation](/guides/make-field-required) — make fields required or enforce patterns
+- [Connect to a webhook](/guides/send-data-to-webhook) — receive submission data in your system
+- [Create a multi-step form](/guides/create-multi-step-form) — split a long form into sections

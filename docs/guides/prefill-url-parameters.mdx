@@ -1,0 +1,85 @@
+---
+title: Prefill with URL parameters
+description: How to populate form fields from query string parameters
+---
+
+Any query parameter in the form URL that matches a field ID is used as that field's initial value. This lets you pre-populate form fields from marketing links, internal tools, or external systems.
+
+## How it works
+
+Add query parameters to the form URL using field IDs as keys:
+
+```
+https://app.declarativeforms.com/acme/forms/contact?name=Jane+Smith&email=jane@example.com
+```
+
+When the form loads, the field with ID `name` will be pre-populated with `Jane Smith` and the field with ID `email` will be pre-populated with `jane@example.com`.
+
+## Reserved keys
+
+These query parameters are reserved by the platform and will **not** be used for field prefill:
+
+| Parameter | Purpose |
+|-----------|---------|
+| `connection_id` | Private repo OAuth connection |
+| `lang` | Force locale |
+| `submission_id` | Resume a partial submission |
+| `step` | Resume at a specific section |
+
+Use any other key as a field prefill parameter.
+
+## Field ID matching
+
+Prefill matching is **case-sensitive**. A field with ID `emailAddress` will not be prefilled by `?emailaddress=...`—the key must match exactly.
+
+## Value handling
+
+All URL parameter values are strings. They are passed to fields as-is without type coercion. For number fields, the string value is displayed in the input.
+
+Special characters in values should be URL-encoded:
+
+```
+?name=Jane+Smith          # spaces encoded as +
+?name=Jane%20Smith        # spaces encoded as %20
+?company=Acme%2C+Inc      # commas encoded as %2C
+```
+
+## Example: prefilling a feedback form
+
+YAML:
+
+```yaml
+version: 1
+title: Product Feedback
+
+sections:
+  - id: main
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+      - id: email
+        type: email
+        label: Email address
+      - id: product
+        type: dropdown
+        label: Which product?
+        options: [App, API, Dashboard]
+    next: done
+```
+
+Prefilled URL:
+
+```
+https://app.declarativeforms.com/acme/forms/feedback?name=Jane&email=jane@example.com&product=API
+```
+
+All three fields will be pre-populated when the form loads.
+
+## Prefilling hidden fields
+
+URL prefill is the primary way to populate `hidden` fields. See [Pass hidden tracking data](/guides/pass-hidden-tracking-data) for the full pattern.
+
+## Editable prefill
+
+Prefilled values are editable by the user unless the field type prevents it (e.g., `hidden` fields are never shown). Users can overwrite any prefilled value before submitting.

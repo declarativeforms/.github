@@ -1,0 +1,90 @@
+---
+title: Submissions
+description: How form submissions are created, saved, and resumed
+---
+
+A **submission** is the record created when a user fills out and submits a form. Submissions move through two states: `partial` and `completed`.
+
+## Submission states
+
+| Status | Description |
+|--------|-------------|
+| `partial` | Created after each section is submitted. Data is merged incrementally. |
+| `completed` | Set when the user submits the final section. Connections fire at this point. |
+
+## Data shape
+
+Each submission record has the following structure:
+
+```json
+{
+  "id": "abc123",
+  "form_id": "declarativeforms/examples/feedback",
+  "status": "completed",
+  "data": {
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "feedback": "The app is great but could use dark mode."
+  },
+  "metadata": {
+    "ip_address": "203.0.113.1",
+    "user_agent": "Mozilla/5.0 ..."
+  },
+  "created_at": "2025-06-01T10:00:00Z",
+  "updated_at": "2025-06-01T10:05:00Z"
+}
+```
+
+The `data` object contains one key per field ID, with the user's submitted value.
+
+## Partial saves
+
+After each section is submitted, the platform:
+
+1. Creates (or updates) a `partial` submission record
+2. Merges the new section data into the existing `data` object
+3. Returns the `submission_id` to the browser
+4. The browser updates the URL: `?submission_id=abc123&step=next_section_id`
+
+Data merging is **non-destructive**—previously saved values are preserved and only overwritten if the same field ID is re-submitted.
+
+## Completing a submission
+
+When the user submits the final section, the platform:
+
+1. Merges the final section data
+2. Sets `status` to `completed`
+3. Fires all configured connections (webhook, email, Airtable)
+4. Returns the final `submission_id` to the browser
+
+## Resuming a submission
+
+To resume a partial submission, visit the form URL with the `submission_id` and `step` parameters:
+
+```
+https://app.declarativeforms.com/acme/forms/signup?submission_id=abc123&step=contact_info
+```
+
+The platform will:
+- Load the existing partial submission data
+- Resume the form at the specified section
+- Pre-populate fields with previously submitted values
+
+These parameters are automatically added to the URL after each section submission, so users can resume simply by bookmarking or revisiting the URL.
+
+## OTP tokens in submission data
+
+If a form uses [email OTP verification](/guides/otp-email-verification), the verification token is stored in `submission.data` under the key `{fieldId}__otp_token`. This token is included in webhook payloads and connection data.
+
+<Note>
+OTP tokens are verification artifacts and do not contain sensitive information beyond the verified email address. However, you should treat them as opaque values in your webhook receiver.
+</Note>
+
+## Metadata
+
+Every submission includes:
+
+- `metadata.ip_address` — the IP address of the user who submitted the form
+- `metadata.user_agent` — the browser's user agent string
+
+These fields are populated automatically and cannot be set by the user.

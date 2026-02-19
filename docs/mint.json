@@ -1,0 +1,155 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Declarative Forms",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#07C983",
+    "dark": "#0D9373"
+  },
+  "topbarLinks": [
+    { "name": "GitHub", "url": "https://github.com/declarativeforms/examples" }
+  ],
+  "topbarCtaButton": {
+    "name": "Open App",
+    "url": "https://app.declarativeforms.com"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/quickstart",
+        "getting-started/how-it-works"
+      ]
+    },
+    {
+      "group": "Concepts",
+      "pages": [
+        "concepts/yaml-schema",
+        "concepts/sections-and-navigation",
+        "concepts/submissions",
+        "concepts/connections",
+        "concepts/localization"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        {
+          "group": "Forms",
+          "pages": [
+            "guides/create-first-form",
+            "guides/create-multi-step-form",
+            "guides/access-private-repo"
+          ]
+        },
+        {
+          "group": "Validation",
+          "pages": [
+            "guides/make-field-required",
+            "guides/validate-min-max",
+            "guides/validate-regex"
+          ]
+        },
+        {
+          "group": "Logic",
+          "pages": [
+            "guides/conditional-visibility",
+            "guides/conditional-navigation"
+          ]
+        },
+        {
+          "group": "Completion",
+          "pages": [
+            "guides/customize-thank-you-page",
+            "guides/redirect-after-submission"
+          ]
+        },
+        {
+          "group": "Email",
+          "pages": [
+            "guides/otp-email-verification",
+            "guides/send-confirmation-email",
+            "guides/send-admin-notification"
+          ]
+        },
+        {
+          "group": "Connections",
+          "pages": [
+            "guides/send-data-to-webhook",
+            "guides/send-data-to-airtable"
+          ]
+        },
+        {
+          "group": "Data",
+          "pages": [
+            "guides/prefill-url-parameters",
+            "guides/pass-hidden-tracking-data",
+            "guides/resume-form-submission"
+          ]
+        },
+        {
+          "group": "Localization",
+          "pages": [
+            "guides/translate-form",
+            "guides/multilingual-options"
+          ]
+        },
+        {
+          "group": "Fields",
+          "pages": [
+            "guides/collect-file-uploads",
+            "guides/capture-signatures",
+            "guides/collect-addresses"
+          ]
+        },
+        {
+          "group": "Settings",
+          "pages": [
+            "guides/control-form-availability",
+            "guides/add-mixpanel-analytics"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "reference/yaml-schema",
+        "reference/field-types",
+        "reference/validators",
+        "reference/sections-and-navigation",
+        "reference/connections",
+        "reference/completion",
+        "reference/url-structure"
+      ]
+    },
+    {
+      "group": "Examples",
+      "pages": [
+        "examples/bug-report",
+        "examples/feature-request",
+        "examples/access-request",
+        "examples/deployment-request",
+        "examples/beta-signup"
+      ]
+    },
+    {
+      "group": "Help",
+      "pages": [
+        "help/faq",
+        "help/troubleshooting",
+        "help/changelog",
+        "help/support"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/declarativeforms/examples"
+  }
+}

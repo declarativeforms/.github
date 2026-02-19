@@ -1,0 +1,100 @@
+---
+title: Customize the thank-you page
+description: How to configure the completion page shown after form submission
+---
+
+After the final section is submitted, users are shown a thank-you page. You can customize the title, message, and an optional call-to-action button.
+
+## Configuration
+
+Add a `completion` key at the top level of your YAML:
+
+```yaml
+completion:
+  title: Thanks for your submission!
+  message: We'll review your request and follow up within 2 business days.
+  button:
+    label: Back to home
+    url: https://example.com
+```
+
+All fields are optional. If `completion` is omitted entirely, a default thank-you message is shown.
+
+## Template interpolation
+
+Use `{{data.fieldId}}` syntax to insert submitted field values into any text field:
+
+```yaml
+completion:
+  title: "Thanks, {{data.first_name}}!"
+  message: "We'll be in touch at {{data.email}} within 24 hours."
+  button:
+    label: Return to dashboard
+    url: "https://app.example.com/users/{{data.user_id}}"
+```
+
+The `data` object contains all submitted field values from the completed form.
+
+## Locale maps
+
+All `completion` fields support locale maps:
+
+```yaml
+completion:
+  title:
+    en: "Thanks, {{data.name}}!"
+    es: "¡Gracias, {{data.name}}!"
+  message:
+    en: We'll be in touch soon.
+    es: Nos pondremos en contacto pronto.
+  button:
+    label:
+      en: Return to home
+      es: Volver al inicio
+    url: https://example.com
+```
+
+## Default fallback
+
+If `completion` is not configured (or a field is missing), default text is shown:
+
+| Field | Default |
+|-------|---------|
+| `title` | "Thank you" |
+| `message` | "Your submission has been received." |
+| `button` | No button shown |
+
+## Full example
+
+```yaml
+version: 1
+title: Job Application
+
+sections:
+  - id: application
+    title: Apply now
+    fields:
+      - id: name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email
+        validators:
+          - required
+      - id: cover_letter
+        type: long_text
+        label: Why do you want to join us?
+    next: done
+
+completion:
+  title: "Application received, {{data.name}}!"
+  message: |
+    We've received your application and will review it shortly.
+    Expect to hear from us at {{data.email}} within 5 business days.
+  button:
+    label: View open positions
+    url: https://example.com/careers
+```

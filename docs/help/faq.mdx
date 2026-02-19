@@ -1,0 +1,84 @@
+---
+title: FAQ
+description: Frequently asked questions about Declarative Forms
+---
+
+## Can I use a private GitHub repository?
+
+Yes. Connect your GitHub account via OAuth at [app.declarativeforms.com/connections](https://app.declarativeforms.com/connections), then add `?connection_id=your-id` to the form URL. See [Access a private repository](/guides/access-private-repo) for setup details.
+
+---
+
+## Is validation enforced server-side?
+
+No. All validation (`required`, `pattern`, `min`, `max`) is enforced **client-side only** in the browser. The API accepts submitted values as-is.
+
+If you need server-side validation, add a `webhook` connection and validate the payload in your own receiver.
+
+---
+
+## What happens if a connection fails?
+
+If a webhook request fails (non-2xx response or network error), the error is logged but **does not fail the submission**. The submission is still saved as `completed` and other connections continue to execute.
+
+---
+
+## Can I have multiple connections on a single form?
+
+Yes. You can add as many webhook, email, and Airtable connections as needed. They execute sequentially in the order listed in the `connections` array.
+
+---
+
+## How long are partial submissions kept?
+
+Partial submissions (from multi-step forms where the user hasn't completed the final section) are kept indefinitely. There is no automatic expiry.
+
+---
+
+## What file types are accepted for uploads?
+
+All file types are accepted by the `file_upload` field. The server enforces a 10 MB limit per file.
+
+---
+
+## Can I use the form without any connections?
+
+Yes. Connections are optional. Forms without connections collect and save submissions but don't send data anywhere. You can view submissions through the platform (if available) or add connections later.
+
+---
+
+## Can I have conditional logic within a section?
+
+Yes. Use `visible_when` on individual fields to show or hide them based on other field values within the same section. See [Conditional field visibility](/guides/conditional-visibility).
+
+For routing between different sections, use [conditional navigation](/guides/conditional-navigation).
+
+---
+
+## Can I prefill select/dropdown options?
+
+Yes. URL prefill works for all field types including `dropdown`, `single_select`, and `multiple_select`. The value must match an option value exactly (case-sensitive). For `multiple_select`, only single-value prefill is supported via URL.
+
+---
+
+## Does Declarative Forms work on mobile?
+
+Yes. The form UI is responsive and works on mobile browsers. Signature fields support touch and stylus input.
+
+---
+
+## Can I embed the form in an iframe?
+
+The form is a standalone page at `app.declarativeforms.com`. Embedding via iframe is not officially supported—some features (OAuth redirects, file uploads) may behave unexpectedly in an iframe context.
+
+---
+
+## What is the `rating` field type?
+
+A numeric rating scale. Users click or tap a number to rate. Configure `min_label` and `max_label` to label the ends of the scale. Use `min`/`max` validators to set the scale bounds.
+
+---
+
+## How do I update a form?
+
+Edit the YAML file in your GitHub repository and push to the `main` branch. Changes take effect immediately on the next page load—no cache clearing or re-deployment needed.

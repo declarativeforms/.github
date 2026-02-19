@@ -1,0 +1,129 @@
+---
+title: How it works
+description: Architecture and data flow for Declarative Forms
+---
+
+## Overview
+
+Declarative Forms connects three components: GitHub (where your form config lives), the API (which fetches and processes forms), and the browser (which renders and submits them).
+
+```
+GitHub repository          Declarative Forms API        Browser
+─────────────────         ──────────────────────       ────────────────
+feedback.yaml        →    fetch + parse YAML       →   render form UI
+                          validate schema
+
+                    ←     return form JSON         ←   user fills form
+
+                          receive submission        ←   submit section
+                          save partial
+                          update URL params
+
+                          fire connections         ←   final submission
+                          (webhook / email / Airtable)
+```
+
+---
+
+## Form loading
+
+When the browser requests a form at `https://app.declarativeforms.com/{owner}/{repo}/{file}`, the API:
+
+1. Constructs the raw GitHub URL: `https://raw.githubusercontent.com/{owner}/{repo}/main/{file}.yaml`
+2. Fetches the file (using OAuth credentials for private repos)
+3. Parses the YAML and returns a JSON representation to the browser
+4. The browser renders the first section
+
+The form's internal ID is derived from the GitHub slug (`{owner}/{repo}/{file}`).
+
+---
+
+## Submission flow
+
+Forms are submitted **one section at a time**. After each section:
+
+1. The browser sends the current section's data to the API
+2. The API saves a **partial** submission record
+3. The API returns a `submission_id`
+4. The browser updates the URL with `?submission_id=X&step=next_section_id`
+5. The user continues to the next section
+
+On the **final section**:
+
+1. The browser sends the remaining data with the existing `submission_id`
+2. The API merges all data and marks the submission as `completed`
+3. All configured connections fire (webhook, email, Airtable)
+4. The browser redirects to the thank-you page
+
+### Connections fire on final submission only
+
+Connections are **not** triggered for partial saves. They only fire when the submission status becomes `completed` (i.e., the user completes the last section).
+
+---
+
+## Validation
+
+Validation is performed **client-side only** by the browser before each section is submitted. The API does not re-validate field values on receipt.
+
+This means:
+- Invalid data can be submitted programmatically by bypassing the browser
+- Validators enforce UX constraints, not security guarantees
+- Server-side validation must be implemented in your own webhook receiver if needed
+
+---
+
+## Partial saves and resuming
+
+After each section, the submission ID and current step are written to the URL:
+
+```
+https://app.declarativeforms.com/acme/forms/signup?submission_id=abc123&step=contact_info
+```
+
+This URL can be bookmarked or shared. When revisited:
+- The API loads the existing partial submission
+- The browser resumes from the saved step
+- Previously entered data is pre-populated
+
+---
+
+## Private repositories
+
+For private GitHub repositories, the form URL requires a `connection_id` parameter:
+
+```
+https://app.declarativeforms.com/acme/private-forms/onboarding?connection_id=github_oauth_token
+```
+
+The `connection_id` maps to an OAuth access token stored in the platform. See [Accessing private repos](/guides/access-private-repo) for setup instructions.
+
+---
+
+## Localization
+
+The browser determines the active locale using this priority order:
+
+1. `?lang=` query parameter
+2. Browser's `navigator.language`
+3. `locale` key in the YAML
+4. English (`en`) as the final fallback
+
+YAML fields that support localization accept either a plain string or a locale map:
+
+```yaml
+title: My Form                    # plain string
+title:
+  en: My Form                     # locale map
+  es: Mi formulario
+```
+
+---
+
+## Analytics
+
+If a Mixpanel project token is configured in the YAML (`mixpanel: "token"`), the platform fires:
+
+- `page_view` — when the form first loads
+- `section_completed` — after each section is submitted
+
+Both events include `form_id` and (for `section_completed`) `section_id` as properties. The EU Mixpanel API host is used by default.

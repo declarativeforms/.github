@@ -1,0 +1,98 @@
+---
+title: Validate with a regex pattern
+description: How to validate input against a regular expression
+---
+
+The `pattern` validator checks field input against a regular expression. Use it when you need format validation beyond what built-in field types provide.
+
+## Basic usage
+
+```yaml
+- id: postal_code
+  type: short_text
+  label: Postal code
+  validators:
+    - type: pattern
+      regex: "^\\d{5}$"
+      message: Enter a 5-digit US ZIP code.
+```
+
+The `regex` value is a JavaScript-compatible regular expression string. Backslashes must be escaped in YAML strings (e.g., `\\d` for `\d`).
+
+## Examples
+
+### Phone number (US)
+
+```yaml
+- id: phone
+  type: short_text
+  label: Phone number
+  validators:
+    - type: pattern
+      regex: "^\\+?1?[-.\\s]?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$"
+      message: Enter a valid US phone number.
+```
+
+### Alphanumeric (no spaces)
+
+```yaml
+- id: username
+  type: short_text
+  label: Username
+  validators:
+    - type: pattern
+      regex: "^[a-zA-Z0-9_]+$"
+      message: Username can only contain letters, numbers, and underscores.
+```
+
+### UK postal code
+
+```yaml
+- id: postcode
+  type: short_text
+  label: UK postcode
+  validators:
+    - type: pattern
+      regex: "^[A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}$"
+      message: Enter a valid UK postcode (e.g. SW1A 2AA).
+```
+
+### Company email domain
+
+```yaml
+- id: work_email
+  type: email
+  label: Work email
+  validators:
+    - required
+    - type: pattern
+      regex: "@example\\.com$"
+      message: Please use your @example.com email address.
+```
+
+## Custom error message
+
+The `message` field is optional. If omitted, the default error is **"{field label} is invalid."**
+
+```yaml
+validators:
+  - type: pattern
+    regex: "^[A-Z]{2}\\d{6}$"
+    # No message — defaults to "Passport number is invalid."
+```
+
+## Combining with `required`
+
+`pattern` does not imply `required`. A blank field passes `pattern` validation. Add `required` explicitly if the field must be filled in.
+
+```yaml
+validators:
+  - required
+  - type: pattern
+    regex: "^\\d{5}$"
+    message: Enter a 5-digit ZIP code.
+```
+
+## Client-side only
+
+Pattern validation is enforced **client-side only** in the browser. The API does not validate submitted values against the regex.

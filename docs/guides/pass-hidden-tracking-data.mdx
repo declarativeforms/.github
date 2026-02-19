@@ -1,0 +1,98 @@
+---
+title: Pass hidden tracking data
+description: How to capture UTM parameters and other tracking data through form submissions
+---
+
+`hidden` fields are invisible to users but included in submission data and connections. Use them to pass context like UTM parameters, user IDs, or campaign codes alongside form submissions.
+
+## Configuration
+
+```yaml
+- id: utm_source
+  type: hidden
+  label: UTM Source
+```
+
+Hidden fields have no visible UI. Their value is set exclusively via URL prefill.
+
+## Passing values via URL
+
+Append tracking parameters to your form URL:
+
+```
+https://app.declarativeforms.com/acme/forms/signup?utm_source=google&utm_medium=cpc&utm_campaign=spring_promo
+```
+
+When the form loads, the hidden fields `utm_source`, `utm_medium`, and `utm_campaign` will be populated with the URL parameter values.
+
+## Full example: UTM tracking form
+
+```yaml
+version: 1
+title: Beta Signup
+
+sections:
+  - id: signup
+    title: Join the beta
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+
+      # Hidden tracking fields
+      - id: utm_source
+        type: hidden
+        label: UTM Source
+      - id: utm_medium
+        type: hidden
+        label: UTM Medium
+      - id: utm_campaign
+        type: hidden
+        label: UTM Campaign
+      - id: referral_id
+        type: hidden
+        label: Referral ID
+    next: done
+
+connections:
+  - type: airtable
+    connection_id: abc123
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Beta Signups
+```
+
+Marketing link:
+
+```
+https://app.declarativeforms.com/acme/forms/beta?utm_source=twitter&utm_campaign=launch
+```
+
+## What gets submitted
+
+Hidden field values are included in `submission.data` like any other field:
+
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "utm_source": "twitter",
+  "utm_medium": null,
+  "utm_campaign": "launch",
+  "referral_id": null
+}
+```
+
+Fields with no corresponding URL parameter will have `null` values.
+
+## Notes
+
+- Hidden fields are excluded from the `include_responses` email table (not shown to users)
+- Hidden fields are excluded from conditional navigation and visibility expressions if they have no value
+- Do not add `required` to hidden fields unless you can guarantee the URL parameter will always be present—otherwise the form will be unsubmittable

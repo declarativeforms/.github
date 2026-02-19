@@ -1,0 +1,131 @@
+---
+title: Sections and Navigation Reference
+description: Complete type definitions for sections, fields, and navigation
+---
+
+## Section
+
+```typescript
+type Section = {
+  id: string;
+  title: string | LocaleMap;
+  fields: Field[];
+  next: string | NavigationRule[];
+};
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier. Referenced by other sections' `next`. |
+| `title` | `string \| LocaleMap` | Yes | Section heading shown to the user. |
+| `fields` | `Field[]` | Yes | Fields displayed in this section. Minimum: 1. |
+| `next` | `string \| NavigationRule[]` | Yes | Navigation target after submission. |
+
+### `next` as a string
+
+| Value | Behavior |
+|-------|----------|
+| Section `id` | Navigate to that section |
+| `"done"` | End the form; show the thank-you page |
+| `"https://..."` | Redirect the browser to that URL |
+
+### `next` as a navigation rule array
+
+An ordered array of `when/go` conditions plus a required `else` fallback:
+
+```yaml
+next:
+  - when: "data.plan === 'enterprise'"
+    go: enterprise_section
+  - when: "data.plan === 'team'"
+    go: team_section
+  - else: basic_section
+```
+
+Rules are evaluated in order. The first matching `when` wins. `else` is required and fires when no `when` matches. If there is no `else` and no `when` matches, navigation defaults to `"done"`.
+
+---
+
+## NavigationRule
+
+```typescript
+type NavigationRule =
+  | { when: string; go: string }
+  | { else: string };
+```
+
+### Conditional rule (`when`/`go`)
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `when` | `string` | JavaScript expression evaluated against the `data` object. Must return a truthy value. |
+| `go` | `string` | Section `id`, `"done"`, or `https://` URL. |
+
+### Fallback rule (`else`)
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `else` | `string` | Section `id`, `"done"`, or `https://` URL. Used when no `when` condition matches. |
+
+### `when` expressions
+
+`when` values are JavaScript expressions evaluated with `new Function("data", "return " + expression)`.
+
+The `data` object contains all submitted field values:
+- Text fields: `string`
+- `number`: `string` (the integer as a string)
+- `multiple_select`: `string[]`
+- `file_upload`: `string` (URL) or `string[]` (URLs)
+- `hidden` fields with no prefill: `undefined`
+
+<Warning>
+`when` expressions are arbitrary JavaScript executed in the browser. Only use static logic from your own form design.
+</Warning>
+
+---
+
+## Field
+
+```typescript
+type Field = {
+  id: string;
+  type: FieldType;
+  label: string | LocaleMap;
+  placeholder?: string | LocaleMap;
+  options?: Option[];
+  validators?: Validator[];
+  visible_when?: string;
+  otp?: boolean;
+  searchable?: boolean;
+  outputFormat?: "string" | "structured";
+  min_label?: string | LocaleMap;
+  max_label?: string | LocaleMap;
+};
+```
+
+See [Field Types reference](/reference/field-types) for per-type details.
+
+### `visible_when` expressions
+
+Like `when` in navigation rules, `visible_when` is a JavaScript expression evaluated against `data`. The field is shown when the expression returns truthy.
+
+```yaml
+visible_when: "data.role === 'admin'"
+visible_when: "data.age >= 18 && data.country === 'US'"
+```
+
+When a field is hidden:
+- Its validators are **not** enforced
+- Its current value is **not** included in the section submission
+
+---
+
+## Partial saves
+
+After each section (except the final) is submitted:
+
+1. The API saves a `partial` submission (or updates an existing one)
+2. The browser URL is updated with `?submission_id=X&step=next_section_id`
+3. The form navigates to the next section
+
+This URL can be used to resume the form later. See [Resume a form submission](/guides/resume-form-submission).

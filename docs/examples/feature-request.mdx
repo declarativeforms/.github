@@ -1,0 +1,131 @@
+---
+title: Feature Request Form
+description: A feature request form with priority rating, confirmation email, and Airtable integration
+---
+
+This example demonstrates a feature request form with:
+- Priority rating (1–5)
+- Confirmation email to the requester
+- Airtable integration for tracking requests
+
+## YAML
+
+```yaml
+version: 1
+title: Feature Request
+description: Help us prioritize what to build next.
+
+sections:
+  - id: requester
+    title: About you
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+
+      - id: role
+        type: single_select
+        label: Your role
+        options:
+          - Developer
+          - Designer
+          - Product Manager
+          - Engineering Manager
+          - Executive
+          - Other
+        validators:
+          - required
+
+    next: request_details
+
+  - id: request_details
+    title: Your request
+    fields:
+      - id: feature_title
+        type: short_text
+        label: Feature title
+        placeholder: A short, descriptive name for the feature
+        validators:
+          - required
+          - type: max
+            value: 100
+
+      - id: description
+        type: long_text
+        label: What should it do?
+        placeholder: Describe the feature and how it should work
+        validators:
+          - required
+          - type: min
+            value: 50
+            message: Please provide at least 50 characters describing the feature.
+
+      - id: use_case
+        type: long_text
+        label: What problem does this solve for you?
+        validators:
+          - required
+
+      - id: priority
+        type: rating
+        label: How important is this to you?
+        min_label: Nice to have
+        max_label: Blocking my work
+        validators:
+          - required
+          - type: min
+            value: 1
+          - type: max
+            value: 5
+
+    next: done
+
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "We received your feature request: {{data.feature_title}}"
+    body: |
+      <p>Hi {{data.name}},</p>
+      <p>Thanks for submitting a feature request. We review all requests and ship the most impactful ones within 48 hours.</p>
+      <p>Your request: <strong>{{data.feature_title}}</strong></p>
+      <p>We'll follow up at this address if we have questions.</p>
+      <p>— The Declarative Forms Team</p>
+
+  - type: airtable
+    connection_id: your-airtable-connection-id
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Feature Requests
+
+completion:
+  title: "Request received, {{data.name}}!"
+  message: "We review all feature requests and ship the best ones fast. Keep an eye on your inbox at {{data.email}}."
+  button:
+    label: See what we've already built
+    url: https://github.com/declarativeforms/examples/issues
+```
+
+## How to use this
+
+1. Replace the Airtable `connection_id`, `base_id`, and `table_id_or_name` with your values
+2. Create an Airtable table with columns matching the field IDs: `name`, `email`, `role`, `feature_title`, `description`, `use_case`, `priority`
+3. Update the `completion.button.url` to your changelog or roadmap
+
+## Airtable column setup
+
+| Airtable column | Airtable type | Form field ID |
+|-----------------|---------------|---------------|
+| `name` | Single line text | `name` |
+| `email` | Email | `email` |
+| `role` | Single select | `role` |
+| `feature_title` | Single line text | `feature_title` |
+| `description` | Long text | `description` |
+| `use_case` | Long text | `use_case` |
+| `priority` | Number | `priority` |

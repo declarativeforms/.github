@@ -1,0 +1,93 @@
+---
+title: Conditional field visibility
+description: How to show or hide fields based on user answers
+---
+
+Use `visible_when` on any field to conditionally show or hide it based on the values of other fields in the same section.
+
+## Basic syntax
+
+```yaml
+- id: other_role
+  type: short_text
+  label: Please describe your role
+  visible_when: "data.role === 'other'"
+```
+
+The `visible_when` expression is evaluated as JavaScript. The `data` object contains all current field values in the form (across all previously submitted sections plus the current one).
+
+## Examples
+
+### Show a field when a specific option is selected
+
+```yaml
+- id: role
+  type: single_select
+  label: Your role
+  options: [Engineer, Designer, Manager, Other]
+
+- id: role_description
+  type: short_text
+  label: Describe your role
+  visible_when: "data.role === 'Other'"
+```
+
+### Show a field when a checkbox is checked
+
+```yaml
+- id: has_referral
+  type: single_select
+  label: Were you referred by someone?
+  options: [Yes, No]
+
+- id: referral_name
+  type: short_text
+  label: Referrer's name
+  visible_when: "data.has_referral === 'Yes'"
+```
+
+### Multiple conditions (AND)
+
+```yaml
+- id: enterprise_details
+  type: long_text
+  label: Enterprise requirements
+  visible_when: "data.plan === 'enterprise' && data.team_size > 50"
+```
+
+### Multiple conditions (OR)
+
+```yaml
+- id: contact_preference
+  type: short_text
+  label: Preferred contact method
+  visible_when: "data.subscribe_email === 'Yes' || data.subscribe_sms === 'Yes'"
+```
+
+### Check array membership (multiple_select)
+
+```yaml
+- id: python_version
+  type: single_select
+  label: Which Python version?
+  options: ["3.10", "3.11", "3.12"]
+  visible_when: "Array.isArray(data.languages) && data.languages.includes('Python')"
+```
+
+## Validation and hidden fields
+
+When a field is hidden (because `visible_when` evaluates to false), its validators are **not enforced**. A `required` validator on a hidden field will not block form submission.
+
+This means you can safely add `required` to a field that is conditionally shown—it will only be enforced when the field is visible.
+
+## The `data` object
+
+`data` contains:
+- All field values from previously submitted sections
+- All current field values in the active section (updated in real-time as the user types)
+
+Field values are strings by default. `multiple_select` and `file_upload` values are arrays.
+
+<Warning>
+`visible_when` expressions are evaluated using `new Function("data", ...)`. They execute arbitrary JavaScript in the browser. Only use static logic derived from your own form design—never construct `visible_when` values from untrusted user input.
+</Warning>

@@ -1,0 +1,93 @@
+---
+title: Add Mixpanel analytics
+description: How to track form engagement with Mixpanel
+---
+
+Add a Mixpanel project token to your form YAML to automatically track form engagement events.
+
+## Configuration
+
+```yaml
+version: 1
+title: Beta Signup
+mixpanel: "your-mixpanel-project-token"
+
+sections:
+  - id: main
+    fields:
+      - id: email
+        type: email
+        label: Email address
+    next: done
+```
+
+## Events tracked
+
+| Event | Triggered |
+|-------|-----------|
+| `page_view` | When the form loads in the browser |
+| `section_completed` | After each section is submitted |
+
+## Event properties
+
+Both events include:
+
+| Property | Value |
+|----------|-------|
+| `form_id` | The internal form identifier |
+
+The `section_completed` event additionally includes:
+
+| Property | Value |
+|----------|-------|
+| `section_id` | The ID of the section that was just completed |
+
+## API host
+
+Events are sent to the **EU Mixpanel API host** by default (`api-eu.mixpanel.com`). This is not configurable per-form.
+
+## Finding your project token
+
+1. Log in to [mixpanel.com](https://mixpanel.com)
+2. Go to **Settings > Project Settings**
+3. Copy the **Project Token** (not the API Secret)
+
+## Full example
+
+```yaml
+version: 1
+title: Product Feedback Survey
+mixpanel: "abc123def456"
+
+sections:
+  - id: intro
+    title: About you
+    fields:
+      - id: role
+        type: single_select
+        label: Your role
+        options: [Developer, Designer, Product Manager, Other]
+    next: feedback
+
+  - id: feedback
+    title: Your feedback
+    fields:
+      - id: rating
+        type: rating
+        label: Overall satisfaction
+      - id: comments
+        type: long_text
+        label: Anything else?
+    next: done
+```
+
+With this config, Mixpanel will receive:
+- `page_view` when the form loads
+- `section_completed` with `section_id: "intro"` after the first section
+- `section_completed` with `section_id: "feedback"` after the final section
+
+## Notes
+
+- The Mixpanel token is visible in the YAML source. Only use it for forms that are publicly accessible or where token exposure is acceptable.
+- No personal information (field values, email addresses) is sent to Mixpanel
+- Analytics fire regardless of whether the user completes the form

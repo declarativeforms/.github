@@ -1,0 +1,104 @@
+---
+title: Completion Reference
+description: Configuration for the thank-you page shown after form submission
+---
+
+The `completion` key configures the page shown after a user submits the final section of a form.
+
+## Type definition
+
+```typescript
+type Completion = {
+  title?: string | LocaleMap;
+  message?: string | LocaleMap;
+  button?: {
+    label: string | LocaleMap;
+    url: string | LocaleMap;
+  };
+};
+```
+
+## Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `title` | `string \| LocaleMap` | No | Heading on the thank-you page. |
+| `message` | `string \| LocaleMap` | No | Body text on the thank-you page. |
+| `button.label` | `string \| LocaleMap` | No | Label for the call-to-action button. |
+| `button.url` | `string \| LocaleMap` | No | URL for the call-to-action button. |
+
+`button` is only shown if both `label` and `url` are provided.
+
+## Default values
+
+If `completion` is omitted or a field is absent, defaults apply:
+
+| Field | Default |
+|-------|---------|
+| `title` | "Thank you" |
+| `message` | "Your submission has been received." |
+| `button` | Not shown |
+
+## Template interpolation
+
+All string fields support `{{data.fieldId}}` syntax to insert submitted values:
+
+```yaml
+completion:
+  title: "Thanks, {{data.first_name}}!"
+  message: "We'll reply to {{data.email}} within 24 hours."
+  button:
+    label: Back to home
+    url: "https://example.com?ref={{data.user_id}}"
+```
+
+The `data` object contains all submitted field values from the completed form.
+
+## Locale map support
+
+All fields accept locale maps:
+
+```yaml
+completion:
+  title:
+    en: "Thanks, {{data.name}}!"
+    es: "¡Gracias, {{data.name}}!"
+  message:
+    en: We'll be in touch soon.
+    es: Nos pondremos en contacto pronto.
+  button:
+    label:
+      en: Return to home
+      es: Volver al inicio
+    url: https://example.com
+```
+
+## Full example
+
+```yaml
+completion:
+  title:
+    en: "Application submitted, {{data.name}}!"
+    es: "¡Solicitud enviada, {{data.name}}!"
+  message:
+    en: "We'll review your application and contact you at {{data.email}} within 5 business days."
+    es: "Revisaremos tu solicitud y te contactaremos en {{data.email}} dentro de 5 días hábiles."
+  button:
+    label:
+      en: View open positions
+      es: Ver posiciones abiertas
+    url: https://example.com/careers
+```
+
+## Redirect alternative
+
+If you want to immediately redirect the user to a URL instead of showing a thank-you page, set the final section's `next` to the URL:
+
+```yaml
+sections:
+  - id: final
+    fields: [...]
+    next: https://example.com/confirmation
+```
+
+See [Redirect after submission](/guides/redirect-after-submission) for details.

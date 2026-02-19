@@ -1,0 +1,113 @@
+---
+title: YAML Schema
+description: Top-level structure of a Declarative Forms configuration file
+---
+
+A Declarative Forms configuration file is a YAML file committed to a GitHub repository. The filename (without extension) becomes part of the form URL.
+
+## Top-level keys
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `version` | `number` | Yes | Schema version. Must be `1`. |
+| `title` | `string \| locale map` | Yes | Form display title shown at the top of the page. |
+| `description` | `string \| locale map` | No | Subtitle displayed below the title. |
+| `sections` | `Section[]` | Yes | One or more form sections. See [Sections](/concepts/sections-and-navigation). |
+| `connections` | `Connection[]` | No | Webhook, email, or Airtable connections. See [Connections](/concepts/connections). |
+| `start_date` | `string (ISO 8601)` | No | Form is inaccessible before this date/time. |
+| `end_date` | `string (ISO 8601)` | No | Form is inaccessible after this date/time. |
+| `locale` | `string` | No | Force all users to a specific locale (e.g., `"es"`). Overridable with `?lang=`. |
+| `mixpanel` | `string` | No | Mixpanel project token for analytics events. |
+| `completion` | `Completion` | No | Customizes the thank-you page shown after submission. |
+
+## Minimal example
+
+```yaml
+version: 1
+title: Contact Us
+sections:
+  - id: main
+    title: Your message
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+      - id: message
+        type: long_text
+        label: Message
+    next: done
+```
+
+## Full example
+
+```yaml
+version: 1
+title:
+  en: Contact Us
+  es: Contáctanos
+description:
+  en: We'll get back to you within 24 hours.
+  es: Te responderemos en menos de 24 horas.
+locale: en
+start_date: "2025-01-01"
+end_date: "2025-12-31"
+mixpanel: "your-project-token"
+
+sections:
+  - id: contact
+    title: Your details
+    fields:
+      - id: name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+    next: message
+
+  - id: message
+    title: Your message
+    fields:
+      - id: body
+        type: long_text
+        label: Message
+        validators:
+          - required
+    next: done
+
+connections:
+  - type: email
+    to: support@example.com
+    subject: New contact form submission
+    include_responses: true
+
+  - type: webhook
+    url: https://your-api.com/hooks/contact
+
+completion:
+  title: Thanks for reaching out!
+  message: We'll be in touch at {{data.email}}.
+  button:
+    label: Back to home
+    url: https://example.com
+```
+
+## Locale maps
+
+Any field that supports `string | locale map` can be written as either a plain string or an object where keys are locale codes:
+
+```yaml
+# Plain string
+title: My Form
+
+# Locale map
+title:
+  en: My Form
+  es: Mi formulario
+```
+
+Supported locale codes: `en`, `es`. See [Localization](/concepts/localization) for details.

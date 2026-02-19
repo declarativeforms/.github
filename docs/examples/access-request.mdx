@@ -1,0 +1,179 @@
+---
+title: Access Request Form
+description: A multi-section access request form with OTP verification and admin notification
+---
+
+This example demonstrates an internal access request form with:
+- Multi-section flow (requester info → access details → approval context)
+- Email OTP verification
+- Admin notification email with all responses
+
+## YAML
+
+```yaml
+version: 1
+title: System Access Request
+description: Request access to internal systems and tools.
+
+sections:
+  - id: requester_info
+    title: Requester information
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Work email
+        otp: true
+        validators:
+          - required
+
+      - id: department
+        type: dropdown
+        label: Department
+        searchable: true
+        options:
+          - Engineering
+          - Design
+          - Product
+          - Marketing
+          - Sales
+          - Finance
+          - Legal
+          - HR
+          - Operations
+          - Executive
+        validators:
+          - required
+
+      - id: employee_id
+        type: short_text
+        label: Employee ID
+        validators:
+          - required
+
+    next: access_details
+
+  - id: access_details
+    title: Access details
+    fields:
+      - id: system
+        type: dropdown
+        label: System or application
+        searchable: true
+        options:
+          - AWS Console
+          - GitHub Organization
+          - Datadog
+          - PagerDuty
+          - Confluence
+          - Jira
+          - Slack (Admin)
+          - Salesforce
+          - HubSpot
+          - Other
+        validators:
+          - required
+
+      - id: other_system
+        type: short_text
+        label: Specify system
+        visible_when: "data.system === 'Other'"
+        validators:
+          - required
+
+      - id: access_level
+        type: single_select
+        label: Access level required
+        options:
+          - Read-only
+          - Read/Write
+          - Admin
+        validators:
+          - required
+
+      - id: duration
+        type: single_select
+        label: Duration needed
+        options:
+          - Temporary (1 week)
+          - Temporary (1 month)
+          - Temporary (3 months)
+          - Permanent
+        validators:
+          - required
+
+    next: approval_context
+
+  - id: approval_context
+    title: Justification
+    fields:
+      - id: justification
+        type: long_text
+        label: Business justification
+        placeholder: Why do you need this access? What will you use it for?
+        validators:
+          - required
+          - type: min
+            value: 50
+            message: Please provide at least 50 characters of justification.
+
+      - id: manager_email
+        type: email
+        label: Your manager's email
+        validators:
+          - required
+
+      - id: urgency
+        type: single_select
+        label: Urgency
+        options:
+          - Standard (3–5 business days)
+          - Urgent (24 hours)
+          - Critical (ASAP)
+
+    next: done
+
+connections:
+  - type: email
+    to: it-security@example.com
+    subject: "Access request: {{data.system}} — {{data.access_level}}"
+    body: |
+      <p>A new access request has been submitted.</p>
+      <p><strong>Requester:</strong> {{data.full_name}} ({{data.email}})</p>
+      <p><strong>System:</strong> {{data.system}}</p>
+      <p><strong>Access level:</strong> {{data.access_level}}</p>
+      <p><strong>Duration:</strong> {{data.duration}}</p>
+    include_responses: true
+
+  - type: email
+    to: "{{data.manager_email}}"
+    subject: "Action needed: Access request from {{data.full_name}}"
+    body: |
+      <p>{{data.full_name}} has submitted an access request that may require your approval.</p>
+      <p><strong>System:</strong> {{data.system}}</p>
+      <p><strong>Justification:</strong> {{data.justification}}</p>
+      <p>Please contact IT Security if you approve or have concerns.</p>
+
+completion:
+  title: Request submitted
+  message: "Your access request has been sent to IT Security. They'll be in touch at {{data.email}} within the requested timeframe."
+```
+
+## How to use this
+
+1. Replace `it-security@example.com` with your IT security team's email
+2. Update the `system` dropdown options to match your actual systems
+3. Add a webhook connection if you want to create tickets automatically
+
+## Conditional field
+
+The `other_system` field only appears when the user selects "Other" from the system dropdown. This is done with `visible_when`:
+
+```yaml
+visible_when: "data.system === 'Other'"
+```

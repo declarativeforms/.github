@@ -1,0 +1,181 @@
+---
+title: Connections Reference
+description: Complete reference for webhook, email, and Airtable connection types
+---
+
+Connections fire **only when a submission is completed** (final section submitted). They do not fire for partial saves.
+
+---
+
+## Webhook
+
+Sends an HTTP POST request with the full submission JSON.
+
+```yaml
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/form
+```
+
+### Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"webhook"` | Yes | — |
+| `url` | `string` | Yes | The endpoint to POST to. |
+
+### Request
+
+```
+POST {url}
+Content-Type: application/json
+```
+
+No authentication headers are sent.
+
+### Payload
+
+The request body is the complete `ISubmission` object:
+
+```typescript
+type ISubmission = {
+  id: string;
+  form_id: string;
+  status: "completed";
+  data: Record<string, any>;
+  metadata: {
+    ip_address: string;
+    user_agent: string;
+  };
+  created_at: string;   // ISO 8601
+  updated_at: string;   // ISO 8601
+};
+```
+
+Example payload:
+
+```json
+{
+  "id": "abc123",
+  "form_id": "declarativeforms/examples/contact",
+  "status": "completed",
+  "data": {
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "message": "Hello!"
+  },
+  "metadata": {
+    "ip_address": "203.0.113.1",
+    "user_agent": "Mozilla/5.0 ..."
+  },
+  "created_at": "2025-06-01T10:00:00Z",
+  "updated_at": "2025-06-01T10:05:00Z"
+}
+```
+
+---
+
+## Email
+
+Sends an HTML email via Resend.
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "Thanks for your submission, {{data.name}}!"
+    body: "<p>We'll be in touch shortly.</p>"
+    include_responses: true
+```
+
+### Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"email"` | Yes | — |
+| `to` | `string` | Yes | Recipient email address. Supports `{{data.fieldId}}` and `{{form.title}}`. |
+| `subject` | `string \| LocaleMap` | Yes | Email subject. Supports template variables. |
+| `body` | `string \| LocaleMap` | No | HTML email body. Supports template variables. |
+| `include_responses` | `boolean` | No | Appends an HTML table of all non-hidden field responses. Default: `false`. |
+
+### Template variables
+
+All string properties support Handlebars-style interpolation:
+
+| Variable | Value |
+|----------|-------|
+| `{{data.fieldId}}` | The submitted value for `fieldId` |
+| `{{form.title}}` | The form's title |
+
+If `body` is omitted and `include_responses` is `false`, the email body defaults to the rendered `subject`.
+
+---
+
+## Airtable
+
+Creates a new record in an Airtable base.
+
+```yaml
+connections:
+  - type: airtable
+    connection_id: your-connection-id
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Submissions
+```
+
+### Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"airtable"` | Yes | — |
+| `connection_id` | `string` | Yes | ID from the connections page after OAuth. |
+| `base_id` | `string` | Yes | Airtable base ID (starts with `app`). |
+| `table_id_or_name` | `string` | Yes | Airtable table name or table ID (starts with `tbl`). |
+
+### Field mapping
+
+The entire `submission.data` object is sent as Airtable `fields`:
+
+```json
+POST https://api.airtable.com/v0/{base_id}/{table_id_or_name}
+{
+  "fields": {
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "message": "Hello!"
+  }
+}
+```
+
+Your form field IDs must match Airtable column names exactly (case-sensitive).
+
+### Notes
+
+- If the `connection_id` is invalid or the OAuth token has expired, the Airtable connection is silently skipped
+- OTP token fields (`{fieldId}__otp_token`) are included in the `fields` payload
+
+---
+
+## Multiple connections
+
+Multiple connections of any type can be configured on one form. They execute sequentially in the order listed.
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: Your submission was received
+
+  - type: email
+    to: admin@example.com
+    subject: New submission
+    include_responses: true
+
+  - type: webhook
+    url: https://api.example.com/hooks/form
+
+  - type: airtable
+    connection_id: abc123
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Submissions
+```

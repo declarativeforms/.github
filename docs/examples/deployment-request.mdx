@@ -1,0 +1,170 @@
+---
+title: Deployment Request Form
+description: A deployment request form with conditional production review and CI/CD webhook integration
+---
+
+This example demonstrates a deployment request form with:
+- Multi-section flow
+- Conditional navigation: production deployments route through an extra review section
+- Webhook to CI/CD system
+
+## YAML
+
+```yaml
+version: 1
+title: Deployment Request
+description: Request a production or staging deployment.
+
+sections:
+  - id: deployment_info
+    title: Deployment details
+    fields:
+      - id: service
+        type: dropdown
+        label: Service
+        searchable: true
+        options:
+          - api
+          - web-app
+          - worker
+          - cron
+          - data-pipeline
+        validators:
+          - required
+
+      - id: environment
+        type: single_select
+        label: Target environment
+        options:
+          - staging
+          - production
+        validators:
+          - required
+
+      - id: version
+        type: short_text
+        label: Version or commit SHA
+        placeholder: "v1.2.3 or abc1234"
+        validators:
+          - required
+
+      - id: deploy_date
+        type: date
+        label: Requested deploy date
+        validators:
+          - required
+
+      - id: requestor
+        type: short_text
+        label: Requestor name
+        validators:
+          - required
+
+      - id: ticket_url
+        type: url
+        label: Ticket or PR URL
+        placeholder: https://github.com/org/repo/pull/123
+
+    next:
+      - when: "data.environment === 'production'"
+        go: production_review
+      - else: change_description
+
+  - id: production_review
+    title: Production deployment review
+    fields:
+      - id: rollback_plan
+        type: long_text
+        label: Rollback plan
+        placeholder: How will you revert this change if needed?
+        validators:
+          - required
+
+      - id: tested_in_staging
+        type: single_select
+        label: Has this been tested in staging?
+        options:
+          - "Yes — tested and passing"
+          - "Yes — tested with known issues"
+          - "No — proceeding directly to production"
+        validators:
+          - required
+
+      - id: notified_oncall
+        type: single_select
+        label: Has the on-call engineer been notified?
+        options:
+          - "Yes"
+          - "No — low-risk deployment"
+        validators:
+          - required
+
+    next: change_description
+
+  - id: change_description
+    title: Change description
+    fields:
+      - id: summary
+        type: short_text
+        label: Change summary
+        validators:
+          - required
+
+      - id: change_details
+        type: long_text
+        label: What does this deployment include?
+        validators:
+          - required
+          - type: min
+            value: 30
+
+      - id: risk_level
+        type: single_select
+        label: Estimated risk
+        options:
+          - Low — config change or bug fix
+          - Medium — new feature with limited scope
+          - High — significant behavioral change
+          - Critical — data migration or breaking change
+
+    next: done
+
+connections:
+  - type: webhook
+    url: https://your-ci-cd.example.com/hooks/deploy-request
+
+  - type: email
+    to: devops@example.com
+    subject: "Deploy request: {{data.service}} → {{data.environment}}"
+    include_responses: true
+
+completion:
+  title: Deployment request submitted
+  message: "Your request for {{data.service}} to {{data.environment}} has been sent to the DevOps team."
+  button:
+    label: View deployment queue
+    url: https://your-ci-cd.example.com/queue
+```
+
+## How conditional navigation works
+
+After the `deployment_info` section, the form checks the selected environment:
+
+```yaml
+next:
+  - when: "data.environment === 'production'"
+    go: production_review
+  - else: change_description
+```
+
+- **Staging deployments**: skip `production_review`, go directly to `change_description`
+- **Production deployments**: require the extra `production_review` section first, then proceed to `change_description`
+
+Both paths converge at `change_description` and end at `done`.
+
+## How to use this
+
+1. Replace the webhook URL with your CI/CD system's endpoint
+2. Replace `devops@example.com` with your team's address
+3. Update the `service` dropdown to match your actual services
+4. Adjust the conditional navigation threshold (e.g., add `"canary"` as a staging-equivalent environment)

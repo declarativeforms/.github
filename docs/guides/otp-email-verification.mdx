@@ -1,0 +1,103 @@
+---
+title: OTP email verification
+description: How to verify an email address with a one-time passcode
+---
+
+Email fields can require OTP (one-time passcode) verification before submission. When `otp: true` is set on an `email` field, the user must prove they control the email address by entering a 6-digit code.
+
+## Configuration
+
+Add `otp: true` to an `email` type field:
+
+```yaml
+- id: email
+  type: email
+  label: Email address
+  otp: true
+  validators:
+    - required
+```
+
+## User flow
+
+1. User enters their email address
+2. Clicks **Send code**
+3. Receives a 6-digit code by email
+4. Enters the code in the verification input
+5. Clicks **Verify**
+6. The field is marked as verified and the section can be submitted
+
+## Constraints
+
+| Constraint | Value |
+|------------|-------|
+| Code length | 6 digits |
+| Code expiry | 10 minutes |
+| Resend cooldown | 30 seconds |
+| Max verification attempts | 5 |
+
+After 5 failed verification attempts, the OTP request is invalidated. The user must request a new code.
+
+## Submission data
+
+When OTP verification succeeds, two values are written to the submission data:
+
+- `{fieldId}` — the verified email address
+- `{fieldId}__otp_token` — a signed verification token
+
+For example, if the field ID is `email`:
+
+```json
+{
+  "email": "jane@example.com",
+  "email__otp_token": "eyJlbWFpbCI6ImphbmV..."
+}
+```
+
+The token is included in webhook payloads and Airtable connections. It is an opaque signed value and does not need to be verified by your receiver—it exists for auditability.
+
+## Example: multi-section form with OTP
+
+```yaml
+version: 1
+title: Event Registration
+
+sections:
+  - id: identity
+    title: Verify your email
+    fields:
+      - id: name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email address
+        otp: true
+        validators:
+          - required
+    next: details
+
+  - id: details
+    title: Registration details
+    fields:
+      - id: ticket_type
+        type: single_select
+        label: Ticket type
+        options: [General, VIP, Student]
+    next: done
+
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "Your registration is confirmed, {{data.name}}!"
+    body: "<p>Thanks for registering. See you there!</p>"
+```
+
+## Common mistakes
+
+**Using `otp: true` on a non-email field** — OTP verification only works with `type: email`. Adding `otp: true` to any other field type has no effect.
+
+**Missing `required` validator** — If the email field is not required and the user leaves it blank, OTP verification is skipped. The field will not appear in submission data. This may or may not be the intended behavior—add `required` if the email is mandatory.

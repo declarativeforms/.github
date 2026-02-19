@@ -1,0 +1,90 @@
+---
+title: Send a confirmation email
+description: How to send a confirmation email to users after they submit a form
+---
+
+Use an `email` connection to send a confirmation to the person who filled out the form.
+
+## Configuration
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "Thanks for your submission, {{data.name}}!"
+    body: |
+      <p>Hi {{data.name}},</p>
+      <p>We've received your submission and will be in touch shortly.</p>
+      <p>The Acme Team</p>
+```
+
+The `to` field uses Handlebars-style template syntax to reference the user's submitted email address.
+
+## Template variables
+
+All text fields (`to`, `subject`, `body`) support `{{data.fieldId}}` syntax:
+
+- `{{data.name}}` — the value of the field with ID `name`
+- `{{data.email}}` — the value of the field with ID `email`
+- `{{form.title}}` — the form's title
+
+## Including submitted responses
+
+Set `include_responses: true` to append an auto-generated HTML table of all non-hidden field responses at the end of the email body:
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: Your submission was received
+    body: "<p>Here's a summary of what you submitted:</p>"
+    include_responses: true
+```
+
+The responses table lists each field label and value, excluding hidden fields.
+
+## Full example
+
+```yaml
+version: 1
+title: Contact Form
+
+sections:
+  - id: main
+    title: Get in touch
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+
+      - id: message
+        type: long_text
+        label: Message
+        validators:
+          - required
+    next: done
+
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "We received your message, {{data.name}}"
+    body: |
+      <p>Hi {{data.name}},</p>
+      <p>Thanks for reaching out! We'll get back to you at this address within 24 hours.</p>
+      <p>If your message is urgent, reply to this email directly.</p>
+```
+
+## Notes
+
+- Email connections fire **only on final submission** (not on partial saves)
+- Emails are sent via [Resend](https://resend.com)
+- If `body` is omitted and `include_responses` is false, the subject is used as the email body
+- The `to` field is rendered as a template before sending—ensure the referenced field always has a value

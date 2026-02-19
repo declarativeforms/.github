@@ -1,0 +1,126 @@
+---
+title: Troubleshooting
+description: Common issues and how to resolve them
+---
+
+## Form shows "Form not found"
+
+**Cause:** The YAML file could not be fetched from GitHub.
+
+**Check:**
+1. The file exists in the repository and is named with a `.yaml` extension (not `.yml`)
+2. The file is on the `main` branch
+3. The URL path matches the file path exactly: `/{owner}/{repo}/{filename-without-extension}`
+4. The owner and repo names in the URL match the GitHub names exactly (case-sensitive)
+
+**Example:** For file `acme/my-forms/contact.yaml` on GitHub, the URL is:
+```
+https://app.declarativeforms.com/acme/my-forms/contact
+```
+
+---
+
+## Form shows "Access denied" or redirects to OAuth
+
+**Cause:** The form is in a private repository and no valid `connection_id` was provided.
+
+**Fix:**
+1. Connect your GitHub account at [app.declarativeforms.com/connections](https://app.declarativeforms.com/connections)
+2. Add `?connection_id=your-id` to the form URL
+
+See [Access a private repository](/guides/access-private-repo).
+
+---
+
+## Form shows "This form is not yet open" or "This form is closed"
+
+**Cause:** The form's `start_date` or `end_date` condition is active.
+
+**Check:** Review the `start_date` and `end_date` values in your YAML. Dates are compared using the server's clock. See [Control form availability](/guides/control-form-availability).
+
+---
+
+## Confirmation email not received
+
+**Possible causes:**
+
+1. **Email in spam/junk** — check the spam folder
+2. **`to` template renders to empty** — verify the referenced field ID matches exactly: `"{{data.email}}"` requires a field with ID `email`
+3. **Form not fully submitted** — email connections only fire on `completed` submissions (final section), not partial saves
+4. **Resend configuration** — if using a custom sending domain, verify Resend DNS records are set up correctly
+
+---
+
+## Airtable records not appearing
+
+**Possible causes:**
+
+1. **`connection_id` is invalid** — re-connect Airtable at the connections page
+2. **Column names don't match** — Airtable column names must match form field IDs exactly (case-sensitive). A field with ID `company_name` requires an Airtable column named `company_name`, not `Company Name`
+3. **Wrong `base_id` or `table_id_or_name`** — verify these values in your Airtable base settings
+4. **Form not fully submitted** — Airtable connections only fire on `completed` submissions
+
+---
+
+## OTP code not received
+
+**Possible causes:**
+
+1. **Email in spam/junk** — check the spam folder
+2. **Invalid email address** — verify the address is correct and the mailbox exists
+3. **Resend cooldown** — you must wait 30 seconds before requesting a new code
+4. **Code expired** — codes expire after 10 minutes; request a new one if expired
+
+---
+
+## OTP verification fails repeatedly
+
+**Cause:** After 5 failed attempts, the OTP request is invalidated.
+
+**Fix:** Click **Send code** again to request a new code. The previous code is no longer valid.
+
+---
+
+## Address field not showing autocomplete suggestions
+
+**Cause:** The Google Places API key may have restrictions or quota limits.
+
+**Check:**
+1. The field is type `address`, `address_locality`, `address_region`, or `address_country`
+2. The browser's location may affect autocomplete results (expected behavior)
+3. If no suggestions appear at all, this may be a platform-side issue—contact support
+
+---
+
+## Conditional field always visible (or never visible)
+
+**Cause:** A syntax error in the `visible_when` expression, or the referenced field ID doesn't match.
+
+**Check:**
+1. The expression is valid JavaScript: `data.role === 'admin'` (not `data.role = 'admin'`)
+2. The referenced field ID matches exactly (case-sensitive): if the field ID is `role`, use `data.role` not `data.Role`
+3. Open your browser's developer console for JavaScript errors
+
+---
+
+## Form navigation loops or doesn't progress
+
+**Cause:** A `next` value references a non-existent section ID, or conditional `next` rules are missing an `else`.
+
+**Check:**
+1. All section IDs in `next` values exist in the `sections` array
+2. Conditional `next` arrays always end with an `else` rule
+3. Section IDs don't contain spaces
+
+---
+
+## Webhook not receiving data
+
+**Possible causes:**
+
+1. **Wrong URL** — verify the webhook URL is correct and the endpoint is publicly accessible
+2. **HTTPS required** — the webhook URL must start with `https://`
+3. **Form not fully submitted** — webhooks only fire on `completed` submissions
+4. **Firewall blocking** — your server may be blocking the platform's outbound IP
+
+**Test:** Use a tool like [webhook.site](https://webhook.site) as a temporary endpoint to confirm the webhook is firing.

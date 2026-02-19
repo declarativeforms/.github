@@ -1,0 +1,117 @@
+---
+title: Conditional navigation
+description: How to create branching form flows based on user answers
+---
+
+Instead of a static `next` value, you can specify an array of `when/go` rules to route users to different sections based on their answers.
+
+## Syntax
+
+```yaml
+next:
+  - when: "data.plan === 'enterprise'"
+    go: enterprise_onboarding
+  - when: "data.plan === 'team'"
+    go: team_onboarding
+  - else: basic_onboarding
+```
+
+Rules are evaluated **in order**. The first matching `when` condition determines where to go. The `else` rule is **required** and serves as the fallback if no `when` conditions match.
+
+## The `go` value
+
+`go` (and `else`) can be:
+- A section `id` — navigate to that section
+- `"done"` — end the form and go to the thank-you page
+- An external URL starting with `https://` — redirect the browser
+
+## Full example: yes/no branching
+
+```yaml
+version: 1
+title: Support Request
+
+sections:
+  - id: triage
+    title: What kind of help do you need?
+    fields:
+      - id: request_type
+        type: single_select
+        label: Request type
+        options:
+          - Bug report
+          - Feature request
+          - Account issue
+          - Other
+        validators:
+          - required
+    next:
+      - when: "data.request_type === 'Bug report'"
+        go: bug_details
+      - when: "data.request_type === 'Feature request'"
+        go: feature_details
+      - else: general_request
+
+  - id: bug_details
+    title: Bug details
+    fields:
+      - id: steps
+        type: long_text
+        label: Steps to reproduce
+      - id: severity
+        type: single_select
+        label: Severity
+        options: [Low, Medium, High, Critical]
+    next: done
+
+  - id: feature_details
+    title: Feature request
+    fields:
+      - id: description
+        type: long_text
+        label: Describe the feature
+      - id: use_case
+        type: long_text
+        label: What problem does this solve?
+    next: done
+
+  - id: general_request
+    title: Your request
+    fields:
+      - id: details
+        type: long_text
+        label: Tell us more
+    next: done
+```
+
+## Multiple conditions
+
+```yaml
+next:
+  - when: "data.age >= 18 && data.country === 'US'"
+    go: us_adult_flow
+  - when: "data.age < 18"
+    go: minor_flow
+  - else: international_flow
+```
+
+## Branching to external URLs
+
+```yaml
+next:
+  - when: "data.qualified === 'Yes'"
+    go: https://calendly.com/sales/demo
+  - else: not_qualified
+```
+
+## Expressions
+
+`when` values are JavaScript expressions evaluated against the `data` object. The `data` object contains all field values submitted so far.
+
+<Warning>
+`when` expressions are evaluated using `new Function("data", ...)`. They execute arbitrary JavaScript in the browser. Only use static logic derived from your form design—never construct `when` values from untrusted user input.
+</Warning>
+
+## The `else` rule is required
+
+If no `when` condition matches and there is no `else` rule, navigation defaults to `"done"`. To avoid unexpected behavior, always include an `else` clause.

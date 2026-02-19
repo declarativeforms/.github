@@ -1,0 +1,92 @@
+---
+title: Create your first form
+description: How to create a form from a GitHub repository
+---
+
+This guide walks you through creating a working form from a GitHub repository.
+
+## Prerequisites
+
+- A GitHub account
+- A repository (public or private)
+
+## Step 1 — Create the YAML file
+
+Create a file in your repository. The filename becomes part of the form URL, so choose something meaningful.
+
+For this example, create `contact.yaml` in the root of your repository:
+
+```yaml
+version: 1
+title: Contact Us
+description: We'll get back to you within 24 hours.
+
+sections:
+  - id: main
+    title: Your details
+    fields:
+      - id: name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+
+      - id: message
+        type: long_text
+        label: Message
+        validators:
+          - required
+    next: done
+```
+
+### Required top-level keys
+
+| Key | Description |
+|-----|-------------|
+| `version` | Must be `1` |
+| `title` | Displayed at the top of the form |
+| `sections` | Array of at least one section |
+
+Each section must have an `id`, a `title`, at least one `fields` entry, and a `next` value.
+
+## Step 2 — Commit and push
+
+```bash
+git add contact.yaml
+git commit -m "Add contact form"
+git push
+```
+
+The file must be on the **default branch** (`main`).
+
+## Step 3 — Open the form
+
+Your form is live at:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/contact
+```
+
+Replace `{owner}` with your GitHub username or organization name, and `{repo}` with your repository name.
+
+## Common mistakes
+
+**Wrong file extension** — The platform expects `.yaml` files. A file named `contact.yml` will return a 404. Always use `.yaml`.
+
+**`version` is not `1`** — The only supported version value is `1`. Any other value may cause a parse error.
+
+**Section `id` with spaces** — Section IDs must not contain spaces. Use underscores or hyphens: `contact_details` or `contact-details`.
+
+**`next` is missing** — Every section must have a `next` key. A section without `next` will cause a navigation error.
+
+## Next steps
+
+- [Add a webhook connection](/guides/send-data-to-webhook) — receive submission data
+- [Add validation](/guides/make-field-required) — required fields, min/max, patterns
+- [Create a multi-step form](/guides/create-multi-step-form) — split the form into sections

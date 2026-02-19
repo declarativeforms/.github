@@ -1,0 +1,87 @@
+---
+title: Make a field required
+description: How to prevent form submission when a field is empty
+---
+
+Add `required` to a field's `validators` array to make it mandatory. The user cannot submit the section until the field has a value.
+
+## Basic usage
+
+```yaml
+- id: name
+  type: short_text
+  label: Full name
+  validators:
+    - required
+```
+
+A required field shows an error message like **"Full name is required."** when the user tries to submit without filling it in.
+
+## Works for all field types
+
+`required` is supported on all field types:
+
+```yaml
+# Text
+- id: bio
+  type: long_text
+  label: Bio
+  validators:
+    - required
+
+# Email
+- id: email
+  type: email
+  label: Email address
+  validators:
+    - required
+
+# Selection
+- id: department
+  type: dropdown
+  label: Department
+  options: [Engineering, Design, Marketing]
+  validators:
+    - required
+
+# File upload
+- id: resume
+  type: file_upload
+  label: Resume
+  validators:
+    - required
+
+# Signature
+- id: signature
+  type: signature
+  label: Sign here
+  validators:
+    - required
+```
+
+## Combining with other validators
+
+`required` can be combined with other validators in the same array:
+
+```yaml
+- id: email
+  type: email
+  label: Email address
+  validators:
+    - required
+    - type: pattern
+      regex: "^[^@]+@[^@]+\\.[^@]+$"
+      message: Please enter a valid email address.
+```
+
+## Hidden fields
+
+Adding `required` to a `hidden` field has no visible effect on the user. However, if the field has no value (e.g., it wasn't prefilled via URL), the validation will fail silently and prevent form submission.
+
+<Warning>
+Use `required` on `hidden` fields with care. If the URL prefill parameter is missing, the form will appear broken—the user sees no error message but cannot submit.
+</Warning>
+
+## Client-side only
+
+Validation is performed **client-side only** in the browser. The API does not validate field values on the server. To enforce required fields server-side, validate the payload in your webhook receiver.

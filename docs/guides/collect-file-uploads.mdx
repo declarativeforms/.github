@@ -1,0 +1,113 @@
+---
+title: Collect file uploads
+description: How to accept file attachments in a form
+---
+
+The `file_upload` field type lets users attach files to their form submission. Files are uploaded to S3 and the submission data contains the resulting URL(s).
+
+## Configuration
+
+```yaml
+- id: resume
+  type: file_upload
+  label: Upload your resume
+  validators:
+    - required
+```
+
+## User experience
+
+Users can upload files by:
+- Clicking the upload area to open the file picker
+- Dragging and dropping files onto the upload area
+
+Multiple files can be uploaded to a single field.
+
+## File constraints
+
+| Constraint | Value |
+|------------|-------|
+| Accepted file types | All types |
+| Maximum file size | 10 MB per file |
+| Storage | S3 (hosted by the platform) |
+
+## Submission value
+
+The field value in `submission.data` is:
+- A **string** (URL) when one file is uploaded
+- A **string array** (URLs) when multiple files are uploaded
+
+```json
+{
+  "resume": "https://storage.example.com/uploads/resume-abc123.pdf",
+  "attachments": [
+    "https://storage.example.com/uploads/screenshot-1.png",
+    "https://storage.example.com/uploads/screenshot-2.png"
+  ]
+}
+```
+
+## Validating file count
+
+Use `min` and `max` validators to constrain the number of files:
+
+```yaml
+- id: screenshots
+  type: file_upload
+  label: Screenshots (2–5 files)
+  validators:
+    - type: min
+      value: 2
+      message: Please upload at least 2 screenshots.
+    - type: max
+      value: 5
+      message: You can upload at most 5 screenshots.
+```
+
+## Making file upload required
+
+Add `required` to ensure at least one file is uploaded:
+
+```yaml
+- id: attachment
+  type: file_upload
+  label: Supporting document
+  validators:
+    - required
+```
+
+## Full example
+
+```yaml
+version: 1
+title: Bug Report
+
+sections:
+  - id: report
+    title: Report a bug
+    fields:
+      - id: summary
+        type: short_text
+        label: Bug summary
+        validators:
+          - required
+
+      - id: steps
+        type: long_text
+        label: Steps to reproduce
+
+      - id: screenshots
+        type: file_upload
+        label: Screenshots (optional)
+        validators:
+          - type: max
+            value: 3
+            message: Please upload at most 3 screenshots.
+    next: done
+```
+
+## Notes
+
+- Files are uploaded immediately when the user selects them, before form submission
+- Uploaded file URLs persist even if the form is abandoned (partial submission)
+- The 10 MB limit is enforced server-side at upload time—users see an error if a file is too large

@@ -1,0 +1,77 @@
+---
+title: Introduction
+description: Forms defined in YAML, hosted in GitHub
+---
+
+Declarative Forms is a developer-first form platform. Instead of building forms through a visual editor, you define them as YAML files in a GitHub repository.
+
+Your forms live in your codebase, evolve through pull requests, and get reviewed like any other configuration file. No accounts to manage per form, no opaque UIs, no locked-in proprietary logic.
+
+## Why YAML in GitHub?
+
+Most form tools work well for simple use cases. But as forms grow—conditional logic, multi-step flows, localization, integrations—they become harder to reason about inside a visual editor.
+
+YAML in GitHub gives you:
+
+- **Version control** — every change is a commit, every history is readable
+- **Code review** — forms go through the same PR process as your API or config
+- **Collaboration** — teammates can comment, suggest, and approve changes
+- **Portability** — no vendor lock-in; your form config is just a file
+
+## How it works
+
+1. Create a `.yaml` file in any GitHub repository
+2. Push it to the `main` branch
+3. Visit `https://app.declarativeforms.com/{owner}/{repo}/{file}`
+
+The platform fetches your YAML from GitHub, renders the form in the browser, and handles submissions—including validation, partial saves, and connections to webhooks, email, and Airtable.
+
+```yaml
+version: 1
+title: Quick Feedback
+sections:
+  - id: main
+    fields:
+      - id: feedback
+        type: long_text
+        label: What can we improve?
+    next: done
+
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/form
+```
+
+## Core value props
+
+<CardGroup cols={2}>
+  <Card title="Version controlled" icon="code-branch">
+    Forms are files. Every change is committed, every history is tracked.
+  </Card>
+  <Card title="PR reviewed" icon="code-pull-request">
+    Changes go through the same review process as the rest of your codebase.
+  </Card>
+  <Card title="No visual editors" icon="ban">
+    Logic is explicit. No hidden state, no drag-and-drop surprises.
+  </Card>
+  <Card title="Connections built in" icon="plug">
+    Send data to webhooks, email, and Airtable—no extra services required.
+  </Card>
+</CardGroup>
+
+## The 48-hour promise
+
+Most form platforms have feature request boards where ideas sit for months. We do things differently.
+
+Open a [GitHub Issue](https://github.com/declarativeforms/examples/issues) with your feature request—if it genuinely improves the product, we'll ship it within 48 hours. No waitlists, no roadmap purgatory.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/getting-started/quickstart">
+    Create your first form in under 60 seconds
+  </Card>
+  <Card title="How it works" icon="circle-info" href="/getting-started/how-it-works">
+    Understand the architecture and data flow
+  </Card>
+</CardGroup>

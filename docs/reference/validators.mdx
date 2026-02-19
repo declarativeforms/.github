@@ -1,0 +1,168 @@
+---
+title: Validators Reference
+description: All validator types with supported fields and examples
+---
+
+Validators are configured in a field's `validators` array. They are enforced **client-side only** in the browser. The API does not validate submitted values on the server.
+
+<Warning>
+Validation is client-side only. For security-sensitive requirements, validate the webhook payload in your own receiver.
+</Warning>
+
+---
+
+## `required`
+
+Prevents form submission when the field is empty.
+
+**Syntax:** the string `"required"` (not an object)
+
+```yaml
+validators:
+  - required
+```
+
+**Applies to:** all field types
+
+**Default error message:** `"{field label} is required."`
+
+**Notes:**
+- For `multiple_select` and `file_upload`, "required" means at least one item must be selected/uploaded
+- For `hidden` fields, validates against the URL-prefilled value—if absent, the form cannot be submitted
+
+---
+
+## `pattern`
+
+Validates input against a regular expression.
+
+**Syntax:**
+
+```yaml
+validators:
+  - type: pattern
+    regex: "^\\d{5}$"
+    message: Please enter a 5-digit ZIP code.  # optional
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"pattern"` | Yes | — |
+| `regex` | `string` | Yes | JavaScript-compatible regex. Backslashes must be escaped (`\\d`). |
+| `message` | `string \| LocaleMap` | No | Custom error message. Defaults to `"{label} is invalid."` |
+
+**Applies to:** `short_text`, `long_text`, `email`, `url`, `mobile_number`, `number` (overrides default integer check)
+
+**Notes:**
+- Does not imply `required`—a blank field passes `pattern` validation
+- The regex is applied with `new RegExp(regex)` (no flags by default)
+
+**Examples:**
+
+```yaml
+# US ZIP code
+- type: pattern
+  regex: "^\\d{5}$"
+  message: Enter a 5-digit ZIP code.
+
+# Alphanumeric username
+- type: pattern
+  regex: "^[a-zA-Z0-9_]+$"
+  message: Only letters, numbers, and underscores.
+
+# Email domain restriction
+- type: pattern
+  regex: "@yourcompany\\.com$"
+  message: Please use your @yourcompany.com email.
+```
+
+---
+
+## `min`
+
+Sets a minimum constraint. Meaning depends on the field type.
+
+**Syntax:**
+
+```yaml
+validators:
+  - type: min
+    value: 10
+    message: Must be at least 10 characters.  # optional
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"min"` | Yes | — |
+| `value` | `number \| string` | Yes | Minimum value. Number for most fields; ISO date string for `date`. |
+| `message` | `string \| LocaleMap` | No | Custom error message. |
+
+**Behavior by field type:**
+
+| Field type | `min` measures | Value type |
+|------------|----------------|------------|
+| `short_text`, `long_text`, `email`, `url` | Character count | `number` |
+| `number` | Numeric value | `number` |
+| `date` | Date (chronological) | `string` (ISO 8601) |
+| `rating` | Numeric value | `number` |
+| `multiple_select` | Selection count | `number` |
+| `file_upload` | File count | `number` |
+
+---
+
+## `max`
+
+Sets a maximum constraint. Meaning depends on the field type.
+
+**Syntax:**
+
+```yaml
+validators:
+  - type: max
+    value: 500
+    message: Must be 500 characters or fewer.  # optional
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"max"` | Yes | — |
+| `value` | `number \| string` | Yes | Maximum value. Number for most fields; ISO date string for `date`. |
+| `message` | `string \| LocaleMap` | No | Custom error message. |
+
+**Behavior by field type:** same as `min` above.
+
+---
+
+## Combining validators
+
+Multiple validators can be combined in the same array:
+
+```yaml
+- id: bio
+  type: long_text
+  label: Bio
+  validators:
+    - required
+    - type: min
+      value: 50
+      message: Bio must be at least 50 characters.
+    - type: max
+      value: 500
+      message: Bio must be 500 characters or fewer.
+```
+
+Validators are applied in order. The first failing validator determines the error message shown.
+
+---
+
+## Localized error messages
+
+`message` supports locale maps:
+
+```yaml
+- type: min
+  value: 10
+  message:
+    en: Must be at least 10 characters.
+    es: Debe tener al menos 10 caracteres.
+```

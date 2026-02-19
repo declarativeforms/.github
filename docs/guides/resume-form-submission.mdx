@@ -1,0 +1,99 @@
+---
+title: Resume a form submission
+description: How to let users resume a partially completed multi-step form
+---
+
+Multi-step forms automatically support resumption. After each section is submitted, the browser URL is updated with a `submission_id` and `step` parameter. Users can return to the form at any time using this URL.
+
+## How it works
+
+After the user submits any section (except the final one), the URL becomes:
+
+```
+https://app.declarativeforms.com/acme/forms/onboarding?submission_id=abc123&step=company_info
+```
+
+When this URL is revisited:
+
+1. The platform loads the existing partial submission
+2. The form resumes at the `step` section
+3. Previously submitted fields are pre-populated (if the user navigates back to earlier sections)
+
+## Automatic — no configuration required
+
+There is no YAML configuration needed for resume to work. It is built into the multi-section submission flow.
+
+## Shareable links
+
+The resume URL can be:
+- Bookmarked by the user
+- Emailed as a "continue your application" link
+- Embedded in a reminder notification
+
+## Creating "continue" links manually
+
+If you capture the `submission_id` in a webhook and want to generate a resume link:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/{file}?submission_id={id}&step={section_id}
+```
+
+The `step` parameter must match an exact section `id` from your YAML. If it doesn't match any section, the form starts from the beginning.
+
+## Example: job application with resume
+
+```yaml
+version: 1
+title: Job Application
+
+sections:
+  - id: personal_details
+    title: Personal details
+    fields:
+      - id: name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email
+        validators:
+          - required
+    next: work_history
+
+  - id: work_history
+    title: Work history
+    fields:
+      - id: current_role
+        type: short_text
+        label: Current role
+      - id: experience_years
+        type: number
+        label: Years of experience
+    next: cover_letter
+
+  - id: cover_letter
+    title: Cover letter
+    fields:
+      - id: why_us
+        type: long_text
+        label: Why do you want to work here?
+        validators:
+          - required
+    next: done
+```
+
+After submitting "personal details", the URL becomes:
+
+```
+?submission_id=abc123&step=work_history
+```
+
+The user can close the tab and return later using this URL.
+
+## Notes
+
+- The `submission_id` in the URL is the partial submission ID, not a secret
+- Anyone with the URL can resume the submission—do not include sensitive session tokens in fields
+- Partial submissions that are never completed remain in `partial` status indefinitely

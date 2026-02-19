@@ -1,0 +1,47 @@
+---
+title: Access a private repository
+description: How to load forms stored in a private GitHub repository
+---
+
+By default, Declarative Forms fetches YAML files from public GitHub repositories. To use a private repository, you need to connect a GitHub account with access to that repo.
+
+## Step 1 — Connect your GitHub account
+
+1. Go to [app.declarativeforms.com/connections](https://app.declarativeforms.com/connections)
+2. Click **Connect GitHub**
+3. Authorize the OAuth app with access to your private repositories
+4. After authorization, you'll receive a `connection_id`
+
+## Step 2 — Add `connection_id` to the URL
+
+Append the `connection_id` as a query parameter when sharing or embedding the form URL:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/{file}?connection_id=your-connection-id
+```
+
+For example:
+
+```
+https://app.declarativeforms.com/acme/internal-forms/hr-intake?connection_id=abc123
+```
+
+## How it works
+
+When `connection_id` is present, the API:
+
+1. Looks up the stored OAuth access token associated with `connection_id`
+2. Uses that token to fetch the YAML from GitHub's API (bypassing public-only raw GitHub access)
+3. Returns the parsed form to the browser
+
+Without `connection_id`, attempts to load a private repository return a `403` response.
+
+## Security considerations
+
+- The `connection_id` maps to an OAuth token stored server-side—it is not itself an access token
+- Anyone with the `connection_id` can load forms from the connected account's accessible repositories
+- Use unique `connection_id` values per team or integration if you need to scope access
+
+## Automatic redirect for unauthenticated access
+
+If a form from a private repository is accessed without a valid `connection_id`, the browser is automatically redirected to the GitHub OAuth flow. After authorization, the user is returned to the original form URL.
