@@ -1,0 +1,151 @@
+---
+title: Sections
+description: How sections structure a form and how navigation between them works.
+---
+
+A form is made up of one or more sections. Each section is a screen — the user fills in its fields and submits before moving on. `apply.yaml` has a single section; most complex forms have several.
+
+Here is the section from the job application form:
+
+```yaml
+sections:
+  - id: main
+    title: Apply to work with us
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+      - id: role
+        type: single_select
+        label: Role you're applying for
+        options:
+          - Software Engineer
+          - Product Manager
+          - Designer
+      - id: email
+        type: email
+        label: Email address
+    next: done
+```
+
+---
+
+## Section properties
+
+**`id`** — Unique identifier for the section. No spaces. Used in `next` references and appears in the URL as `?step=` for partial saves. By convention, use snake_case.
+
+**`title`** — The heading shown at the top of the section. Accepts a plain string or a LocaleMap.
+
+**`fields`** — Array of field definitions. At least one field is required. See [Fields](/concepts/fields) for all field properties.
+
+**`next`** — Where to go after this section is submitted. See below.
+
+---
+
+## The `next` property
+
+`next` controls navigation after a section is submitted. It has three forms:
+
+**`next: done`** — Ends the form. The submission is marked `completed`, connections fire, and the user sees the thank-you page.
+
+```yaml
+next: done
+```
+
+**`next: some_section_id`** — Advances to the section with that ID.
+
+```yaml
+next: role_selection
+```
+
+**`next: https://...`** — Redirects the browser to that URL instead of showing the thank-you page.
+
+```yaml
+next: https://example.com/thanks
+```
+
+---
+
+## Multi-section forms
+
+Sections are presented in definition order. The form always starts at the first section.
+
+Here is `apply.yaml` split into two steps:
+
+```yaml
+version: 1
+title: Join the team
+sections:
+  - id: personal
+    title: About you
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+      - id: email
+        type: email
+        label: Email address
+    next: role_selection
+
+  - id: role_selection
+    title: What you're applying for
+    fields:
+      - id: role
+        type: single_select
+        label: Role you're applying for
+        options:
+          - Software Engineer
+          - Product Manager
+          - Designer
+    next: done
+```
+
+After submitting `personal`, the user sees `role_selection`. After submitting `role_selection`, the form is complete.
+
+---
+
+## Conditional navigation
+
+`next` can be an array of rules when you want different sections to appear based on what the user entered. Rules are evaluated in order; the first match wins.
+
+```yaml
+next:
+  - when: "data.role === 'Software Engineer'"
+    go: eng_questions
+  - when: "data.role === 'Product Manager'"
+    go: pm_questions
+  - else: general_questions
+```
+
+Each rule has:
+
+| Key | Required | Description |
+|-----|----------|-------------|
+| `when` | Yes (conditional rules) | JS expression evaluated against `data` |
+| `go` | Yes (conditional rules) | Section ID, `"done"`, or `https://` URL |
+| `else` | Yes (last rule) | Fallback destination — required |
+
+The `data` object contains all field values submitted so far, keyed by field ID. Expressions have access to the full `data` object:
+
+```yaml
+next:
+  - when: "data.role === 'Software Engineer'"
+    go: eng_questions
+  - else: other_questions
+```
+
+<Warning>
+`when` expressions are evaluated with `new Function("data", ...)`. Only use static YAML logic in these expressions — never construct them from user input.
+</Warning>
+
+---
+
+## Partial saves
+
+After each section is submitted, the URL is updated with `?submission_id=` and `?step=`:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/apply?submission_id=abc123&step=role_selection
+```
+
+This URL can be bookmarked or shared. When revisited, the browser resumes from the saved step with previously entered data pre-populated.

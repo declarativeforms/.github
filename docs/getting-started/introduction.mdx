@@ -1,17 +1,25 @@
 ---
 title: Introduction
-description: Define forms in YAML, commit to GitHub, share a URL.
+description: Terraform for forms. Define in YAML, commit to GitHub, share a URL.
 ---
 
-Declarative Forms is a hosted form platform where the entire form definition lives in a YAML file in your GitHub repository. There is no visual editor, no separate admin panel, and no proprietary config format — just a file you can read, edit, review, and version like any other code.
+Every dev tool has moved to config-as-code. Terraform provisions infrastructure from `.tf` files. Kubernetes runs from manifests. GitHub Actions runs from YAML in `.github/workflows/`. You can build, review, and version all of it without a visual editor.
 
-## Why this approach
+Forms are the exception. Tally, Jotform, and Google Forms still require a visual editor to create or change anything. They have no API for creating forms, no way to check in a change via PR, and no way to use Claude Code or Codex to build or iterate on them. If you want to add a field or change a label, you click around in a GUI.
 
-**Version control.** Every change to a form is a commit. You can see exactly what changed, when, and why — the same way you track changes to application code.
+Declarative Forms is the missing piece: define your form in YAML, commit it to GitHub, share a URL.
 
-**Code review.** Adding a field, changing a label, or rewording a validation message goes through a pull request. Your team reviews it before it goes live.
+---
 
-**No visual editor.** Visual editors feel fast at first, but they hide structure and make collaboration harder. A YAML file is readable by anyone and editable anywhere.
+## Why this matters now
+
+**Works with LLMs.** Ask Claude Code to generate or modify a form YAML. Describe the fields you want, get back valid YAML, push it, and the form is live. No clicking through a GUI, no proprietary API to learn.
+
+**Version controlled.** Every field change is a commit. You get history, blame, and the ability to revert — the same way you track changes to application code.
+
+**Code reviewed.** Forms go through PRs like any other config. Your team reviews them before they go live. You can see exactly what changed and why.
+
+---
 
 ## The 48-hour promise
 
@@ -19,4 +27,4 @@ Open a [GitHub Issue](https://github.com/declarativeforms/examples/issues) with 
 
 ---
 
-Ready to build your first form? [Start with the quickstart.](/getting-started/quickstart)
+[Build your first form →](/getting-started/quickstart)

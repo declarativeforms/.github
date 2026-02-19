@@ -1,52 +1,40 @@
 ---
 title: Connections
-description: How to receive submission data after a form is completed.
+description: What fires after a form is completed — webhooks, email, and Airtable.
 ---
 
-After `feedback.yaml` is submitted, how do you receive the data? That's what connections are for.
+Connections define what happens after a form is completed. They are configured in the `connections` array at the root of your YAML file and fire once, when the submission status becomes `completed` — that is, when the user submits the final section.
 
-Connections are configured in the `connections` array at the top level of your YAML file. They fire once, when the submission status becomes `completed` — that is, when the user submits the final section.
+Connections do not fire for partial saves. If a user submits section 1 of a multi-section form and then abandons it, no connections fire.
 
 ---
 
-## Adding a webhook to the canonical form
+## Webhook
+
+Sends an HTTP POST to a URL with the full submission as the request body.
 
 ```yaml
-version: 1
-title: Feedback
-sections:
-  - id: main
-    title: Share your feedback
-    fields:
-      - id: name
-        type: short_text
-        label: Your name
-      - id: message
-        type: short_text
-        label: Your message
-    next: done
-
 connections:
   - type: webhook
-    url: https://your-api.com/hooks/feedback
+    url: https://your-api.com/hooks/apply
 ```
 
-When the form is completed, the platform sends an HTTP POST to `https://your-api.com/hooks/feedback`.
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"webhook"` | Yes | Must be `webhook`. |
+| `url` | `string` | Yes | The endpoint to POST to. |
 
----
-
-## What the webhook body looks like
-
-The request body is the full submission object:
+**Request body** — `Content-Type: application/json`:
 
 ```json
 {
   "id": "abc123",
-  "form_id": "acme/forms/feedback",
+  "form_id": "acme/forms/apply",
   "status": "completed",
   "data": {
-    "name": "Jane Smith",
-    "message": "The product is great. More keyboard shortcuts please."
+    "full_name": "Jane Smith",
+    "role": "Software Engineer",
+    "email": "jane@example.com"
   },
   "metadata": {
     "ip_address": "203.0.113.1",
@@ -61,39 +49,119 @@ No authentication headers are sent. To verify the source, validate the payload s
 
 ---
 
-## Email connections
+## Email
 
-Send an email when the form is completed. Supports Handlebars-style variables:
+Sends an email when the form is completed. Supports Handlebars-style `{{variable}}` interpolation in `to`, `subject`, and `body`.
 
 ```yaml
 connections:
   - type: email
-    to: "{{data.name}} <team@example.com>"
-    subject: "New feedback from {{data.name}}"
-    body: "<p>{{data.message}}</p>"
+    to: "{{data.email}}"
+    subject: "Thanks for applying, {{data.full_name}}"
+    body: "<p>We received your application for {{data.role}}. We'll be in touch.</p>"
     include_responses: true
 ```
 
-Setting `include_responses: true` appends an auto-generated table of all field responses to the email body.
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"email"` | Yes | Must be `email`. |
+| `to` | `string` | Yes | Recipient address. Supports Handlebars. |
+| `subject` | `string \| LocaleMap` | Yes | Email subject. Supports Handlebars. |
+| `body` | `string \| LocaleMap` | No | Email body. HTML is supported. Supports Handlebars. |
+| `include_responses` | `boolean` | No | Auto-appends an HTML table of all field responses to the body. |
+
+**Available template variables:**
+- `data` — submission data object (one key per field ID)
+- `form` — form object
+
+**`subject` and `body` support LocaleMap.** When using locale maps with Handlebars:
+
+```yaml
+subject:
+  en: "New application from {{data.full_name}}"
+  es: "Nueva solicitud de {{data.full_name}}"
+```
+
+Email is sent via [Resend](https://resend.com).
+
+**Sending to both the applicant and your team:**
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "Thanks for applying, {{data.full_name}}"
+    body: "<p>We received your application. We'll be in touch soon.</p>"
+  - type: email
+    to: "hiring@example.com"
+    subject: "New application from {{data.full_name}}"
+    include_responses: true
+```
 
 ---
 
-## Airtable connections
+## Airtable
 
-Create a new row in an Airtable base. Requires an OAuth connection set up through the [connections page](https://app.declarativeforms.com/connections).
+Creates a new row in an Airtable base.
+
+**Setup:** Navigate to `https://app.declarativeforms.com/oauth/airtable` — you'll be redirected through an OAuth2 flow to authorize access to your Airtable workspace. After authorizing, you'll receive a `connection_id` to use in your YAML.
 
 ```yaml
 connections:
   - type: airtable
-    connection_id: your-airtable-connection-id
+    connection_id: your-connection-id
     base_id: appXXXXXXXXXXXXXX
-    table_id_or_name: Submissions
+    table_id_or_name: Applications
 ```
 
-Your form field IDs (`name`, `message`) must match Airtable column names exactly.
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | `"airtable"` | Yes | Must be `airtable`. |
+| `connection_id` | `string` | Yes | OAuth connection ID from the setup flow. |
+| `base_id` | `string` | Yes | Airtable base ID — starts with `app`. |
+| `table_id_or_name` | `string` | Yes | Table name (e.g., `"Applications"`) or table ID. |
+
+The platform sends `submission.data` as the Airtable `fields` object. Your form field IDs must match Airtable column names exactly. For example, if your form has `full_name`, `role`, and `email`, your Airtable table must have columns named `full_name`, `role`, and `email`.
 
 ---
 
-## Connections fire on completed submissions only
+## Multiple connections
 
-Connections are not triggered for partial saves. If a user submits section 1 of a multi-section form and then abandons it, no connections fire. They only fire when `status` becomes `completed`.
+You can configure multiple connections. They fire sequentially in array order.
+
+Here is the job application form with all three connection types:
+
+```yaml
+version: 1
+title: Join the team
+sections:
+  - id: main
+    title: Apply to work with us
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+      - id: role
+        type: single_select
+        label: Role you're applying for
+        options:
+          - Software Engineer
+          - Product Manager
+          - Designer
+      - id: email
+        type: email
+        label: Email address
+    next: done
+
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/apply
+  - type: email
+    to: "{{data.email}}"
+    subject: "Thanks for applying, {{data.full_name}}"
+    body: "<p>We received your application for {{data.role}}.</p>"
+  - type: airtable
+    connection_id: your-connection-id
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Applications
+```

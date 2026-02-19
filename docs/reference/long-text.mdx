@@ -1,9 +1,9 @@
 ---
-title: short_text
-description: Single-line text input.
+title: long_text
+description: Multi-line textarea for longer free-form responses.
 ---
 
-`short_text` renders a single-line text input. It works well for names, short answers, identifiers, and any value that fits on one line.
+`long_text` renders a multi-line textarea. It is the right choice for messages, descriptions, open-ended answers, and any value where the user needs more than one line.
 
 **Submission value type:** `string`
 
@@ -14,9 +14,9 @@ description: Single-line text input.
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `id` | `string` | Yes | Unique identifier within the form. Becomes the key in submission `data`. |
-| `type` | `"short_text"` | Yes | Must be `short_text`. |
-| `label` | `string \| LocaleMap` | Yes | Label shown above the input. |
-| `placeholder` | `string \| LocaleMap` | No | Placeholder text shown inside the input when empty. |
+| `type` | `"long_text"` | Yes | Must be `long_text`. |
+| `label` | `string \| LocaleMap` | Yes | Label shown above the textarea. |
+| `placeholder` | `string \| LocaleMap` | No | Placeholder text shown inside the textarea when empty. |
 | `validators` | `Validator[]` | No | Validation rules applied before the section is submitted. |
 | `visible_when` | `string` | No | JS expression; field is shown when truthy, hidden otherwise. Hidden fields are excluded from submission data. |
 
@@ -39,13 +39,13 @@ Default error message: `This field is required.`
 
 ### `type: pattern`
 
-Input must match a regular expression.
+Input must match a regular expression. The pattern is tested against the full text.
 
 ```yaml
 validators:
   - type: pattern
-    regex: "^[A-Z]{2}\\d{4}$"
-    message: Must be two uppercase letters followed by four digits.
+    regex: "\\S+"
+    message: Please enter a non-empty response.
 ```
 
 | Property | Type | Required | Description |
@@ -64,8 +64,8 @@ Minimum character count. The field is invalid if the submitted string has fewer 
 ```yaml
 validators:
   - type: min
-    value: 2
-    message: Please enter at least 2 characters.
+    value: 50
+    message: Please write at least 50 characters.
 ```
 
 | Property | Type | Required | Description |
@@ -79,13 +79,13 @@ Default error message: `Must be at least {value} characters.`
 
 ### `type: max`
 
-Maximum character count. The field is invalid if the submitted string has more than `value` characters.
+Maximum character count. Useful for keeping responses focused and limiting storage size.
 
 ```yaml
 validators:
   - type: max
-    value: 100
-    message: Must be 100 characters or fewer.
+    value: 2000
+    message: Please keep your response under 2000 characters.
 ```
 
 | Property | Type | Required | Description |
@@ -105,39 +105,31 @@ Validators run in the browser before each section is submitted. They enforce UX 
 
 ## Full example
 
-The `full_name` field from the job application form with all validators applied:
+A feedback form with a `long_text` message field requiring between 50 and 2000 characters:
 
 ```yaml
 version: 1
-title: Join the team
+title: Share your feedback
 sections:
   - id: main
-    title: Apply to work with us
+    title: We'd love to hear from you
     fields:
-      - id: full_name
+      - id: name
         type: short_text
-        label: Full name
-        placeholder: Jane Smith
+        label: Your name
+        validators:
+          - required
+      - id: message
+        type: long_text
+        label: Your message
+        placeholder: Tell us what you think...
         validators:
           - required
           - type: min
-            value: 2
-            message: Full name must be at least 2 characters.
+            value: 50
+            message: Please write at least 50 characters so we can understand your feedback.
           - type: max
-            value: 100
-            message: Full name must be 100 characters or fewer.
-          - type: pattern
-            regex: "^[A-Za-z .'-]+$"
-            message: Please use letters and standard punctuation only.
-      - id: role
-        type: single_select
-        label: Role you're applying for
-        options:
-          - Software Engineer
-          - Product Manager
-          - Designer
-      - id: email
-        type: email
-        label: Email address
+            value: 2000
+            message: Please keep your response under 2000 characters.
     next: done
 ```

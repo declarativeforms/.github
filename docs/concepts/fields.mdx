@@ -1,0 +1,190 @@
+---
+title: Fields
+description: Shared properties available on every field type.
+---
+
+Every field in a Declarative Forms config shares the same base properties. This page covers all of them. Type-specific properties (like `options` for selection fields or `otp` for email) are covered in the individual reference pages.
+
+---
+
+## `id`
+
+Unique identifier within the form. No spaces — use snake_case by convention. The `id` becomes the key in `submission.data` and is used in `visible_when` expressions and `next` conditional rules.
+
+```yaml
+- id: full_name
+  type: short_text
+  label: Full name
+```
+
+---
+
+## `type`
+
+The field type. Required. Determines how the field renders and what value it produces.
+
+| Type | Description | Reference |
+|------|-------------|-----------|
+| `short_text` | Single-line text input | [short_text](/reference/short-text) |
+| `long_text` | Multi-line textarea | [long_text](/reference/long-text) |
+| `email` | Email address input with format validation | |
+| `number` | Integer value | |
+| `url` | URL input | |
+| `mobile_number` | Phone/mobile number input | |
+| `date` | Date picker | |
+| `dropdown` | Single selection from a collapsible list | [dropdown](/reference/dropdown) |
+| `single_select` | Radio-button style single selection | [single_select](/reference/single-select) |
+| `multiple_select` | Checkbox-style multi-selection | [multiple_select](/reference/multiple-select) |
+| `rating` | Numeric rating scale | |
+| `address` | Full address with Google Places autocomplete | |
+| `address_locality` | City/locality autocomplete | |
+| `address_region` | State/region autocomplete | |
+| `address_country` | Country autocomplete | |
+| `file_upload` | File attachment (up to 10 MB) | |
+| `signature` | HTML5 canvas signature | |
+| `hidden` | Not shown; populated via URL prefill | |
+
+---
+
+## `label`
+
+The label shown above the input. Required. Accepts a plain string or a LocaleMap.
+
+```yaml
+label: Full name
+```
+
+```yaml
+label:
+  en: Full name
+  es: Nombre completo
+```
+
+---
+
+## `placeholder`
+
+Text shown inside the input when it is empty. Optional. Accepts a plain string or a LocaleMap.
+
+```yaml
+placeholder: Jane Smith
+```
+
+---
+
+## `visible_when`
+
+A JavaScript expression evaluated against `data` — the object containing all field values submitted so far. The field is shown when the expression is truthy. Hidden fields are excluded from submission data.
+
+```yaml
+- id: email
+  type: email
+  label: Email address
+  visible_when: "data.role !== undefined"
+```
+
+This shows the `email` field only after `role` has been selected. Use any JS expression that evaluates to a boolean — comparisons, logical operators, and string methods all work.
+
+---
+
+## `validators`
+
+An array of validation rules applied client-side before the section is submitted. Rules run in order; all must pass.
+
+### `required`
+
+Field must not be empty.
+
+```yaml
+validators:
+  - required
+```
+
+Default error message: `This field is required.`
+
+---
+
+### `type: pattern`
+
+Input must match a regular expression.
+
+```yaml
+validators:
+  - type: pattern
+    regex: "^[A-Za-z ]+$"
+    message: Please enter letters only.
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `regex` | `string` | Yes | Regular expression to match against. |
+| `message` | `string \| LocaleMap` | No | Error shown when the pattern does not match. |
+
+---
+
+### `type: min`
+
+Minimum value. Meaning depends on field type:
+
+- `short_text`, `long_text` — minimum character count
+- `number` — minimum numeric value
+- `date` — minimum date (ISO 8601)
+- `multiple_select` — minimum number of selections
+
+```yaml
+validators:
+  - type: min
+    value: 2
+    message: Full name must be at least 2 characters.
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `value` | `number \| string` | Yes | Minimum value. |
+| `message` | `string \| LocaleMap` | No | Error shown when the input falls below the minimum. |
+
+---
+
+### `type: max`
+
+Maximum value. Same type-specific semantics as `min`.
+
+```yaml
+validators:
+  - type: max
+    value: 100
+    message: Full name must be 100 characters or fewer.
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `value` | `number \| string` | Yes | Maximum value. |
+| `message` | `string \| LocaleMap` | No | Error shown when the input exceeds the maximum. |
+
+---
+
+## Full example
+
+The `full_name` field from the job application form with all validators applied:
+
+```yaml
+- id: full_name
+  type: short_text
+  label: Full name
+  placeholder: Jane Smith
+  validators:
+    - required
+    - type: min
+      value: 2
+      message: Full name must be at least 2 characters.
+    - type: max
+      value: 100
+      message: Full name must be 100 characters or fewer.
+    - type: pattern
+      regex: "^[A-Za-z .'-]+$"
+      message: Please use letters and standard punctuation only.
+```
+
+<Warning>
+All validators are client-side only. The API does not re-validate values on receipt. Implement server-side validation in your webhook receiver if needed.
+</Warning>

@@ -1,71 +1,78 @@
 ---
 title: YAML Schema
-description: The structure of a Declarative Forms YAML file, built up from first principles.
+description: Overview of all root-level keys in a Declarative Forms config file.
 ---
 
-A Declarative Forms configuration file is a YAML file committed to a GitHub repository. This page builds up the full schema one piece at a time, starting from the smallest valid file.
+A Declarative Forms config file is a YAML file in a GitHub repo. It has a small set of root-level keys. Three are required; the rest are optional and each adds a specific capability.
 
----
-
-## The minimum valid YAML
-
-Every form needs three keys: `version`, `title`, and `sections`. Here is the canonical form from the quickstart, stripped to a single field:
+Here is the job application form from the quickstart:
 
 ```yaml
 version: 1
-title: Feedback
+title: Join the team
 sections:
   - id: main
-    title: Share your feedback
+    title: Apply to work with us
     fields:
-      - id: name
+      - id: full_name
         type: short_text
-        label: Your name
+        label: Full name
+      - id: role
+        type: single_select
+        label: Role you're applying for
+        options:
+          - Software Engineer
+          - Product Manager
+          - Designer
+      - id: email
+        type: email
+        label: Email address
     next: done
 ```
 
-That's a working form. Everything else is optional.
+Three keys at work here: `version`, `title`, and `sections`. That's everything required to make a working form.
 
 ---
 
-## Adding `description`
+## Required keys
 
-`description` renders as a subtitle below the form title:
+**`version`** — Always `1`. Reserved for future schema versioning.
+
+**`title`** — The heading shown at the top of the form. Accepts a plain string or a locale map for multilingual forms.
+
+**`sections`** — An array of one or more section definitions. Each section has fields, a title, and a `next` destination. See [Sections](/concepts/sections).
+
+---
+
+## Optional keys
+
+### `description`
+
+A subtitle rendered below the form title.
 
 ```yaml
 version: 1
-title: Feedback
-description: Takes about 30 seconds.
-sections:
-  - id: main
-    title: Share your feedback
-    fields:
-      - id: name
-        type: short_text
-        label: Your name
-      - id: message
-        type: short_text
-        label: Your message
-    next: done
+title: Join the team
+description: Takes about 2 minutes.
 ```
 
+Accepts a plain string or a locale map.
+
 ---
-
-## Optional top-level keys
-
-Each of these keys adds a capability to the form. They are introduced briefly here; each has a dedicated concept page.
 
 ### `connections`
 
-Triggers actions after the form is completed — send data to a webhook, send an email, or write a row to Airtable.
+Defines what fires after the form is completed — a webhook, an email, or an Airtable row. Connections only fire when `status` becomes `completed`.
 
 ```yaml
 connections:
   - type: webhook
-    url: https://your-api.com/hooks/feedback
+    url: https://your-api.com/hooks/apply
 ```
 
-See [Connections](/concepts/connections).
+See [Connections](/concepts/connections) for full coverage of all three types.
+
+---
 
 ### `completion`
 
@@ -73,9 +80,14 @@ Customizes the thank-you page shown after the final section is submitted. Suppor
 
 ```yaml
 completion:
-  title: "Thanks, {{data.name}}!"
-  message: We received your message.
+  title: "Thanks, {{data.full_name}}!"
+  message: We'll review your application and be in touch.
+  button:
+    label: Back to our site
+    url: https://example.com
 ```
+
+---
 
 ### `start_date` / `end_date`
 
@@ -86,15 +98,19 @@ start_date: "2025-09-01"
 end_date: "2025-09-30"
 ```
 
+---
+
 ### `locale`
 
-Locks the form to a specific language. Without this key, the locale is resolved from the browser.
+Locks the form to a specific language. Without this key, locale is resolved from the browser. The platform auto-appends `?lang=` to maintain locale across sections.
 
 ```yaml
 locale: es
 ```
 
 See [Localization](/concepts/localization).
+
+---
 
 ### `mixpanel`
 
@@ -108,12 +124,12 @@ mixpanel: "your-project-token"
 
 ## Full example
 
-The canonical form with all optional top-level keys included:
+The job application form with every optional root key included:
 
 ```yaml
 version: 1
-title: Feedback
-description: Takes about 30 seconds.
+title: Join the team
+description: Takes about 2 minutes.
 start_date: "2025-01-01"
 end_date: "2025-12-31"
 locale: en
@@ -121,25 +137,32 @@ mixpanel: "your-project-token"
 
 sections:
   - id: main
-    title: Share your feedback
+    title: Apply to work with us
     fields:
-      - id: name
+      - id: full_name
         type: short_text
-        label: Your name
-      - id: message
-        type: short_text
-        label: Your message
+        label: Full name
+      - id: role
+        type: single_select
+        label: Role you're applying for
+        options:
+          - Software Engineer
+          - Product Manager
+          - Designer
+      - id: email
+        type: email
+        label: Email address
     next: done
 
 connections:
   - type: webhook
-    url: https://your-api.com/hooks/feedback
+    url: https://your-api.com/hooks/apply
 
 completion:
-  title: "Thanks, {{data.name}}!"
-  message: We received your message.
+  title: "Thanks, {{data.full_name}}!"
+  message: We'll review your application and be in touch.
 ```
 
 ---
 
-For the complete property tables, see the [YAML Schema reference](/reference/yaml-schema).
+For complete property tables, see the [YAML Schema reference](/reference/yaml-schema).

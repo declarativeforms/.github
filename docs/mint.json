@@ -31,8 +31,9 @@
       "group": "Concepts",
       "pages": [
         "concepts/yaml-schema",
-        "concepts/sections-and-navigation",
-        "concepts/submissions",
+        "concepts/version-title-description",
+        "concepts/sections",
+        "concepts/fields",
         "concepts/connections",
         "concepts/localization"
       ]
@@ -41,7 +42,11 @@
       "group": "Reference",
       "pages": [
         "reference/yaml-schema",
-        "reference/short-text"
+        "reference/short-text",
+        "reference/long-text",
+        "reference/multiple-select",
+        "reference/single-select",
+        "reference/dropdown"
       ]
     },
     {

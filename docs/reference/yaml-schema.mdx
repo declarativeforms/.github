@@ -1,6 +1,6 @@
 ---
 title: YAML Schema Reference
-description: Complete reference for all top-level YAML configuration keys.
+description: Complete property tables for all Declarative Forms configuration keys.
 ---
 
 ## Top-level keys
@@ -24,15 +24,17 @@ description: Complete reference for all top-level YAML configuration keys.
 
 | Key | Type | Required | Description |
 |-----|------|----------|-------------|
-| `id` | `string` | Yes | Unique identifier. No spaces. Used in `next` references. |
+| `id` | `string` | Yes | Unique identifier. No spaces. Used in `next` references and `?step=` URL param. |
 | `title` | `string \| LocaleMap` | Yes | Section heading. |
 | `fields` | `Field[]` | Yes | Fields in this section. Minimum: 1. |
 | `next` | `string \| NavigationRule[]` | Yes | Where to go after submission. |
 
 ### `next` values
 
-- **String**: section `id`, `"done"`, or an `https://` URL
-- **Array**: `NavigationRule[]` — see [NavigationRule](#navigationrule)
+- **`"done"`** — ends the form; submission marked completed
+- **Section ID** — advances to that section
+- **`https://...` URL** — redirects the browser
+- **`NavigationRule[]`** — conditional navigation (see [NavigationRule](#navigationrule))
 
 ---
 
@@ -41,42 +43,13 @@ description: Complete reference for all top-level YAML configuration keys.
 | Key | Type | Required | Description |
 |-----|------|----------|-------------|
 | `id` | `string` | Yes | Unique identifier within the form. Used in submission data. |
-| `type` | `string` | Yes | The field type. See [Field types](#field-types). |
+| `type` | `string` | Yes | The field type. |
 | `label` | `string \| LocaleMap` | Yes | Field label shown to the user. |
 | `placeholder` | `string \| LocaleMap` | No | Input placeholder text. |
 | `validators` | `Validator[]` | No | Validation rules. |
-| `visible_when` | `string` | No | JS expression; field shown when truthy. |
-| `options` | `Option[]` | No | For selection fields (`dropdown`, `single_select`, `multiple_select`, `rating`). |
-| `otp` | `boolean` | No | Enable OTP verification. Only for `email` type. |
-| `searchable` | `boolean` | No | Enable search. For `dropdown` and `multiple_select`. |
-| `outputFormat` | `"string" \| "structured"` | No | Address output format. Only for address types. |
-| `min_label` | `string \| LocaleMap` | No | Label at min end of scale. Only for `rating`. |
-| `max_label` | `string \| LocaleMap` | No | Label at max end of scale. Only for `rating`. |
+| `visible_when` | `string` | No | JS expression; field shown when truthy. Hidden fields excluded from submission data. |
 
----
-
-## Field types
-
-| Value | Description |
-|-------|-------------|
-| `short_text` | Single-line text input |
-| `long_text` | Multi-line textarea |
-| `email` | Email address (optional OTP verification) |
-| `number` | Integer value |
-| `url` | URL |
-| `mobile_number` | Phone/mobile number |
-| `date` | Date picker |
-| `dropdown` | Single selection from a list (supports `searchable`) |
-| `single_select` | Radio-button style single selection |
-| `multiple_select` | Checkbox-style multi-selection (supports `searchable`) |
-| `rating` | Numeric rating scale |
-| `address` | Full address with Google Places autocomplete |
-| `address_locality` | City/locality autocomplete |
-| `address_region` | State/region autocomplete |
-| `address_country` | Country autocomplete |
-| `file_upload` | File attachment (up to 10 MB) |
-| `signature` | HTML5 canvas signature |
-| `hidden` | Not shown; populated via URL prefill |
+Type-specific properties (`options`, `otp`, `searchable`, `outputFormat`, `min_label`, `max_label`) are documented in each field type's reference page.
 
 ---
 
@@ -98,9 +71,9 @@ validators:
 | Validator | Description |
 |-----------|-------------|
 | `"required"` | Field must not be empty. |
-| `type: pattern` | Input must match the given regex. |
-| `type: min` | Minimum character count (for text fields). |
-| `type: max` | Maximum character count (for text fields). |
+| `type: pattern` | Input must match the given regex. Properties: `regex` (required), `message` (optional). |
+| `type: min` | Minimum value. Meaning varies by field type: character count (text), numeric value (number), date (date), selection count (multiple_select). Properties: `value` (required), `message` (optional). |
+| `type: max` | Maximum value. Same type-specific semantics as `min`. Properties: `value` (required), `message` (optional). |
 
 <Warning>All validators are client-side only. The API does not validate submitted values server-side.</Warning>
 
@@ -110,9 +83,11 @@ validators:
 
 ```yaml
 next:
-  - when: "data.role === 'manager'"
-    go: manager_section
-  - else: standard_section
+  - when: "data.role === 'Software Engineer'"
+    go: eng_questions
+  - when: "data.role === 'Product Manager'"
+    go: pm_questions
+  - else: general_questions
 ```
 
 | Key | Type | Required | Description |
@@ -127,10 +102,10 @@ next:
 
 ```yaml
 completion:
-  title: "Thanks, {{data.name}}!"
-  message: We'll be in touch.
+  title: "Thanks, {{data.full_name}}!"
+  message: We'll review your application and be in touch.
   button:
-    label: Return to home
+    label: Back to our site
     url: https://example.com
 ```
 
@@ -149,8 +124,8 @@ A locale map is an object where keys are locale codes and values are strings:
 
 ```yaml
 title:
-  en: Feedback
-  es: Comentarios
+  en: Join the team
+  es: Únete al equipo
 ```
 
-Supported locales: `en`, `es`. Any field that accepts `string | LocaleMap` can use either format.
+Supported locales: `en`, `es`. Any field that accepts `string | LocaleMap` can use either format. See [Localization](/concepts/localization) for full resolution rules.

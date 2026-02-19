@@ -1,48 +1,54 @@
 ---
 title: How it works
-description: What happens when you push a YAML file and visit the form URL.
+description: What happened when you pushed apply.yaml and visited the URL.
 ---
 
-There are four things worth understanding about how the platform works. This page covers each one, using `feedback.yaml` as the example.
+The quickstart gave you a live form in three steps. This page traces what the platform actually did.
 
 ---
 
-## 1. Where the YAML comes from
+## Where the YAML comes from
 
-When you push `feedback.yaml` to your repository's `main` branch, it becomes accessible at:
+When you push `apply.yaml` to your repository's `main` branch, it becomes accessible at:
 
 ```
-https://raw.githubusercontent.com/{owner}/{repo}/main/feedback.yaml
+https://raw.githubusercontent.com/{owner}/{repo}/main/apply.yaml
 ```
 
-When someone visits `https://app.declarativeforms.com/{owner}/{repo}/feedback`, the API fetches that raw URL, parses the YAML, and returns a JSON representation to the browser. The form always reflects the current `main` branch.
+When someone visits `https://app.declarativeforms.com/{owner}/{repo}/apply`, the API fetches that raw URL and parses the YAML. The form always reflects the current `main` branch — push a change, refresh the form URL, and the update is live.
 
 ---
 
-## 2. How the form renders
+## How the form loads
 
-The browser receives the parsed form definition and renders the first section. For `feedback.yaml`, that means two `short_text` fields: `name` and `message`.
+The browser receives the parsed form definition as JSON and renders the first section. For `apply.yaml`, that's three fields:
 
-Field values stay in the browser until the user submits. Validation (if configured) runs client-side before each submission.
+- `full_name` — `short_text` renders a single-line text input
+- `role` — `single_select` renders radio buttons, one per option
+- `email` — `email` renders a text input that validates email address format before submission
 
----
-
-## 3. How submissions work
-
-When the user submits a section, the browser sends the field values to the API. The API saves a submission record and returns a `submission_id`. On the final section, the submission is marked `completed` and any configured connections fire.
-
-For `feedback.yaml` — a single-section form — there is no intermediate step. Submit the section, and it's done.
+Field values stay in the browser until the user submits. Validators (if configured) run client-side before the section is sent to the API.
 
 ---
 
-## 4. Partial saves
+## How submissions work
 
-For multi-section forms, the submission ID and current step are written into the URL after each section:
+When the user submits, the browser sends the field values to the API. The API saves a submission record and returns a `submission_id`. On the final section — which is the only section in `apply.yaml` — the submission is marked `completed` and any configured connections fire.
+
+---
+
+## Partial saves
+
+For multi-section forms, the URL gets updated after each section:
 
 ```
-https://app.declarativeforms.com/{owner}/{repo}/feedback?submission_id=abc123&step=next_section
+https://app.declarativeforms.com/{owner}/{repo}/apply?submission_id=abc123&step=next_section
 ```
 
 This URL can be bookmarked or shared. When revisited, the browser resumes from the saved step with previously entered data pre-populated.
 
-`feedback.yaml` has only one section, so this doesn't apply yet — but it will once you add a second section in [Sections and navigation](/concepts/sections-and-navigation).
+`apply.yaml` has one section, so this doesn't apply yet — but it matters once you start building multi-section flows. See [Sections](/concepts/sections) for how navigation between sections works.
+
+---
+
+Ready to understand the full schema? Start with [YAML Schema](/concepts/yaml-schema), then dive into the Concepts section for each piece.

@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: Create your first form in three steps.
+description: Get a live form in three steps.
 ---
 
 ## Prerequisites
@@ -10,35 +10,42 @@ description: Create your first form in three steps.
 
 ---
 
-## Step 1 — Create `feedback.yaml`
+## Step 1 — Create `apply.yaml`
 
-Create a file named `feedback.yaml` in the root of your repository:
+Create a file named `apply.yaml` in the root of your repository:
 
 ```yaml
 version: 1
-title: Feedback
+title: Join the team
 sections:
   - id: main
-    title: Share your feedback
+    title: Apply to work with us
     fields:
-      - id: name
+      - id: full_name
         type: short_text
-        label: Your name
-      - id: message
-        type: short_text
-        label: Your message
+        label: Full name
+      - id: role
+        type: single_select
+        label: Role you're applying for
+        options:
+          - Software Engineer
+          - Product Manager
+          - Designer
+      - id: email
+        type: email
+        label: Email address
     next: done
 ```
 
-This is the minimum valid form: a version number, a title, and one section with two fields.
+This is a complete form — three different field types (`short_text`, `single_select`, `email`), no extra configuration needed.
 
 ---
 
 ## Step 2 — Push to `main`
 
 ```bash
-git add feedback.yaml
-git commit -m "Add feedback form"
+git add apply.yaml
+git commit -m "Add job application form"
 git push
 ```
 
@@ -47,13 +54,13 @@ git push
 ## Step 3 — Visit your form
 
 ```
-https://app.declarativeforms.com/{owner}/{repo}/feedback
+https://app.declarativeforms.com/{owner}/{repo}/apply
 ```
 
 Replace `{owner}` with your GitHub username or organization, and `{repo}` with your repository name. The form is live immediately — no deploy step required.
 
 ---
 
-This form is what we'll build on throughout the rest of the docs. The next page explains how the platform fetches and processes it.
+Your form is live. Change a field label, push again, the form updates instantly. The next page explains what just happened.
 
 [How it works →](/getting-started/how-it-works)

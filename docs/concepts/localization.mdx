@@ -1,116 +1,169 @@
 ---
 title: Localization
-description: How to translate form labels and text into multiple languages.
+description: How LocaleMap works, which properties support it, and how locale is resolved.
 ---
 
-By default, YAML text values are plain strings and render the same for every user. To support multiple languages, replace any string value with a **locale map** — an object where keys are locale codes and values are translations.
-
-Supported locales: `en` (English) and `es` (Spanish).
+Localization in Declarative Forms is built around a single concept: any text field that accepts a `string` also accepts a **LocaleMap** — an object with locale code keys and translated string values. The platform picks the right value at runtime based on the active locale.
 
 ---
 
-## Converting `title` to a locale map
+## LocaleMap syntax
 
-Start with the canonical form's plain string title:
+A plain string applies to all locales:
 
 ```yaml
-version: 1
-title: Feedback
+label: Full name
 ```
 
-Replace it with a locale map:
+A locale map provides a translation per locale:
 
 ```yaml
-version: 1
-title:
-  en: Feedback
-  es: Comentarios
+label:
+  en: Full name
+  es: Nombre completo
 ```
 
-The platform picks the correct value based on the active locale.
+When a locale map is used, the platform selects the value matching the active locale. If no matching locale exists in the map, `en` is used as the fallback.
 
 ---
 
-## Converting field labels
+## Every string field supports LocaleMap
 
-Do the same for field `label` values:
+The following properties all accept `string | LocaleMap`:
 
-```yaml
-sections:
-  - id: main
-    title:
-      en: Share your feedback
-      es: Comparte tus comentarios
-    fields:
-      - id: name
-        type: short_text
-        label:
-          en: Your name
-          es: Tu nombre
-      - id: message
-        type: short_text
-        label:
-          en: Your message
-          es: Tu mensaje
-    next: done
-```
-
-Any field that accepts a string also accepts a locale map: `title`, `description`, `label`, `placeholder`, validator `message`, and `completion` text.
+- `title` (root key)
+- `description` (root key)
+- `sections[].title`
+- `fields[].label`
+- `fields[].placeholder`
+- `fields[].min_label`, `fields[].max_label` (for `rating` fields)
+- `options[].label` (for selection fields)
+- `validators[].message`
+- `completion.title`
+- `completion.message`
+- `completion.button.label`
+- `completion.button.url`
+- `connections[email].subject`
+- `connections[email].body`
 
 ---
 
-## The `locale` top-level key
-
-To lock the form to a specific language regardless of the user's browser, set `locale` at the top level:
-
-```yaml
-version: 1
-locale: es
-title:
-  en: Feedback
-  es: Comentarios
-sections:
-  - id: main
-    title:
-      en: Share your feedback
-      es: Comparte tus comentarios
-    fields:
-      - id: name
-        type: short_text
-        label:
-          en: Your name
-          es: Tu nombre
-      - id: message
-        type: short_text
-        label:
-          en: Your message
-          es: Tu mensaje
-    next: done
-```
-
-When `locale` is set, the platform adds `?lang=es` to the URL automatically to keep the locale consistent across sections.
-
----
-
-## `?lang=` URL override
-
-Append `?lang=es` to any form URL to override the locale:
-
-```
-https://app.declarativeforms.com/acme/forms/feedback?lang=es
-```
-
-This is useful for multilingual marketing campaigns or embedding forms in language-specific pages.
-
----
-
-## Resolution priority
+## Locale resolution — priority order
 
 The active locale is determined in this order:
 
-1. `?lang=` query parameter
+1. `?lang=` URL query parameter — always wins
 2. Browser's `navigator.language`
 3. `locale` key in the YAML
 4. `en` as the final fallback
 
-The `?lang=` parameter always takes precedence — including over the YAML `locale` key.
+---
+
+## The `locale` root key
+
+Setting `locale` in your YAML locks the form to a specific language. The platform auto-appends `?lang=` to the URL to maintain locale consistency as the user moves between sections.
+
+```yaml
+locale: es
+```
+
+The `?lang=` query parameter can still override the `locale` key — it takes the highest priority in the resolution chain.
+
+---
+
+## Supported locale codes
+
+`en` (English) and `es` (Spanish).
+
+---
+
+## Templating and localization
+
+LocaleMap values in email connections support Handlebars interpolation. Each locale string can contain `{{data.fieldId}}` variables:
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject:
+      en: "New application from {{data.full_name}}"
+      es: "Nueva solicitud de {{data.full_name}}"
+```
+
+---
+
+## Options localization
+
+Selection fields (`single_select`, `multiple_select`, `dropdown`) use a structured option format when labels need to be translated:
+
+```yaml
+options:
+  - value: eng
+    label:
+      en: Software Engineer
+      es: Ingeniero de Software
+  - value: pm
+    label:
+      en: Product Manager
+      es: Gerente de Producto
+  - value: design
+    label:
+      en: Designer
+      es: Diseñador
+```
+
+The `value` is locale-independent — it is what gets stored in `submission.data`. The `label` is what the user sees and supports LocaleMap.
+
+---
+
+## Full example
+
+The job application form fully translated:
+
+```yaml
+version: 1
+title:
+  en: Join the team
+  es: Únete al equipo
+description:
+  en: Takes about 2 minutes.
+  es: Tarda unos 2 minutos.
+sections:
+  - id: main
+    title:
+      en: Apply to work with us
+      es: Solicita trabajar con nosotros
+    fields:
+      - id: full_name
+        type: short_text
+        label:
+          en: Full name
+          es: Nombre completo
+        placeholder:
+          en: Jane Smith
+          es: Ana García
+      - id: role
+        type: single_select
+        label:
+          en: Role you're applying for
+          es: Puesto al que aplicas
+        options:
+          - value: eng
+            label:
+              en: Software Engineer
+              es: Ingeniero de Software
+          - value: pm
+            label:
+              en: Product Manager
+              es: Gerente de Producto
+          - value: design
+            label:
+              en: Designer
+              es: Diseñador
+      - id: email
+        type: email
+        label:
+          en: Email address
+          es: Correo electrónico
+    next: done
+```
