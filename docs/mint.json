@@ -38,113 +38,15 @@
       ]
     },
     {
-      "group": "Guides",
-      "pages": [
-        {
-          "group": "Forms",
-          "pages": [
-            "guides/create-first-form",
-            "guides/create-multi-step-form",
-            "guides/access-private-repo"
-          ]
-        },
-        {
-          "group": "Validation",
-          "pages": [
-            "guides/make-field-required",
-            "guides/validate-min-max",
-            "guides/validate-regex"
-          ]
-        },
-        {
-          "group": "Logic",
-          "pages": [
-            "guides/conditional-visibility",
-            "guides/conditional-navigation"
-          ]
-        },
-        {
-          "group": "Completion",
-          "pages": [
-            "guides/customize-thank-you-page",
-            "guides/redirect-after-submission"
-          ]
-        },
-        {
-          "group": "Email",
-          "pages": [
-            "guides/otp-email-verification",
-            "guides/send-confirmation-email",
-            "guides/send-admin-notification"
-          ]
-        },
-        {
-          "group": "Connections",
-          "pages": [
-            "guides/send-data-to-webhook",
-            "guides/send-data-to-airtable"
-          ]
-        },
-        {
-          "group": "Data",
-          "pages": [
-            "guides/prefill-url-parameters",
-            "guides/pass-hidden-tracking-data",
-            "guides/resume-form-submission"
-          ]
-        },
-        {
-          "group": "Localization",
-          "pages": [
-            "guides/translate-form",
-            "guides/multilingual-options"
-          ]
-        },
-        {
-          "group": "Fields",
-          "pages": [
-            "guides/collect-file-uploads",
-            "guides/capture-signatures",
-            "guides/collect-addresses"
-          ]
-        },
-        {
-          "group": "Settings",
-          "pages": [
-            "guides/control-form-availability",
-            "guides/add-mixpanel-analytics"
-          ]
-        }
-      ]
-    },
-    {
       "group": "Reference",
       "pages": [
         "reference/yaml-schema",
-        "reference/field-types",
-        "reference/validators",
-        "reference/sections-and-navigation",
-        "reference/connections",
-        "reference/completion",
-        "reference/url-structure"
-      ]
-    },
-    {
-      "group": "Examples",
-      "pages": [
-        "examples/bug-report",
-        "examples/feature-request",
-        "examples/access-request",
-        "examples/deployment-request",
-        "examples/beta-signup"
+        "reference/short-text"
       ]
     },
     {
       "group": "Help",
       "pages": [
-        "help/faq",
-        "help/troubleshooting",
-        "help/changelog",
         "help/support"
       ]
     }

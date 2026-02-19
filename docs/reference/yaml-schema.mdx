@@ -1,6 +1,6 @@
 ---
 title: YAML Schema Reference
-description: Complete reference for all top-level YAML configuration keys
+description: Complete reference for all top-level YAML configuration keys.
 ---
 
 ## Top-level keys
@@ -12,11 +12,11 @@ description: Complete reference for all top-level YAML configuration keys
 | `description` | `string \| LocaleMap` | No | Subtitle below the title. |
 | `sections` | `Section[]` | Yes | One or more form sections. Minimum: 1. |
 | `connections` | `Connection[]` | No | Webhook, email, and/or Airtable connections. |
+| `completion` | `Completion` | No | Thank-you page configuration. |
+| `locale` | `string` | No | Lock form to a locale (`en` or `es`). |
 | `start_date` | `string` (ISO 8601) | No | Form is inaccessible before this date. |
 | `end_date` | `string` (ISO 8601) | No | Form is inaccessible after this date. |
-| `locale` | `string` | No | Lock form to a locale (`en` or `es`). |
 | `mixpanel` | `string` | No | Mixpanel project token for analytics. |
-| `completion` | `Completion` | No | Thank-you page configuration. |
 
 ---
 
@@ -32,7 +32,7 @@ description: Complete reference for all top-level YAML configuration keys
 ### `next` values
 
 - **String**: section `id`, `"done"`, or an `https://` URL
-- **Array**: `NavigationRule[]` — see [Conditional navigation](#navigationrule)
+- **Array**: `NavigationRule[]` — see [NavigationRule](#navigationrule)
 
 ---
 
@@ -41,12 +41,12 @@ description: Complete reference for all top-level YAML configuration keys
 | Key | Type | Required | Description |
 |-----|------|----------|-------------|
 | `id` | `string` | Yes | Unique identifier within the form. Used in submission data. |
-| `type` | `FieldType` | Yes | The field type. See [Field types](#field-types). |
+| `type` | `string` | Yes | The field type. See [Field types](#field-types). |
 | `label` | `string \| LocaleMap` | Yes | Field label shown to the user. |
 | `placeholder` | `string \| LocaleMap` | No | Input placeholder text. |
-| `options` | `Option[]` | No | For selection fields. |
 | `validators` | `Validator[]` | No | Validation rules. |
 | `visible_when` | `string` | No | JS expression; field shown when truthy. |
+| `options` | `Option[]` | No | For selection fields (`dropdown`, `single_select`, `multiple_select`, `rating`). |
 | `otp` | `boolean` | No | Enable OTP verification. Only for `email` type. |
 | `searchable` | `boolean` | No | Enable search. For `dropdown` and `multiple_select`. |
 | `outputFormat` | `"string" \| "structured"` | No | Address output format. Only for address types. |
@@ -57,51 +57,26 @@ description: Complete reference for all top-level YAML configuration keys
 
 ## Field types
 
-| Value | Category | Description |
-|-------|----------|-------------|
-| `short_text` | Input | Single-line text |
-| `long_text` | Input | Multi-line textarea |
-| `email` | Input | Email address (optional OTP verification) |
-| `number` | Input | Integer value |
-| `url` | Input | URL |
-| `mobile_number` | Input | Phone/mobile number |
-| `date` | Input | Date picker |
-| `dropdown` | Selection | Single selection from a list (supports `searchable`) |
-| `single_select` | Selection | Radio-button style single selection |
-| `multiple_select` | Selection | Checkbox-style multi-selection (supports `searchable`) |
-| `rating` | Selection | Numeric rating scale |
-| `address` | Advanced | Full address with Google Places autocomplete |
-| `address_locality` | Advanced | City/locality autocomplete |
-| `address_region` | Advanced | State/region autocomplete |
-| `address_country` | Advanced | Country autocomplete |
-| `file_upload` | Advanced | File attachment (up to 10 MB) |
-| `signature` | Advanced | HTML5 canvas signature |
-| `hidden` | Advanced | Not shown; populated via URL prefill |
-
----
-
-## Option
-
-Options can be plain strings or structured objects:
-
-```yaml
-# Simple
-options:
-  - Option A
-  - Option B
-
-# Structured (with translated labels)
-options:
-  - value: option_a
-    label:
-      en: Option A
-      es: Opción A
-```
-
-| Key | Type | Required | Description |
-|-----|------|----------|-------------|
-| `value` | `string` | Yes (structured) | Value stored in submission data. |
-| `label` | `string \| LocaleMap` | Yes (structured) | Displayed label. |
+| Value | Description |
+|-------|-------------|
+| `short_text` | Single-line text input |
+| `long_text` | Multi-line textarea |
+| `email` | Email address (optional OTP verification) |
+| `number` | Integer value |
+| `url` | URL |
+| `mobile_number` | Phone/mobile number |
+| `date` | Date picker |
+| `dropdown` | Single selection from a list (supports `searchable`) |
+| `single_select` | Radio-button style single selection |
+| `multiple_select` | Checkbox-style multi-selection (supports `searchable`) |
+| `rating` | Numeric rating scale |
+| `address` | Full address with Google Places autocomplete |
+| `address_locality` | City/locality autocomplete |
+| `address_region` | State/region autocomplete |
+| `address_country` | Country autocomplete |
+| `file_upload` | File attachment (up to 10 MB) |
+| `signature` | HTML5 canvas signature |
+| `hidden` | Not shown; populated via URL prefill |
 
 ---
 
@@ -120,12 +95,12 @@ validators:
     message: Must be 500 characters or fewer.
 ```
 
-| Validator | Value type | Description |
-|-----------|------------|-------------|
-| `"required"` | — | Field must not be empty. |
-| `type: pattern` | `regex: string`, `message?: string \| LocaleMap` | Input must match regex. |
-| `type: min` | `value: number \| string`, `message?: string \| LocaleMap` | Min character count, numeric value, or date. |
-| `type: max` | `value: number \| string`, `message?: string \| LocaleMap` | Max character count, numeric value, or date. |
+| Validator | Description |
+|-----------|-------------|
+| `"required"` | Field must not be empty. |
+| `type: pattern` | Input must match the given regex. |
+| `type: min` | Minimum character count (for text fields). |
+| `type: max` | Maximum character count (for text fields). |
 
 <Warning>All validators are client-side only. The API does not validate submitted values server-side.</Warning>
 
@@ -135,15 +110,15 @@ validators:
 
 ```yaml
 next:
-  - when: "data.plan === 'enterprise'"
-    go: enterprise_section
+  - when: "data.role === 'manager'"
+    go: manager_section
   - else: standard_section
 ```
 
 | Key | Type | Required | Description |
 |-----|------|----------|-------------|
-| `when` | `string` | Yes (for conditional rules) | JS expression evaluated against `data`. |
-| `go` | `string` | Yes (for conditional rules) | Section ID, `"done"`, or `https://` URL. |
+| `when` | `string` | Yes (conditional rules) | JS expression evaluated against `data`. |
+| `go` | `string` | Yes (conditional rules) | Section ID, `"done"`, or `https://` URL. |
 | `else` | `string` | Yes (last rule) | Fallback destination. Required. |
 
 ---
@@ -159,12 +134,12 @@ completion:
     url: https://example.com
 ```
 
-| Key | Type | Required | Description |
-|-----|------|----------|-------------|
-| `title` | `string \| LocaleMap` | No | Thank-you page heading. Supports `{{data.fieldId}}`. |
-| `message` | `string \| LocaleMap` | No | Body text. Supports `{{data.fieldId}}`. |
-| `button.label` | `string \| LocaleMap` | No | CTA button label. |
-| `button.url` | `string \| LocaleMap` | No | CTA button URL. Supports `{{data.fieldId}}`. |
+| Key | Type | Description |
+|-----|------|-------------|
+| `title` | `string \| LocaleMap` | Thank-you page heading. Supports `{{data.fieldId}}`. |
+| `message` | `string \| LocaleMap` | Body text. Supports `{{data.fieldId}}`. |
+| `button.label` | `string \| LocaleMap` | CTA button label. |
+| `button.url` | `string \| LocaleMap` | CTA button URL. Supports `{{data.fieldId}}`. |
 
 ---
 
@@ -174,10 +149,8 @@ A locale map is an object where keys are locale codes and values are strings:
 
 ```yaml
 title:
-  en: My Form
-  es: Mi formulario
+  en: Feedback
+  es: Comentarios
 ```
 
-Supported locales: `en`, `es`.
-
-Any field that accepts `string | LocaleMap` can use either format.
+Supported locales: `en`, `es`. Any field that accepts `string | LocaleMap` can use either format.

@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: Create your first form in under 60 seconds
+description: Create your first form in three steps.
 ---
 
 ## Prerequisites
@@ -10,40 +10,31 @@ description: Create your first form in under 60 seconds
 
 ---
 
-## Step 1 — Create a YAML file
+## Step 1 — Create `feedback.yaml`
 
 Create a file named `feedback.yaml` in the root of your repository:
 
 ```yaml
 version: 1
-title: Quick Feedback
+title: Feedback
 sections:
   - id: main
+    title: Share your feedback
     fields:
       - id: name
         type: short_text
         label: Your name
-        validators:
-          - required
-      - id: feedback
-        type: long_text
-        label: What can we improve?
-        validators:
-          - required
+      - id: message
+        type: short_text
+        label: Your message
     next: done
-
-connections:
-  - type: webhook
-    url: https://your-api.com/hooks/form
 ```
 
-The minimum required top-level keys are `version`, `title`, and `sections`. Everything else is optional.
+This is the minimum valid form: a version number, a title, and one section with two fields.
 
 ---
 
-## Step 2 — Push to GitHub
-
-Commit and push the file to your repository's `main` branch:
+## Step 2 — Push to `main`
 
 ```bash
 git add feedback.yaml
@@ -53,38 +44,16 @@ git push
 
 ---
 
-## Step 3 — Open your form
-
-Your form is live immediately at:
+## Step 3 — Visit your form
 
 ```
 https://app.declarativeforms.com/{owner}/{repo}/feedback
 ```
 
-Replace `{owner}` with your GitHub username or organization, and `{repo}` with your repository name.
-
-For example, if your GitHub username is `acme` and your repository is `forms`:
-
-```
-https://app.declarativeforms.com/acme/forms/feedback
-```
+Replace `{owner}` with your GitHub username or organization, and `{repo}` with your repository name. The form is live immediately — no deploy step required.
 
 ---
 
-## What just happened?
+This form is what we'll build on throughout the rest of the docs. The next page explains how the platform fetches and processes it.
 
-When someone visits your form URL, the platform:
-
-1. Fetches `https://raw.githubusercontent.com/acme/forms/main/feedback.yaml`
-2. Parses and validates the YAML
-3. Renders the form in the browser
-4. On submission, saves the data and fires any configured connections
-
----
-
-## Next steps
-
-- [Field types reference](/reference/field-types) — see all 16 available field types
-- [Add validation](/guides/make-field-required) — make fields required or enforce patterns
-- [Connect to a webhook](/guides/send-data-to-webhook) — receive submission data in your system
-- [Create a multi-step form](/guides/create-multi-step-form) — split a long form into sections
+[How it works →](/getting-started/how-it-works)

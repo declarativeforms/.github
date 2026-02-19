@@ -1,118 +1,116 @@
 ---
 title: Localization
-description: How to translate forms into multiple languages
+description: How to translate form labels and text into multiple languages.
 ---
 
-Declarative Forms supports multiple languages through locale maps in your YAML configuration.
+By default, YAML text values are plain strings and render the same for every user. To support multiple languages, replace any string value with a **locale map** — an object where keys are locale codes and values are translations.
 
-## Supported locales
+Supported locales: `en` (English) and `es` (Spanish).
 
-| Code | Language |
-|------|----------|
-| `en` | English |
-| `es` | Spanish |
+---
 
-## Locale resolution priority
+## Converting `title` to a locale map
 
-The active locale is determined in this order:
-
-1. `?lang=` query parameter (e.g., `?lang=es`)
-2. Browser's `navigator.language`
-3. `locale` key in the YAML
-4. English (`en`) as the final fallback
-
-## Locale map syntax
-
-Any text field that supports localization accepts either a plain string or an object where the keys are locale codes:
+Start with the canonical form's plain string title:
 
 ```yaml
-# Plain string (applies to all locales)
-title: My Form
-
-# Locale map
-title:
-  en: My Form
-  es: Mi formulario
+version: 1
+title: Feedback
 ```
 
-## Fields that support locale maps
+Replace it with a locale map:
 
-The following fields accept locale maps:
+```yaml
+version: 1
+title:
+  en: Feedback
+  es: Comentarios
+```
 
-| Field | Notes |
-|-------|-------|
-| Form `title` | Top-level key |
-| Form `description` | Top-level key |
-| Section `title` | Per-section |
-| Field `label` | Per-field |
-| Field `placeholder` | Per-field |
-| Option `label` | For dropdown, single_select, multiple_select, rating |
-| Validator `message` | Custom error message per validator |
-| `completion.title` | Thank-you page title |
-| `completion.message` | Thank-you page body |
-| `completion.button.label` | Button label |
-| `completion.button.url` | Button URL (can vary by locale) |
-| Email connection `subject` | Per connection |
-| Email connection `body` | Per connection |
+The platform picks the correct value based on the active locale.
 
-## Locking a form to a specific locale
+---
 
-Set the `locale` top-level key to force all users into a specific language:
+## Converting field labels
+
+Do the same for field `label` values:
+
+```yaml
+sections:
+  - id: main
+    title:
+      en: Share your feedback
+      es: Comparte tus comentarios
+    fields:
+      - id: name
+        type: short_text
+        label:
+          en: Your name
+          es: Tu nombre
+      - id: message
+        type: short_text
+        label:
+          en: Your message
+          es: Tu mensaje
+    next: done
+```
+
+Any field that accepts a string also accepts a locale map: `title`, `description`, `label`, `placeholder`, validator `message`, and `completion` text.
+
+---
+
+## The `locale` top-level key
+
+To lock the form to a specific language regardless of the user's browser, set `locale` at the top level:
 
 ```yaml
 version: 1
 locale: es
 title:
-  en: Contact Us
-  es: Contáctanos
+  en: Feedback
+  es: Comentarios
 sections:
   - id: main
     title:
-      en: Your message
-      es: Tu mensaje
+      en: Share your feedback
+      es: Comparte tus comentarios
     fields:
       - id: name
         type: short_text
         label:
-          en: Full name
-          es: Nombre completo
+          en: Your name
+          es: Tu nombre
+      - id: message
+        type: short_text
+        label:
+          en: Your message
+          es: Tu mensaje
     next: done
 ```
 
-When `locale` is set in the YAML, the platform automatically adds `?lang=es` to the URL if it's not already present. This keeps the locale consistent even when users navigate between sections.
+When `locale` is set, the platform adds `?lang=es` to the URL automatically to keep the locale consistent across sections.
 
-<Note>
-The `?lang=` parameter always takes precedence over the YAML `locale` key. This allows you to override the form locale from a link (e.g., for multilingual marketing campaigns).
-</Note>
+---
 
-## Translating option labels
+## `?lang=` URL override
 
-For selection fields, use the structured option format with a `label` locale map:
+Append `?lang=es` to any form URL to override the locale:
 
-```yaml
-- id: country
-  type: dropdown
-  label:
-    en: Country
-    es: País
-  options:
-    - value: us
-      label:
-        en: United States
-        es: Estados Unidos
-    - value: mx
-      label:
-        en: Mexico
-        es: México
-    - value: es
-      label:
-        en: Spain
-        es: España
+```
+https://app.declarativeforms.com/acme/forms/feedback?lang=es
 ```
 
-The `value` is what gets stored in the submission—not the translated label. This means your submission data is locale-independent regardless of the user's language.
+This is useful for multilingual marketing campaigns or embedding forms in language-specific pages.
 
-## Guides
+---
 
-- [Translate a form](/guides/translate-form) — step-by-step localization walkthrough
-- [Translate dropdown and select options](/guides/multilingual-options) — handling option label translations
+## Resolution priority
+
+The active locale is determined in this order:
+
+1. `?lang=` query parameter
+2. Browser's `navigator.language`
+3. `locale` key in the YAML
+4. `en` as the final fallback
+
+The `?lang=` parameter always takes precedence — including over the YAML `locale` key.

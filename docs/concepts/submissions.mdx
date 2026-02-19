@@ -1,30 +1,24 @@
 ---
 title: Submissions
-description: How form submissions are created, saved, and resumed
+description: What gets saved when a user submits a form.
 ---
 
-A **submission** is the record created when a user fills out and submits a form. Submissions move through two states: `partial` and `completed`.
+When a user submits `feedback.yaml`, the platform creates a submission record. This page shows exactly what that record looks like and how it changes through the form flow.
 
-## Submission states
+---
 
-| Status | Description |
-|--------|-------------|
-| `partial` | Created after each section is submitted. Data is merged incrementally. |
-| `completed` | Set when the user submits the final section. Connections fire at this point. |
+## What gets saved
 
-## Data shape
-
-Each submission record has the following structure:
+For the canonical `feedback.yaml` — two `short_text` fields, `name` and `message` — a completed submission looks like this:
 
 ```json
 {
   "id": "abc123",
-  "form_id": "declarativeforms/examples/feedback",
+  "form_id": "acme/forms/feedback",
   "status": "completed",
   "data": {
     "name": "Jane Smith",
-    "email": "jane@example.com",
-    "feedback": "The app is great but could use dark mode."
+    "message": "The product is great. More keyboard shortcuts please."
   },
   "metadata": {
     "ip_address": "203.0.113.1",
@@ -35,56 +29,60 @@ Each submission record has the following structure:
 }
 ```
 
-The `data` object contains one key per field ID, with the user's submitted value.
+`data` contains one key per field ID, with the user's submitted value. `metadata` is populated automatically.
 
-## Partial saves
+---
 
-After each section is submitted, the platform:
+## `status: "partial"` vs `status: "completed"`
 
-1. Creates (or updates) a `partial` submission record
-2. Merges the new section data into the existing `data` object
-3. Returns the `submission_id` to the browser
-4. The browser updates the URL: `?submission_id=abc123&step=next_section_id`
+For a single-section form like `feedback.yaml`, the submission goes directly to `completed` when the user submits. There is no intermediate state.
 
-Data merging is **non-destructive**—previously saved values are preserved and only overwritten if the same field ID is re-submitted.
+For a multi-section form, the status moves through two states:
 
-## Completing a submission
+| Status | When | Connections fire? |
+|--------|------|-------------------|
+| `partial` | After each section (except the last) | No |
+| `completed` | After the final section | Yes |
 
-When the user submits the final section, the platform:
+Here's what the submission looks like mid-way through the two-section variant of the form — after `about` has been submitted but before `feedback`:
 
-1. Merges the final section data
-2. Sets `status` to `completed`
-3. Fires all configured connections (webhook, email, Airtable)
-4. Returns the final `submission_id` to the browser
-
-## Resuming a submission
-
-To resume a partial submission, visit the form URL with the `submission_id` and `step` parameters:
-
+```json
+{
+  "id": "abc123",
+  "form_id": "acme/forms/feedback",
+  "status": "partial",
+  "data": {
+    "name": "Jane Smith"
+  },
+  "metadata": { ... },
+  "created_at": "2025-06-01T10:00:00Z",
+  "updated_at": "2025-06-01T10:02:00Z"
+}
 ```
-https://app.declarativeforms.com/acme/forms/signup?submission_id=abc123&step=contact_info
-```
 
-The platform will:
-- Load the existing partial submission data
-- Resume the form at the specified section
-- Pre-populate fields with previously submitted values
+After the user completes the second section, `status` becomes `completed` and `data.message` is added.
 
-These parameters are automatically added to the URL after each section submission, so users can resume simply by bookmarking or revisiting the URL.
+---
 
-## OTP tokens in submission data
+## `metadata`
 
-If a form uses [email OTP verification](/guides/otp-email-verification), the verification token is stored in `submission.data` under the key `{fieldId}__otp_token`. This token is included in webhook payloads and connection data.
+Every submission includes two automatically populated fields:
 
-<Note>
-OTP tokens are verification artifacts and do not contain sensitive information beyond the verified email address. However, you should treat them as opaque values in your webhook receiver.
-</Note>
-
-## Metadata
-
-Every submission includes:
-
-- `metadata.ip_address` — the IP address of the user who submitted the form
+- `metadata.ip_address` — the IP address of the submitting browser
 - `metadata.user_agent` — the browser's user agent string
 
-These fields are populated automatically and cannot be set by the user.
+These cannot be set by the user.
+
+---
+
+## Resume: how `?submission_id=` and `?step=` work
+
+After each section is submitted, the platform writes the submission ID and the next section ID into the URL:
+
+```
+https://app.declarativeforms.com/acme/forms/feedback?submission_id=abc123&step=feedback
+```
+
+This happens automatically. The user can bookmark this URL and return later. When they do, the platform loads the existing partial submission and resumes from the saved step, with previously entered values pre-populated.
+
+For single-section forms like the canonical `feedback.yaml`, this URL is never generated — the form completes in one step.

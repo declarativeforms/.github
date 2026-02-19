@@ -1,126 +1,153 @@
 ---
 title: Sections and Navigation
-description: How multi-step forms and conditional branching work
+description: How sections, fields, and navigation work — from a single section to conditional branching.
 ---
 
-Every form has one or more **sections**. Each section is a discrete step in the form flow with its own set of fields.
+Every form is made up of one or more **sections**. Each section is a discrete step with its own set of fields. This page builds from a single section up to conditional navigation.
 
-## Section structure
+---
 
-```yaml
-sections:
-  - id: intro          # unique identifier
-    title: Step 1      # displayed as the section heading
-    fields:            # one or more field definitions
-      - id: name
-        type: short_text
-        label: Your name
-    next: details      # where to go after this section
-```
+## What is a section?
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `id` | `string` | Yes | Unique identifier for this section. Used in `next` references. |
-| `title` | `string \| locale map` | Yes | Section heading shown to the user. |
-| `fields` | `Field[]` | Yes | The fields to display in this section. |
-| `next` | `string \| Rule[]` | Yes | Where to navigate after the user completes this section. |
-
-## The `next` property
-
-`next` controls where the form goes after the user submits a section. It can be:
-
-### Static navigation
-
-A plain string pointing to the next section's `id`:
-
-```yaml
-next: contact_details
-```
-
-Or the special value `"done"` to end the form:
-
-```yaml
-next: done
-```
-
-Or an external URL to redirect the user:
-
-```yaml
-next: https://example.com/thank-you
-```
-
-### Conditional navigation
-
-An array of `when/go` rules with a required `else` fallback:
-
-```yaml
-next:
-  - when: "data.plan === 'enterprise'"
-    go: enterprise_details
-  - when: "data.plan === 'team'"
-    go: team_details
-  - else: basic_details
-```
-
-Rules are evaluated **in order**. The first matching `when` condition wins. The `else` rule is required and serves as the fallback.
-
-The `go` value can be a section `id`, `"done"`, or an external URL.
-
-## When expressions
-
-`when` values are JavaScript expressions evaluated against the current form data:
-
-```yaml
-when: "data.role === 'admin'"
-when: "data.age >= 18 && data.country === 'US'"
-when: "['yes', 'maybe'].includes(data.interested)"
-```
-
-The `data` object contains all field values collected so far across all sections.
-
-<Warning>
-`when` expressions are evaluated using `new Function("data", ...)`. They execute arbitrary JavaScript in the browser. Only use values that originate from your own form logic—do not construct `when` expressions from untrusted user input.
-</Warning>
-
-## Single-section forms
-
-A form can have a single section. In that case, `next: done` ends the form immediately after submission.
+The canonical `feedback.yaml` has one section:
 
 ```yaml
 sections:
   - id: main
-    title: Feedback
+    title: Share your feedback
     fields:
-      - id: comment
-        type: long_text
-        label: Your feedback
+      - id: name
+        type: short_text
+        label: Your name
+      - id: message
+        type: short_text
+        label: Your message
     next: done
 ```
 
-## Multi-section forms
+A section has four required properties: `id`, `title`, `fields`, and `next`.
 
-Sections reference each other by `id`. The form starts with the first section defined in the `sections` array.
+---
+
+## What is a field?
+
+Fields are the inputs inside a section. Each field needs at minimum an `id`, a `type`, and a `label`:
+
+```yaml
+- id: name
+  type: short_text
+  label: Your name
+```
+
+`id` is how the value appears in submission data. `type` controls what kind of input renders. `label` is what the user sees.
+
+---
+
+## What does `next: done` mean?
+
+`done` is a reserved value that ends the form. When the user submits a section with `next: done`, the submission is marked `completed` and the thank-you page appears.
+
+---
+
+## Adding a second section
+
+Split the canonical form into two steps by adding a second section and pointing the first to it:
 
 ```yaml
 sections:
-  - id: step_1
+  - id: about
     title: About you
-    fields: [...]
-    next: step_2
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+    next: feedback
 
-  - id: step_2
-    title: Your request
-    fields: [...]
-    next: step_3
-
-  - id: step_3
-    title: Review
-    fields: [...]
+  - id: feedback
+    title: Share your feedback
+    fields:
+      - id: message
+        type: short_text
+        label: Your message
     next: done
 ```
 
-Section IDs must be **unique** within a form. Referencing a non-existent section ID will result in a navigation error.
+The form starts at the first section in the array (`about`). After submission it advances to `feedback`, then ends.
 
-## Partial saves between sections
+---
 
-After each section is submitted, the platform saves a **partial** submission record and updates the browser URL with a `submission_id` and `step` parameter. This allows users to resume the form later. See [Submissions](/concepts/submissions) for details.
+## `next` pointing to a section ID
+
+`next` can be any section's `id`, the string `"done"`, or an `https://` URL (to redirect the user after the section):
+
+```yaml
+next: feedback          # advance to the section with id "feedback"
+next: done              # end the form
+next: https://example.com/thank-you  # redirect instead of showing the thank-you page
+```
+
+---
+
+## Conditional `next`
+
+To send different users to different sections based on their answers, use an array of `when/go` rules with a required `else` fallback:
+
+```yaml
+sections:
+  - id: about
+    title: About you
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+      - id: role
+        type: short_text
+        label: Your role
+    next:
+      - when: "data.role === 'manager'"
+        go: manager_feedback
+      - else: feedback
+
+  - id: feedback
+    title: Share your feedback
+    fields:
+      - id: message
+        type: short_text
+        label: Your message
+    next: done
+
+  - id: manager_feedback
+    title: Manager feedback
+    fields:
+      - id: message
+        type: short_text
+        label: What would help your team?
+    next: done
+```
+
+Rules are evaluated in order. The first matching `when` wins. `else` is required and serves as the fallback.
+
+`when` values are JavaScript expressions evaluated against `data`, an object containing all field values collected so far.
+
+---
+
+## `visible_when` on a field
+
+To show or hide a specific field based on other answers, use `visible_when` on the field definition:
+
+```yaml
+fields:
+  - id: name
+    type: short_text
+    label: Your name
+  - id: message
+    type: short_text
+    label: Your message
+    visible_when: "data.name !== ''"
+```
+
+`visible_when` is a JavaScript expression. The field renders when the expression is truthy and is hidden otherwise. Hidden fields are excluded from submission data.
+
+---
+
+For the full property tables, see the [YAML Schema reference](/reference/yaml-schema).

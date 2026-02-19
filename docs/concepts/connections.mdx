@@ -1,97 +1,99 @@
 ---
 title: Connections
-description: Overview of webhook, email, and Airtable connections
+description: How to receive submission data after a form is completed.
 ---
 
-Connections define what happens after a form is **completed**. They are configured in the `connections` array at the top level of your YAML file.
+After `feedback.yaml` is submitted, how do you receive the data? That's what connections are for.
+
+Connections are configured in the `connections` array at the top level of your YAML file. They fire once, when the submission status becomes `completed` — that is, when the user submits the final section.
+
+---
+
+## Adding a webhook to the canonical form
+
+```yaml
+version: 1
+title: Feedback
+sections:
+  - id: main
+    title: Share your feedback
+    fields:
+      - id: name
+        type: short_text
+        label: Your name
+      - id: message
+        type: short_text
+        label: Your message
+    next: done
+
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/feedback
+```
+
+When the form is completed, the platform sends an HTTP POST to `https://your-api.com/hooks/feedback`.
+
+---
+
+## What the webhook body looks like
+
+The request body is the full submission object:
+
+```json
+{
+  "id": "abc123",
+  "form_id": "acme/forms/feedback",
+  "status": "completed",
+  "data": {
+    "name": "Jane Smith",
+    "message": "The product is great. More keyboard shortcuts please."
+  },
+  "metadata": {
+    "ip_address": "203.0.113.1",
+    "user_agent": "Mozilla/5.0 ..."
+  },
+  "created_at": "2025-06-01T10:00:00Z",
+  "updated_at": "2025-06-01T10:05:00Z"
+}
+```
+
+No authentication headers are sent. To verify the source, validate the payload structure in your receiver, or embed a secret in your webhook URL.
+
+---
+
+## Email connections
+
+Send an email when the form is completed. Supports Handlebars-style variables:
 
 ```yaml
 connections:
-  - type: webhook
-    url: https://your-api.com/hooks/form
   - type: email
-    to: team@example.com
-    subject: New submission
+    to: "{{data.name}} <team@example.com>"
+    subject: "New feedback from {{data.name}}"
+    body: "<p>{{data.message}}</p>"
     include_responses: true
 ```
 
-## Important: connections fire on final submission only
+Setting `include_responses: true` appends an auto-generated table of all field responses to the email body.
 
-Connections are **not** triggered for partial submissions (i.e., mid-form section saves). They fire once, when the submission status becomes `completed`—that is, when the user submits the final section of the form.
+---
 
-## Connection types
+## Airtable connections
 
-### Webhook
-
-Sends the full submission as JSON to your endpoint via HTTP POST.
-
-```yaml
-- type: webhook
-  url: https://your-api.com/hooks/form
-```
-
-The request body is the complete `ISubmission` object. See [Webhook connection reference](/reference/connections#webhook) for the full payload shape.
-
-No authentication headers are sent with the request. To verify the source, validate the payload structure in your receiver, or use a secret in your webhook URL.
-
-### Email
-
-Sends an email via [Resend](https://resend.com). Supports Handlebars-style template variables in `to`, `subject`, and `body`.
-
-```yaml
-- type: email
-  to: "{{data.email}}"
-  subject: "Thanks for your submission, {{data.name}}!"
-  body: "<p>We received your message and will be in touch soon.</p>"
-  include_responses: true
-```
-
-Setting `include_responses: true` appends an auto-generated HTML table of all non-hidden field responses to the email body.
-
-### Airtable
-
-Creates a new record in an Airtable base. Requires an OAuth connection set up through the [connections page](https://app.declarativeforms.com/connections).
-
-```yaml
-- type: airtable
-  connection_id: your-airtable-connection-id
-  base_id: appXXXXXXXXXXXXXX
-  table_id_or_name: Submissions
-```
-
-The `submission.data` object is sent directly as Airtable `fields`. Your form field IDs must match Airtable column names exactly.
-
-## Multiple connections
-
-You can configure multiple connections on a single form. They are processed sequentially in the order they appear in the `connections` array.
+Create a new row in an Airtable base. Requires an OAuth connection set up through the [connections page](https://app.declarativeforms.com/connections).
 
 ```yaml
 connections:
-  - type: email
-    to: "{{data.email}}"
-    subject: Your submission was received
-    body: "<p>Thank you, {{data.name}}.</p>"
-
-  - type: email
-    to: admin@example.com
-    subject: New form submission
-    include_responses: true
-
-  - type: webhook
-    url: https://your-api.com/hooks/form
-
   - type: airtable
-    connection_id: abc123
+    connection_id: your-airtable-connection-id
     base_id: appXXXXXXXXXXXXXX
-    table_id_or_name: Leads
+    table_id_or_name: Submissions
 ```
 
-## Detailed reference
+Your form field IDs (`name`, `message`) must match Airtable column names exactly.
 
-For full property tables and payload schemas, see the [Connections reference](/reference/connections).
+---
 
-For step-by-step guides:
-- [Send data to a webhook](/guides/send-data-to-webhook)
-- [Send a confirmation email](/guides/send-confirmation-email)
-- [Send an admin notification email](/guides/send-admin-notification)
-- [Send data to Airtable](/guides/send-data-to-airtable)
+## Connections fire on completed submissions only
+
+Connections are not triggered for partial saves. If a user submits section 1 of a multi-section form and then abandons it, no connections fire. They only fire when `status` becomes `completed`.
