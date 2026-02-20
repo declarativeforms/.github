@@ -1,0 +1,58 @@
+---
+title: Multiple Sections
+description: Split a form into more than one section using explicit section IDs and `next` routing.
+---
+
+Use multiple sections when you want the form to progress step by step.
+
+## Single section baseline
+
+```yaml
+version: 1
+title: Rental Application
+sections:
+  - id: section_1
+    title: Applicant
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+    next: done
+```
+
+## Add a second section
+
+Change `section_1.next` from `done` to the next section ID.
+
+```yaml
+version: 1
+title: Rental Application
+sections:
+  - id: section_1
+    title: Applicant
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+    next: section_2
+
+  - id: section_2
+    title: Housing
+    fields:
+      - id: move_in_date
+        type: date
+        label: Preferred move-in date
+        validators:
+          - required
+    next: done
+```
+
+## Rules
+
+- Each section needs a unique `id`
+- Use `next: <section_id>` to continue to another section
+- Use `next: done` to finish the form

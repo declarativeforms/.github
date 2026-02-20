@@ -1,80 +1,58 @@
 ---
 title: Quickstart
-description: Build and publish your first form in under five minutes.
+description: Build and publish a simple rental application form in minutes.
 ---
 
-By the end of this page you will have a live form URL using only a public GitHub repository.
+This is the fastest path to a live form.
 
----
-
-## Step 1 - Create your form file
-
-Create `intake.yaml` at the root of your repository (or any path). The filename becomes the form name in the URL.
+## 1. Create `rental_application.yaml`
 
 ```yaml
 version: 1
-title: General Intake
-description: Tell us what you need and we will follow up.
+title: Rental Application
+description: Basic renter details
 sections:
-  - id: contact
-    title: Contact
+  - id: section_1
+    title: Applicant
     fields:
       - id: full_name
         type: short_text
         label: Full name
+        placeholder: Jane Doe
         validators:
           - required
       - id: email
         type: email
-        label: Work email
+        label: Email
+        placeholder: jane@example.com
         validators:
           - required
-      - id: request_type
+      - id: move_in_timeline
         type: single_select
-        label: What do you need?
+        label: Move-in timeline
         options:
-          - Sales inquiry
-          - Partnership
-          - Support
-      - id: team_size
-        type: dropdown
-        label: Team size
-        options:
-          - 1-10
-          - 11-50
-          - 51-200
-          - 201+
+          - Immediately
+          - Within 30 days
+          - Within 60 days
+        validators:
+          - required
     next: done
 ```
 
-With this file name, the form path will end in `/intake`.
+This demonstrates the core model: one YAML file defines the full form.
 
----
+## 2. Push to GitHub
 
-## Step 2 - Push to GitHub
+Push the file to the `main` branch of a public repository.
 
 ```bash
-git add intake.yaml
-git commit -m "Add intake form"
-git push
+git add rental_application.yaml
+git commit -m "Add rental application form"
+git push origin main
 ```
 
----
+## 3. Open your live form
 
-## Step 3 - Open the live form
+`https://app.declarativeforms.com/{owner}/{repository}/rental_application`
 
-`https://app.declarativeforms.com/{owner}/{repo}/intake`
-
-Replace `{owner}` and `{repo}` with your GitHub username/org and repository name.
-
-No account required.
-
----
-
-## Optional - Prefill fields from the URL
-
-Any query parameter that matches a field `id` prefills that field.
-
-`https://app.declarativeforms.com/{owner}/{repo}/intake?request_type=Partnership&team_size=11-50`
-
-Reserved parameters (`connection_id`, `lang`, `submission_id`, `step`) are platform parameters and are not used for field prefill.
+Replace `{owner}` and `{repository}` with your GitHub namespace and repository name.

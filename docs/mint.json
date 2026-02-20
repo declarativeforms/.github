@@ -35,6 +35,20 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": [
+        "guides/multiple-sections",
+        "guides/conditional-navigation"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "reference/short-text-field",
+        "reference/long-text-field"
+      ]
+    },
+    {
       "group": "Help",
       "pages": [
         "help/support"

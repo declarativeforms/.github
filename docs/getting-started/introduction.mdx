@@ -1,157 +1,49 @@
 ---
 title: Introduction
-description: Define forms in YAML, push to public GitHub, and share a live form URL instantly.
+description: Build forms as YAML in GitHub and publish hosted form URLs without UI builder bottlenecks.
 ---
 
-Declarative Forms turns a YAML file in a public GitHub repository into a live hosted form.
+Declarative Forms is a form-building system where forms are declared in YAML and rendered as hosted forms.
 
-`https://app.declarativeforms.com/{owner}/{repo}/{form_name}`
+`https://app.declarativeforms.com/{owner}/{repository}/{file}`
 
-No builder UI. No account. No setup flow.
+If your file is `rental_application.yaml`, the form URL ends with `/rental_application`.
 
----
+## What it is
 
-## Why this exists
+A declarative form definition model:
 
-AI tools can generate infrastructure, tests, and app scaffolding, but forms still usually require clicking through a builder. That breaks code-first workflows.
+- Form structure is a YAML file
+- Sections and fields are explicit in source
+- Routing between sections is defined in `next`
 
-Declarative Forms keeps forms in the same system as the rest of your product:
+## What problem it solves
 
-- Text-based definitions
-- Version history in Git
-- Pull request review and diffs
-- Easy generation with Claude Code, Codex, and similar tools
+Most product work is now code-first and Git-first. Traditional form workflows still force visual builder editing, which breaks developer momentum.
 
----
+Declarative Forms keeps forms inside the same workflow as engineering work: write text, commit changes, review diffs, ship updates.
 
-## How it works
+## Why it is different
 
-1. Write a YAML file (`version: 1`)
-2. Push it to a public GitHub repository
-3. Open `https://app.declarativeforms.com/{owner}/{repo}/{form_name}`
+UI-first form tools treat forms as builder state. Declarative Forms treats forms as source definitions.
 
-If your file is `intake.yaml`, your form URL ends with `/intake`.
+That gives you:
 
----
+- Git history for every form change
+- Pull request review for form updates
+- A workflow that matches LLM-assisted development
 
-## Where it fits
+## Core value proposition
 
-- Internal tools and operational workflows
-- Customer intake and onboarding
-- Hiring and application collection
-- AI-assisted build flows where forms are generated from prompts
+You can move from idea to live form using the same workflow you already use for code.
 
----
+No parallel UI authoring flow. No hidden builder state.
 
-## Example patterns
+## High-level how it works
 
-### Hiring intake
+1. Create a YAML form file with `version: 1`
+2. Push that file to the `main` branch of a public GitHub repository
+3. Open `https://app.declarativeforms.com/{owner}/{repository}/{file}`
+4. The hosted app loads the YAML and renders the form
 
-```yaml
-version: 1
-title: Candidate Screening
-sections:
-  - id: candidate
-    fields:
-      - id: full_name
-        type: short_text
-        label: Full name
-        validators:
-          - required
-      - id: role
-        type: single_select
-        label: Role
-        options:
-          - Backend Engineer
-          - Product Designer
-          - Product Manager
-    next: done
-```
-
-### Customer onboarding
-
-```yaml
-version: 1
-title: New Customer Intake
-sections:
-  - id: onboarding
-    fields:
-      - id: company_name
-        type: short_text
-        label: Company name
-        validators:
-          - required
-      - id: team_size
-        type: dropdown
-        label: Team size
-        options:
-          - 1-10
-          - 11-50
-          - 51-200
-          - 201+
-      - id: use_case
-        type: long_text
-        label: What are you trying to solve?
-    next: done
-```
-
-### Internal operations request
-
-```yaml
-version: 1
-title: Operations Request
-sections:
-  - id: request
-    fields:
-      - id: request_type
-        type: single_select
-        label: Request type
-        options:
-          - Access
-          - Procurement
-          - Incident
-      - id: priority
-        type: single_select
-        label: Priority
-        options:
-          - Low
-          - Medium
-          - High
-      - id: details
-        type: long_text
-        label: Details
-        validators:
-          - required
-    next: done
-```
-
-All three are published with the same URL pattern:
-`https://app.declarativeforms.com/{owner}/{repo}/{form_name}`
-
----
-
-## Why teams choose it over builders
-
-**Code-native changes.** Form updates are commits you can diff and review.
-
-**AI-compatible workflow.** Prompt an AI tool, get YAML, and commit. No manual rebuild in a separate UI.
-
-**No signup gate.** A public GitHub repository is enough to publish.
-
----
-
-## What to know before using it
-
-- The repository must be public for hosted rendering.
-- Declarative Forms is strongest when your team already works in Git.
-- If you need a drag-and-drop visual builder as your source of truth, this may not be the best fit.
-
----
-
-## Start here
-
-[Build your first form ->](/getting-started/quickstart)  
-[Open the app ->](https://app.declarativeforms.com)  
-[View feature requests on GitHub ->](https://github.com/declarativeforms/.github/issues)
-
-Need something specific? [Open an issue](https://github.com/declarativeforms/.github/issues/new) and include your use case.
+[Build your first form ->](/getting-started/quickstart)
