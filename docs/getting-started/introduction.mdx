@@ -1,38 +1,30 @@
 ---
 title: Introduction
-description: Define forms in YAML, commit to GitHub, share a URL.
+description: Forms are the one thing AI tools can't help you ship — until now.
 ---
 
-Every dev tool has moved to config-as-code. Terraform provisions infrastructure from `.tf` files. Kubernetes runs from manifests. GitHub Actions runs from YAML in `.github/workflows/`. You can build, review, and version all of it without a visual editor.
-
-Forms are the exception. Tally, Jotform, and Google Forms still require a visual editor to create or change anything. They have no API for creating forms, no way to check in a change via PR, and no way to use Claude Code or Codex to build or iterate on them. If you want to add a field or change a label, you click around in a GUI.
-
-Declarative Forms is the missing piece: define your form in YAML, commit it to GitHub, share a URL.
+Forms are the one thing AI tools can't help you ship. You can generate Dockerfiles, CI configs, and infrastructure as code — but a form still means opening a builder and clicking. Declarative Forms closes that gap: write YAML, push to GitHub, share a link — free, no sign-up required.
 
 ---
 
-## Why this matters now
+## How it works
 
-**Works with LLMs.** Ask Claude Code to generate or modify a form YAML. Describe the fields you want, get back valid YAML, push it, and the form is live. No clicking through a GUI, no proprietary API to learn.
-
-**Version controlled.** Every field change is a commit. You get history, blame, and the ability to revert — the same way you track changes to application code.
-
-**Code reviewed.** Forms go through PRs like any other config. Your team reviews them before they go live. You can see exactly what changed and why.
+1. Write a YAML file describing your form
+2. Push it to a public GitHub repository
+3. Share the URL: `https://app.declarativeforms.com/{owner}/{repo}/{form_name}`
 
 ---
 
-## The rental application example
+## What it looks like
 
-Throughout these docs, we build a rental application form — `rental.yaml`. You'll start with three fields in the Quickstart, then expand it across three guides: splitting the form into multiple steps, adding a short text field, and adding a long text field.
-
-Here's the minimal starting point:
+The YAML is readable enough that you can understand exactly what the form will do before it renders:
 
 ```yaml
 version: 1
 title: Rental Application
 sections:
-  - id: main
-    title: Apply to rent
+  - id: basic_info
+    title: Basic info
     fields:
       - id: full_name
         type: short_text
@@ -44,22 +36,34 @@ sections:
         label: Email address
         validators:
           - required
-      - id: move_in_date
-        type: date
-        label: Desired move-in date
+      - id: unit_type
+        type: single_select
+        label: Unit type
+        options:
+          - Studio
+          - 1 bedroom
+          - 2 bedrooms
         validators:
           - required
     next: done
 ```
 
-Three fields, one section, live in three steps.
+Three fields, one section, live at a shareable URL.
 
 ---
 
-## The 48-hour promise
+## Why it fits how you work
 
-Open a [GitHub Issue](https://github.com/declarativeforms/examples/issues) with a feature request — if it genuinely improves the product, we'll ship it within 48 hours.
+**Works with AI tools.** Describe the form you need, generate the YAML, and push it directly — no clicking required.
+
+**Lives in your repo.** Form changes are commits; you get history, diffs, and code review for free.
+
+**No account required.** Push YAML to any public GitHub repo and your form is live instantly.
 
 ---
+
+The quickstart walks you through it in under five minutes.
 
 [Build your first form →](/getting-started/quickstart)
+
+Open a [GitHub Issue](https://github.com/declarativeforms/.github/issues) with a feature request — if it genuinely improves the product, we'll ship it within 48 hours.

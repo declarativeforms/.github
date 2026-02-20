@@ -20,11 +20,11 @@
   },
   "metadata": {
     "og:title": "Declarative Forms",
-    "og:description": "Define forms in YAML, commit to GitHub, share a URL. Works with LLMs. Version controlled. Code reviewed.",
+    "og:description": "Forms are the one thing AI tools can't help you ship. Write YAML, push to GitHub, share a link — free, no sign-up required.",
     "og:site_name": "Declarative Forms",
     "twitter:card": "summary",
     "twitter:title": "Declarative Forms",
-    "twitter:description": "Define forms in YAML, commit to GitHub, share a URL."
+    "twitter:description": "Forms are the one thing AI tools can't help you ship. Write YAML, push to GitHub, share a link."
   },
   "navigation": [
     {
@@ -32,19 +32,6 @@
       "pages": [
         "getting-started/introduction",
         "getting-started/quickstart"
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        {
-          "group": "Building the Form",
-          "pages": [
-            "guides/add-steps",
-            "guides/short-text-field",
-            "guides/long-text-field"
-          ]
-        }
       ]
     },
     {

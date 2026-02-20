@@ -1,25 +1,22 @@
 ---
 title: Quickstart
-description: Get a live rental form in three steps.
+description: Build and publish your first form in under five minutes.
 ---
 
-## Prerequisites
-
-- A GitHub account
-- A repository (public or private)
+By the end of this page you'll have a live form at a real URL. All you need is a public GitHub repository.
 
 ---
 
-## Step 1 — Create `rental.yaml`
+## Step 1 — Create the YAML file
 
-Create a file named `rental.yaml` in the root of your repository:
+Create `rental.yaml` at the root of your repository (or any path — the filename becomes the form name):
 
 ```yaml
 version: 1
 title: Rental Application
 sections:
-  - id: main
-    title: Apply to rent
+  - id: basic_info
+    title: Basic info
     fields:
       - id: full_name
         type: short_text
@@ -31,19 +28,23 @@ sections:
         label: Email address
         validators:
           - required
-      - id: move_in_date
-        type: date
-        label: Desired move-in date
+      - id: unit_type
+        type: single_select
+        label: Unit type
+        options:
+          - Studio
+          - 1 bedroom
+          - 2 bedrooms
         validators:
           - required
     next: done
 ```
 
-This is a complete form — three field types (`short_text`, `email`, `date`), required validators on each, no extra configuration needed.
+The filename — `rental` — becomes the last segment of your form's URL.
 
 ---
 
-## Step 2 — Push to `main`
+## Step 2 — Push to GitHub
 
 ```bash
 git add rental.yaml
@@ -51,18 +52,14 @@ git commit -m "Add rental application form"
 git push
 ```
 
+That's it.
+
 ---
 
-## Step 3 — Visit your form
+## Step 3 — Open your form
 
 ```
 https://app.declarativeforms.com/{owner}/{repo}/rental
 ```
 
-Replace `{owner}` with your GitHub username or organization, and `{repo}` with your repository name. The form is live immediately — no deploy step required.
-
----
-
-Your form is live. Change a field label, push again, the form updates instantly. The next page explains what just happened.
-
-[How it works →](/getting-started/how-it-works)
+Replace `{owner}` and `{repo}` with your GitHub username and repository name. Your form is live — no account required.
