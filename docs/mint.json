@@ -1,11 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Declarative Forms",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
-  },
-  "favicon": "/favicon.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -39,13 +34,6 @@
       "pages": [
         "guides/multiple-sections",
         "guides/conditional-navigation"
-      ]
-    },
-    {
-      "group": "Reference",
-      "pages": [
-        "reference/short-text-field",
-        "reference/long-text-field"
       ]
     },
     {
