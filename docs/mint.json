@@ -42,10 +42,10 @@
       ]
     },
     {
-      "group": "References",
+      "group": "Reference",
       "pages": [
-        "references/short-text-field",
-        "references/long-text-field"
+        "reference/short-text-field",
+        "reference/long-text-field"
       ]
     },
     {
