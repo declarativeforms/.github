@@ -9,14 +9,28 @@ Use multiple sections when you want the form to progress step by step.
 
 ```yaml
 version: 1
-title: Rental Application
+title: Bug Report Triage
 sections:
   - id: section_1
-    title: Applicant
+    title: Bug Details
     fields:
-      - id: full_name
+      - id: bug_title
         type: short_text
-        label: Full name
+        label: Bug title
+        validators:
+          - required
+      - id: reporter_email
+        type: email
+        label: Reporter email
+        validators:
+          - required
+      - id: severity
+        type: single_select
+        label: Severity
+        options:
+          - Low
+          - Medium
+          - High
         validators:
           - required
     next: done
@@ -28,24 +42,38 @@ Change `section_1.next` from `done` to the next section ID.
 
 ```yaml
 version: 1
-title: Rental Application
+title: Bug Report Triage
 sections:
   - id: section_1
-    title: Applicant
+    title: Bug Details
     fields:
-      - id: full_name
+      - id: bug_title
         type: short_text
-        label: Full name
+        label: Bug title
+        validators:
+          - required
+      - id: reporter_email
+        type: email
+        label: Reporter email
+        validators:
+          - required
+      - id: severity
+        type: single_select
+        label: Severity
+        options:
+          - Low
+          - Medium
+          - High
         validators:
           - required
     next: section_2
 
   - id: section_2
-    title: Housing
+    title: Reproduction Details
     fields:
-      - id: move_in_date
-        type: date
-        label: Preferred move-in date
+      - id: reproduction_steps
+        type: long_text
+        label: Reproduction steps
         validators:
           - required
     next: done

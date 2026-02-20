@@ -1,39 +1,39 @@
 ---
 title: Quickstart
-description: Build and publish a simple rental application form in minutes.
+description: Build and publish a simple bug report triage form in minutes.
 ---
 
 This is the fastest path to a live form.
 
-## 1. Create `rental_application.yaml`
+## 1. Create `bug_report.yaml`
 
 ```yaml
 version: 1
-title: Rental Application
-description: Basic renter details
+title: Bug Report Triage
+description: Basic bug intake
 sections:
   - id: section_1
-    title: Applicant
+    title: Bug Details
     fields:
-      - id: full_name
+      - id: bug_title
         type: short_text
-        label: Full name
-        placeholder: Jane Doe
+        label: Bug title
+        placeholder: Login button is unresponsive
         validators:
           - required
-      - id: email
+      - id: reporter_email
         type: email
-        label: Email
-        placeholder: jane@example.com
+        label: Reporter email
+        placeholder: dev@example.com
         validators:
           - required
-      - id: move_in_timeline
+      - id: severity
         type: single_select
-        label: Move-in timeline
+        label: Severity
         options:
-          - Immediately
-          - Within 30 days
-          - Within 60 days
+          - Low
+          - Medium
+          - High
         validators:
           - required
     next: done
@@ -46,13 +46,13 @@ This demonstrates the core model: one YAML file defines the full form.
 Push the file to the `main` branch of a public repository.
 
 ```bash
-git add rental_application.yaml
-git commit -m "Add rental application form"
+git add bug_report.yaml
+git commit -m "Add bug report triage form"
 git push origin main
 ```
 
 ## 3. Open your live form
 
-`https://app.declarativeforms.com/{owner}/{repository}/rental_application`
+`https://app.declarativeforms.com/{owner}/{repository}/bug_report`
 
 Replace `{owner}` and `{repository}` with your GitHub namespace and repository name.

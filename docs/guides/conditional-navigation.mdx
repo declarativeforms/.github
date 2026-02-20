@@ -9,14 +9,24 @@ description: Route section flow with the `next` property.
 
 ```yaml
 version: 1
-title: Example
+title: Bug Report Triage
 sections:
   - id: section_1
-    title: Start
+    title: Bug Details
     fields:
-      - id: email
+      - id: bug_title
+        type: short_text
+        label: Bug title
+      - id: reporter_email
         type: email
-        label: Email
+        label: Reporter email
+      - id: severity
+        type: single_select
+        label: Severity
+        options:
+          - Low
+          - Medium
+          - High
     next: done
 ```
 
@@ -24,22 +34,32 @@ sections:
 
 ```yaml
 version: 1
-title: Example
+title: Bug Report Triage
 sections:
   - id: section_1
-    title: Start
+    title: Bug Details
     fields:
-      - id: full_name
+      - id: bug_title
         type: short_text
-        label: Full name
+        label: Bug title
+      - id: reporter_email
+        type: email
+        label: Reporter email
+      - id: severity
+        type: single_select
+        label: Severity
+        options:
+          - Low
+          - Medium
+          - High
     next: section_2
 
   - id: section_2
-    title: Follow up
+    title: Reproduction Details
     fields:
-      - id: notes
+      - id: reproduction_steps
         type: long_text
-        label: Notes
+        label: Reproduction steps
     next: done
 ```
 
@@ -47,15 +67,25 @@ sections:
 
 ```yaml
 version: 1
-title: Example
+title: Bug Report Triage
 sections:
   - id: section_1
-    title: Start
+    title: Bug Details
     fields:
-      - id: email
+      - id: bug_title
+        type: short_text
+        label: Bug title
+      - id: reporter_email
         type: email
-        label: Email
-    next: https://example.com/thank-you
+        label: Reporter email
+      - id: severity
+        type: single_select
+        label: Severity
+        options:
+          - Low
+          - Medium
+          - High
+    next: https://yourcompany.com/thanks
 ```
 
 An `https://` value is treated as an external redirect target.
@@ -64,30 +94,37 @@ An `https://` value is treated as an external redirect target.
 
 ```yaml
 version: 1
-title: Example
+title: Bug Report Triage
 sections:
   - id: section_1
-    title: Start
+    title: Bug Details
     fields:
-      - id: wants_callback
+      - id: bug_title
+        type: short_text
+        label: Bug title
+      - id: reporter_email
+        type: email
+        label: Reporter email
+      - id: severity
         type: single_select
-        label: Would you like a callback?
+        label: Severity
         options:
-          - Yes
-          - No
+          - Low
+          - Medium
+          - High
         validators:
           - required
     next:
-      - when: data.wants_callback == "Yes"
-        go: callback_details
+      - when: data.severity == "High"
+        go: section_2
       - else: done
 
-  - id: callback_details
-    title: Callback Details
+  - id: section_2
+    title: Reproduction Details
     fields:
-      - id: phone
-        type: mobile_number
-        label: Phone number
+      - id: reproduction_steps
+        type: long_text
+        label: Reproduction steps
         validators:
           - required
     next: done

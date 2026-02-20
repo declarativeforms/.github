@@ -1,0 +1,3 @@
+I want you to make the following chnages. I want you to find a better example to use in the quickstart. Still keep it basic but have the example be more relatable to the audience. A rental application is very specific. Next, apply this example to other areas. On the conditional navigation section, make sure it's an extension of the quickstart example and similarly the multiple section bit.
+
+I want you to ask 5 clarifying questions so that you are clear about my intentions and can produce a high quality result.
