@@ -1,5 +1,6 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
   "name": "Declarative Forms",
   "logo": {
     "light": "/logo/light.svg",
@@ -11,44 +12,58 @@
     "light": "#07C983",
     "dark": "#0D9373"
   },
-  "topbarLinks": [
-    { "name": "GitHub", "url": "https://github.com/declarativeforms" }
-  ],
-  "topbarCtaButton": {
-    "name": "Open App",
-    "url": "https://app.declarativeforms.com"
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "getting-started/introduction",
+              "getting-started/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/multiple-sections",
+              "guides/conditional-navigation"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/short-text-field",
+              "reference/long-text-field"
+            ]
+          },
+          {
+            "group": "Help",
+            "pages": [
+              "help/support"
+            ]
+          }
+        ]
+      }
+    ]
   },
-  "metadata": {
-    "og:title": "Declarative Forms",
-    "og:description": "Define forms in YAML, push to public GitHub, and share a live hosted form URL in minutes. No account required.",
-    "og:site_name": "Declarative Forms",
-    "twitter:card": "summary",
-    "twitter:title": "Declarative Forms",
-    "twitter:description": "Define forms in YAML, push to public GitHub, and share a live form URL in minutes."
-  },
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": [
-        "getting-started/introduction",
-        "getting-started/quickstart"
-      ]
-    },
-    {
-      "group": "Guides",
-      "pages": [
-        "guides/multiple-sections",
-        "guides/conditional-navigation"
-      ]
-    },
-    {
-      "group": "Help",
-      "pages": [
-        "help/support"
-      ]
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/declarativeforms"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Open App",
+      "href": "https://app.declarativeforms.com"
     }
-  ],
-  "footerSocials": {
-    "github": "https://github.com/declarativeforms"
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/declarativeforms"
+    }
   }
 }
