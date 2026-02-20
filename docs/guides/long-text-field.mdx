@@ -1,0 +1,46 @@
+---
+title: Collect Long-Form Responses
+description: Add a multi-line textarea for open-ended answers.
+---
+
+The `about_yourself` field in the references section lets applicants share context about themselves — a perfect use case for `long_text`, which renders a multi-line textarea.
+
+---
+
+## What to add
+
+Add a `long_text` field to the `references` section of `rental.yaml`:
+
+```yaml
+      - id: about_yourself
+        type: long_text
+        label: Tell us about yourself
+        placeholder: Share anything relevant — lifestyle, work schedule, hobbies...
+        validators:
+          - required
+          - type: min
+            value: 50
+```
+
+---
+
+## How it works
+
+`long_text` renders a resizable multi-line textarea. Use it whenever you want the applicant to write more than a single line — descriptions, explanations, or open-ended responses.
+
+The `type: min` validator enforces a minimum character count, which encourages substantive responses. In this example, applicants must write at least 50 characters before the field validates.
+
+### Validators
+
+| Validator | Description |
+|-----------|-------------|
+| `required` | Field must not be empty. |
+| `type: min` + `value` | Minimum character count. |
+| `type: max` + `value` | Maximum character count. |
+| `type: pattern` + `regex` | Input must match the regular expression. |
+
+See [reference/long-text](/reference/long-text) for full validator details.
+
+---
+
+Next: [Collect Email Addresses](/guides/email-field)

@@ -1,0 +1,100 @@
+---
+title: date
+description: Calendar date picker.
+---
+
+`date` renders a calendar date picker. The applicant selects a date; no free-form text entry is allowed.
+
+**Submission value type:** `string` in ISO 8601 format — e.g., `"2025-03-15"`.
+
+---
+
+## Field properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier within the form. Becomes the key in submission `data`. |
+| `type` | `"date"` | Yes | Must be `date`. |
+| `label` | `string \| LocaleMap` | Yes | Label shown above the picker. |
+| `validators` | `Validator[]` | No | Validation rules applied before the section is submitted. |
+| `visible_when` | `string` | No | JS expression; field is shown when truthy, hidden otherwise. |
+
+---
+
+## Validators
+
+### `required`
+
+A date must be selected.
+
+```yaml
+validators:
+  - required
+```
+
+Default error message: `This field is required.`
+
+---
+
+### `type: min`
+
+Earliest allowed date. The field is invalid if the selected date is before `value`.
+
+```yaml
+validators:
+  - type: min
+    value: "2025-01-01"
+    message: Please select a date in 2025 or later.
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `value` | `string` (ISO 8601) | Yes | Earliest allowed date. |
+| `message` | `string \| LocaleMap` | No | Error shown when the date is too early. |
+
+---
+
+### `type: max`
+
+Latest allowed date. The field is invalid if the selected date is after `value`.
+
+```yaml
+validators:
+  - type: max
+    value: "2025-12-31"
+    message: Please select a date in 2025 or earlier.
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `value` | `string` (ISO 8601) | Yes | Latest allowed date. |
+| `message` | `string \| LocaleMap` | No | Error shown when the date is too late. |
+
+---
+
+<Warning>
+Validators run in the browser before each section is submitted. They enforce UX constraints, not security guarantees. If you need server-side validation, implement it in your webhook receiver.
+</Warning>
+
+---
+
+## Full example
+
+The `move_in_date` field from the rental application form's personal section:
+
+```yaml
+version: 1
+title: Rental Application
+sections:
+  - id: personal
+    title: Personal details
+    fields:
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
+          - type: min
+            value: "2025-01-01"
+    next: done
+```

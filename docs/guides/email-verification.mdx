@@ -1,0 +1,46 @@
+---
+title: Verify Email Addresses
+description: Require applicants to prove they own the email address they entered.
+---
+
+Adding `otp: true` to the `email` field triggers a one-time code verification flow — the applicant receives a 6-digit code by email and must enter it before the section can be submitted.
+
+---
+
+## What to add
+
+Add `otp: true` to the `email` field in the `personal` section of `rental.yaml`:
+
+```yaml
+      - id: email
+        type: email
+        label: Email address
+        otp: true
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+When `otp: true` is set on an `email` field, the verification flow replaces the normal submit button:
+
+1. The applicant enters their email address.
+2. They click "Send code" — a 6-digit code is emailed to that address.
+3. A code entry input appears inline.
+4. The applicant enters the code within 10 minutes.
+5. On success, the section proceeds as normal.
+6. If the code is wrong, they can retry. After 5 failed attempts, the code is invalidated.
+
+The applicant can request a new code after 30 seconds if they didn't receive the first one.
+
+The verified email address is stored in submission data exactly as it would be without OTP. The OTP status is recorded on the submission record but is not included in `data`.
+
+<Warning>
+The `otp` property is only available on `email` fields. Setting it on any other field type has no effect.
+</Warning>
+
+---
+
+Next: [Pre-fill Fields from the URL](/guides/prefill)

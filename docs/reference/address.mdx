@@ -1,0 +1,80 @@
+---
+title: address
+description: Full postal address with street, city, state, postal code, and country.
+---
+
+`address` renders a set of structured inputs for a complete postal address. The applicant fills in each component separately.
+
+**Submission value type:** `object` with keys `street`, `city`, `state`, `postal_code`, and `country`.
+
+```json
+{
+  "current_address": {
+    "street": "123 Main St",
+    "city": "Portland",
+    "state": "OR",
+    "postal_code": "97201",
+    "country": "US"
+  }
+}
+```
+
+---
+
+## Field properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier within the form. Becomes the key in submission `data`. |
+| `type` | `"address"` | Yes | Must be `address`. |
+| `label` | `string \| LocaleMap` | Yes | Label shown above the address inputs. |
+| `validators` | `Validator[]` | No | Validation rules applied before the section is submitted. |
+| `visible_when` | `string` | No | JS expression; field is shown when truthy, hidden otherwise. |
+
+---
+
+## Variants
+
+To collect a single address component without the full form, use the variant types:
+
+| Type | Captures |
+|------|----------|
+| `address_locality` | City or town |
+| `address_region` | State, province, or region |
+| `address_country` | Country (dropdown) |
+
+See [Collect City, State, or Country](/guides/address-variants) for usage examples.
+
+---
+
+## Validators
+
+### `required`
+
+All required sub-fields must be completed.
+
+```yaml
+validators:
+  - required
+```
+
+---
+
+## Full example
+
+The `current_address` field from the rental application form's employment section:
+
+```yaml
+version: 1
+title: Rental Application
+sections:
+  - id: employment
+    title: Employment
+    fields:
+      - id: current_address
+        type: address
+        label: Current address
+        validators:
+          - required
+    next: done
+```

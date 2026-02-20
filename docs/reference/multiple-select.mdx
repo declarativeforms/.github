@@ -132,43 +132,28 @@ Validators run in the browser before each section is submitted. They enforce UX 
 
 ## Full example
 
-A skills selection field with search enabled, requiring between 1 and 3 selections:
+The `amenities` field from the rental application form's property section:
 
 ```yaml
 version: 1
-title: Skills assessment
+title: Rental Application
 sections:
-  - id: main
-    title: Tell us about your skills
+  - id: property
+    title: Property preferences
     fields:
-      - id: skills
+      - id: amenities
         type: multiple_select
-        label: Which of these do you work with?
-        searchable: true
+        label: Required amenities
         options:
-          - value: js
-            label: JavaScript
-          - value: ts
-            label: TypeScript
-          - value: py
-            label: Python
-          - value: go
-            label: Go
-          - value: rust
-            label: Rust
-          - value: java
-            label: Java
-          - value: cs
-            label: C#
-          - value: cpp
-            label: C++
+          - value: parking
+            label: Parking
+          - value: gym
+            label: Gym
+          - value: pool
+            label: Pool
+          - value: laundry
+            label: In-unit laundry
         validators:
           - required
-          - type: min
-            value: 1
-            message: Please select at least one skill.
-          - type: max
-            value: 3
-            message: Please select no more than 3 skills.
     next: done
 ```

@@ -1,0 +1,55 @@
+---
+title: Allow Multiple Selections
+description: Present checkboxes so applicants can pick more than one option.
+---
+
+The `amenities` field in the property section lets applicants select all the amenities they need — a case where multiple answers are valid, making `multiple_select` the right choice.
+
+---
+
+## What to add
+
+Add a `multiple_select` field to the `property` section of `rental.yaml`:
+
+```yaml
+      - id: amenities
+        type: multiple_select
+        label: Required amenities
+        options:
+          - value: parking
+            label: Parking
+          - value: gym
+            label: Gym
+          - value: pool
+            label: Pool
+          - value: laundry
+            label: In-unit laundry
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`multiple_select` renders a list of checkboxes. The applicant can select any number of options. The submission value is a `string[]` — an array of the selected `value` strings.
+
+### Validators
+
+| Validator | Description |
+|-----------|-------------|
+| `required` | At least one option must be selected. |
+| `type: min` + `value` | Minimum number of options that must be selected. |
+| `type: max` + `value` | Maximum number of options that can be selected. |
+
+For long option lists, add `searchable: true` to show a text filter above the checkboxes:
+
+```yaml
+        searchable: true
+```
+
+See [reference/multiple-select](/reference/multiple-select) for full details.
+
+---
+
+Next: [Use a Searchable Dropdown](/guides/dropdown-field)

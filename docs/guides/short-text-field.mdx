@@ -1,0 +1,47 @@
+---
+title: Collect Short Answers
+description: Add a single-line text field to your form.
+---
+
+The `full_name` field in the personal section is a short text field — the most common field type for names, identifiers, and any value that fits on one line.
+
+---
+
+## What to add
+
+Add a `short_text` field to the `personal` section of `rental.yaml`:
+
+```yaml
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`short_text` renders a single-line text input. The `id` becomes the key in the submission data — `data.full_name` will contain whatever the applicant typed.
+
+The `label` is displayed above the input. You can also add a `placeholder` to show hint text inside the input when it's empty:
+
+```yaml
+        placeholder: Jane Smith
+```
+
+### Validators
+
+| Validator | Description |
+|-----------|-------------|
+| `required` | Field must not be empty. |
+| `type: min` + `value` | Minimum character count. |
+| `type: max` + `value` | Maximum character count. |
+| `type: pattern` + `regex` | Input must match the regular expression. |
+
+All validators run in the browser before the section is submitted. See [reference/short-text](/reference/short-text) for full validator details.
+
+---
+
+Next: [Collect Long-Form Responses](/guides/long-text-field)

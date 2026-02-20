@@ -1,0 +1,60 @@
+---
+title: rating
+description: Star or numeric rating scale for collecting subjective feedback.
+---
+
+`rating` renders a 1–5 scale that the applicant clicks to select a value.
+
+**Submission value type:** `number` — the selected rating (1 through 5).
+
+---
+
+## Field properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier within the form. Becomes the key in submission `data`. |
+| `type` | `"rating"` | Yes | Must be `rating`. |
+| `label` | `string \| LocaleMap` | Yes | Label shown above the scale. |
+| `min_label` | `string \| LocaleMap` | No | Label for the lowest value (1) on the scale. |
+| `max_label` | `string \| LocaleMap` | No | Label for the highest value (5) on the scale. |
+| `validators` | `Validator[]` | No | Validation rules applied before the section is submitted. |
+| `visible_when` | `string` | No | JS expression; field is shown when truthy, hidden otherwise. |
+
+---
+
+## Validators
+
+### `required`
+
+A rating must be selected.
+
+```yaml
+validators:
+  - required
+```
+
+Default error message: `This field is required.`
+
+---
+
+## Full example
+
+The `overall_rating` field from the rental application form's references section:
+
+```yaml
+version: 1
+title: Rental Application
+sections:
+  - id: references
+    title: References
+    fields:
+      - id: overall_rating
+        type: rating
+        label: How excited are you about this property?
+        min_label: Not at all
+        max_label: Extremely excited
+        validators:
+          - required
+    next: done
+```

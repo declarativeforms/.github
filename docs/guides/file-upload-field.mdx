@@ -1,0 +1,40 @@
+---
+title: Accept File Uploads
+description: Let applicants attach documents or images to their submission.
+---
+
+The `id_document` field in the references section asks applicants to upload a photo ID — a common requirement for rental applications.
+
+---
+
+## What to add
+
+Add a `file_upload` field to the `references` section of `rental.yaml`:
+
+```yaml
+      - id: id_document
+        type: file_upload
+        label: Upload a photo ID
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`file_upload` renders a file picker. The applicant selects a file from their device; the platform uploads it and stores a reference in the submission data.
+
+**Submission value type:** `string` — a URL to the uploaded file.
+
+### Validators
+
+| Validator | Description |
+|-----------|-------------|
+| `required` | A file must be uploaded. |
+| `type: min` + `value` | Minimum number of files (for multi-file uploads). |
+| `type: max` + `value` | Maximum number of files (for multi-file uploads). |
+
+---
+
+Next: [Capture a Signature](/guides/signature-field)

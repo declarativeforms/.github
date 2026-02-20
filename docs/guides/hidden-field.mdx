@@ -1,0 +1,39 @@
+---
+title: Pass Data Without Showing a Field
+description: Capture invisible context using hidden fields prefilled from the URL.
+---
+
+The `source` field in the references section tracks where an applicant came from — set invisibly via a URL parameter, never shown to the applicant.
+
+---
+
+## What to add
+
+Add a `hidden` field to the `references` section of `rental.yaml`:
+
+```yaml
+      - id: source
+        type: hidden
+```
+
+---
+
+## How it works
+
+`hidden` fields are never rendered in the form. They exist solely to capture values injected via URL parameters. When the form URL includes a `?source=` parameter, the value is stored in the submission data as `data.source`.
+
+**Submission value type:** `string` — whatever value was passed in the URL, or absent from submission data if the parameter was not present.
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/rental?source=zillow
+```
+
+The submission will contain `"source": "zillow"` in its `data` object.
+
+Hidden fields do not support `label`, `placeholder`, or `validators`. The `id` must match the URL parameter name you want to capture.
+
+See [Pre-fill Fields from the URL](/guides/prefill) for how prefill works across all field types.
+
+---
+
+Next: [Show Fields Conditionally](/guides/conditional-fields)

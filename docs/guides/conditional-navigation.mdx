@@ -1,6 +1,6 @@
 ---
-title: Branch on Answers
-description: Route applicants to different sections based on what they select.
+title: Route Applicants by Their Answers
+description: Send applicants to different sections based on what they select.
 ---
 
 Not every applicant needs every section. Studio applicants don't need employment verification — it's irrelevant for a lower-cost unit. This guide changes the property section's `next` to branch based on the selected unit type, and adds an employment section for non-studio applicants.
@@ -16,7 +16,7 @@ Change the property section's `next`:
 ```yaml
     next:
       - when: "data.unit_type === 'studio'"
-        go: done
+        go: references
       - else: employment
 ```
 
@@ -36,7 +36,12 @@ Add the `employment` section after `property`:
         label: Monthly income (USD)
         validators:
           - required
-    next: done
+      - id: current_address
+        type: address
+        label: Current address
+        validators:
+          - required
+    next: references
 ```
 
 ---
@@ -55,86 +60,4 @@ Rules are evaluated at submission time, using the values from the section just s
 
 ---
 
-## Complete `rental.yaml`
-
-```yaml
-version: 1
-title: Rental Application
-
-sections:
-  - id: personal
-    title: Personal details
-    fields:
-      - id: full_name
-        type: short_text
-        label: Full name
-        validators:
-          - required
-      - id: email
-        type: email
-        label: Email address
-        validators:
-          - required
-      - id: move_in_date
-        type: date
-        label: Desired move-in date
-        validators:
-          - required
-    next: property
-
-  - id: property
-    title: Property details
-    fields:
-      - id: unit_type
-        type: single_select
-        label: Unit type
-        options:
-          - value: studio
-            label: Studio
-          - value: 1br
-            label: 1 bedroom
-          - value: 2br
-            label: 2 bedrooms
-          - value: 3br
-            label: 3+ bedrooms
-        validators:
-          - required
-      - id: has_pets
-        type: single_select
-        label: Do you have pets?
-        options:
-          - value: "yes"
-            label: "Yes"
-          - value: "no"
-            label: "No"
-        validators:
-          - required
-      - id: pet_details
-        type: short_text
-        label: Pet details
-        placeholder: Breed, size, and number of pets
-        visible_when: "data.has_pets === 'yes'"
-    next:
-      - when: "data.unit_type === 'studio'"
-        go: done
-      - else: employment
-
-  - id: employment
-    title: Employment
-    fields:
-      - id: employer
-        type: short_text
-        label: Employer name
-        validators:
-          - required
-      - id: monthly_income
-        type: number
-        label: Monthly income (USD)
-        validators:
-          - required
-    next: done
-```
-
----
-
-Next: [Notify Your Team](/guides/notify-team)
+Next: [Verify Email Addresses](/guides/email-verification)

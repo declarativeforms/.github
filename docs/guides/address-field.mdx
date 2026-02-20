@@ -1,0 +1,46 @@
+---
+title: Capture a Physical Address
+description: Collect a structured postal address with a single field.
+---
+
+The `current_address` field in the employment section collects the applicant's current home address using a single structured field.
+
+---
+
+## What to add
+
+Add an `address` field to the `employment` section of `rental.yaml`:
+
+```yaml
+      - id: current_address
+        type: address
+        label: Current address
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`address` renders a set of inputs for street, city, state/province, postal code, and country. The applicant fills in each part separately; the platform stores them as a structured object.
+
+**Submission value type:** object with keys `street`, `city`, `state`, `postal_code`, and `country`.
+
+```json
+{
+  "current_address": {
+    "street": "123 Main St",
+    "city": "Portland",
+    "state": "OR",
+    "postal_code": "97201",
+    "country": "US"
+  }
+}
+```
+
+For collecting only a city, state, or country — without the full address — see [Collect City, State, or Country](/guides/address-variants).
+
+---
+
+Next: [Collect City, State, or Country](/guides/address-variants)

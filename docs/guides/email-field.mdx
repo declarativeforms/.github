@@ -1,0 +1,36 @@
+---
+title: Collect Email Addresses
+description: Add an email field with built-in format validation.
+---
+
+The `email` field in the personal section collects the applicant's email address and validates its format before submission.
+
+---
+
+## What to add
+
+Add an `email` field to the `personal` section of `rental.yaml`:
+
+```yaml
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`email` renders a text input that validates the entered value as a correctly formatted email address before the section is submitted. Invalid addresses are rejected with an inline error message.
+
+The submission value is a string — `data.email` will contain the address as typed, normalized to lowercase.
+
+`email` fields can be used in email connections as the `to` recipient with template syntax: `to: "{{data.email}}"`. See [Send an Applicant Confirmation](/guides/confirm-submission) for an example.
+
+To add OTP email verification on top of format validation, see [Verify Email Addresses](/guides/email-verification).
+
+---
+
+Next: [Collect Phone Numbers](/guides/mobile-number-field)

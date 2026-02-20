@@ -38,14 +38,56 @@
     {
       "group": "Guides",
       "pages": [
-        "guides/add-steps",
-        "guides/conditional-fields",
-        "guides/conditional-navigation",
-        "guides/notify-team",
-        "guides/webhook",
-        "guides/airtable",
-        "guides/localization",
-        "guides/analytics"
+        {
+          "group": "Building the Form",
+          "pages": [
+            "guides/add-steps",
+            "guides/short-text-field",
+            "guides/long-text-field",
+            "guides/email-field",
+            "guides/mobile-number-field",
+            "guides/number-field",
+            "guides/url-field",
+            "guides/date-field",
+            "guides/single-select-field",
+            "guides/multiple-select-field",
+            "guides/dropdown-field",
+            "guides/rating-field",
+            "guides/address-field",
+            "guides/address-variants",
+            "guides/file-upload-field",
+            "guides/signature-field",
+            "guides/hidden-field"
+          ]
+        },
+        {
+          "group": "Form Behavior",
+          "pages": [
+            "guides/conditional-fields",
+            "guides/conditional-navigation",
+            "guides/email-verification",
+            "guides/prefill",
+            "guides/form-availability",
+            "guides/completion-page"
+          ]
+        },
+        {
+          "group": "Connections",
+          "pages": [
+            "guides/notify-team",
+            "guides/confirm-submission",
+            "guides/email-templates",
+            "guides/webhook",
+            "guides/airtable"
+          ]
+        },
+        {
+          "group": "Localization and Analytics",
+          "pages": [
+            "guides/localization",
+            "guides/analytics"
+          ]
+        }
       ]
     },
     {
@@ -54,9 +96,19 @@
         "reference/yaml-schema",
         "reference/short-text",
         "reference/long-text",
-        "reference/multiple-select",
+        "reference/email",
+        "reference/mobile-number",
+        "reference/number",
+        "reference/url",
+        "reference/date",
         "reference/single-select",
-        "reference/dropdown"
+        "reference/multiple-select",
+        "reference/dropdown",
+        "reference/rating",
+        "reference/address",
+        "reference/file-upload",
+        "reference/signature",
+        "reference/hidden"
       ]
     },
     {

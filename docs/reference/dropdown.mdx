@@ -92,45 +92,28 @@ Validators run in the browser before each section is submitted. They enforce UX 
 
 ## Full example
 
-A country selection dropdown with search enabled:
+The `neighborhood` field from the rental application form's property section:
 
 ```yaml
 version: 1
-title: Contact information
+title: Rental Application
 sections:
-  - id: main
-    title: Where are you based?
+  - id: property
+    title: Property preferences
     fields:
-      - id: full_name
-        type: short_text
-        label: Full name
-        validators:
-          - required
-      - id: country
+      - id: neighborhood
         type: dropdown
-        label: Country
+        label: Preferred neighborhood
         searchable: true
         options:
-          - value: us
-            label: United States
-          - value: gb
-            label: United Kingdom
-          - value: ca
-            label: Canada
-          - value: au
-            label: Australia
-          - value: de
-            label: Germany
-          - value: fr
-            label: France
-          - value: jp
-            label: Japan
-          - value: br
-            label: Brazil
-          - value: mx
-            label: Mexico
-          - value: in
-            label: India
+          - value: downtown
+            label: Downtown
+          - value: midtown
+            label: Midtown
+          - value: uptown
+            label: Uptown
+          - value: suburbs
+            label: Suburbs
         validators:
           - required
     next: done

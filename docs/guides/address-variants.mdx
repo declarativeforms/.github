@@ -1,0 +1,54 @@
+---
+title: Collect City, State, or Country
+description: Capture a single address component without a full street address.
+---
+
+Sometimes you need just one component of an address — the city an applicant lives in, the state they're licensed in, or the country they're from. The address variant types give you a scoped field for each component.
+
+---
+
+## What to add
+
+Use any of the three variant types in place of a standard field type:
+
+```yaml
+      - id: home_city
+        type: address_locality
+        label: City
+        validators:
+          - required
+
+      - id: home_state
+        type: address_region
+        label: State or province
+        validators:
+          - required
+
+      - id: home_country
+        type: address_country
+        label: Country
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+Each variant captures a single address component with an appropriate input:
+
+| Type | Captures | Input |
+|------|----------|-------|
+| `address_locality` | City or town | Free-text |
+| `address_region` | State, province, or region | Free-text |
+| `address_country` | Country | Dropdown |
+
+**Submission value type:** `string` for all three variants.
+
+These types share the same properties as all other fields (`id`, `label`, `placeholder`, `validators`, `visible_when`). They do not have any variant-specific properties.
+
+Use `address` (see [Capture a Physical Address](/guides/address-field)) when you need the complete address. Use these variants when you need only one component.
+
+---
+
+Next: [Accept File Uploads](/guides/file-upload-field)

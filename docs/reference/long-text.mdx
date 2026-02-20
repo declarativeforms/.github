@@ -105,29 +105,24 @@ Validators run in the browser before each section is submitted. They enforce UX 
 
 ## Full example
 
-A feedback form with a `long_text` message field requiring between 50 and 2000 characters:
+The `about_yourself` field from the rental application form's references section:
 
 ```yaml
 version: 1
-title: Share your feedback
+title: Rental Application
 sections:
-  - id: main
-    title: We'd love to hear from you
+  - id: references
+    title: References
     fields:
-      - id: name
-        type: short_text
-        label: Your name
-        validators:
-          - required
-      - id: message
+      - id: about_yourself
         type: long_text
-        label: Your message
-        placeholder: Tell us what you think...
+        label: Tell us about yourself
+        placeholder: Share anything relevant — lifestyle, work schedule, hobbies...
         validators:
           - required
           - type: min
             value: 50
-            message: Please write at least 50 characters so we can understand your feedback.
+            message: Please write at least 50 characters.
           - type: max
             value: 2000
             message: Please keep your response under 2000 characters.

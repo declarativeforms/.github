@@ -1,0 +1,50 @@
+---
+title: Offer a Single Choice
+description: Present radio buttons for mutually exclusive options.
+---
+
+The `has_pets` field in the property section lets applicants indicate whether they have pets — a yes/no question that's a natural fit for `single_select`.
+
+---
+
+## What to add
+
+Add a `single_select` field to the `property` section of `rental.yaml`:
+
+```yaml
+      - id: has_pets
+        type: single_select
+        label: Do you have pets?
+        options:
+          - value: "yes"
+            label: "Yes"
+          - value: "no"
+            label: "No"
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`single_select` renders a list of radio buttons. The applicant can pick exactly one option. All options are visible at the same time — best for 2–6 choices where you want options immediately scannable.
+
+Each option has a `value` (stored in submission data) and a `label` (shown to the user). When they're the same, you can use the simple format:
+
+```yaml
+        options:
+          - Studio
+          - 1 bedroom
+          - 2 bedrooms
+```
+
+When you need the stored value to differ from the display text, use the structured format with explicit `value` and `label` keys — as shown in the `has_pets` example above.
+
+For longer option lists or when vertical space is limited, use [`dropdown`](/guides/dropdown-field) instead.
+
+See [reference/single-select](/reference/single-select) for full details including localized options.
+
+---
+
+Next: [Allow Multiple Selections](/guides/multiple-select-field)

@@ -1,0 +1,46 @@
+---
+title: Personalize Emails with Templates
+description: Interpolate submission data into email subjects, bodies, and more.
+---
+
+The `{{data.fieldId}}` syntax lets you embed submitted values into email connections and the completion page — making every notification feel personal.
+
+---
+
+## What to add
+
+Use `{{data.fieldId}}` anywhere a template-capable property accepts a string:
+
+```yaml
+connections:
+  - type: email
+    to: landlord@example.com
+    subject: "New application from {{data.full_name}}"
+    body: "<p>{{data.full_name}} applied for a {{data.unit_type}} unit.</p>"
+    include_responses: true
+```
+
+---
+
+## How it works
+
+Templates are resolved at send time using the completed submission's data. `{{data.full_name}}` becomes whatever the applicant typed in the `full_name` field.
+
+If the referenced field was hidden (its `visible_when` evaluated to false) or was never submitted, the template resolves to an empty string.
+
+### Where templates work
+
+| Property | Supports templates |
+|----------|--------------------|
+| `connections[].to` | Yes |
+| `connections[].subject` | Yes |
+| `connections[].body` | Yes |
+| `completion.title` | Yes |
+| `completion.message` | Yes |
+| `completion.button.url` | Yes |
+
+Templates do not work in field labels, validators, or `visible_when` expressions.
+
+---
+
+Next: [Send to Your Back End](/guides/webhook)

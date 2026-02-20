@@ -1,33 +1,40 @@
 ---
-title: Go Multilingual
+title: Reach Anyone in Their Language
 description: Translate every label, option, and message with a locale map.
 ---
 
-Any string property in `rental.yaml` can be replaced with a locale map — an object keyed by locale code. The platform resolves the correct string at render time based on the visitor's language. This guide adds English and Spanish to the full rental form.
+Any string property in `rental.yaml` can be replaced with a locale map — an object keyed by locale code. The platform resolves the correct string at render time based on the visitor's language. This guide adds English and Spanish to the rental form.
 
 ---
 
-## The locale map syntax
+## What to add
 
-Instead of a plain string:
-
-```yaml
-label: Full name
-```
-
-use a locale map:
+Replace plain strings with locale maps anywhere a string is accepted:
 
 ```yaml
-label:
-  en: Full name
-  es: Nombre completo
+title:
+  en: Rental Application
+  es: Solicitud de arrendamiento
+locale: en
 ```
+
+Apply the same pattern to field labels and option labels:
+
+```yaml
+      - id: full_name
+        type: short_text
+        label:
+          en: Full name
+          es: Nombre completo
+        validators:
+          - required
+```
+
+---
+
+## How locale maps work
 
 Both forms are valid anywhere a string is accepted. You can localize some fields and leave others as plain strings — the platform falls back to the plain string value for any locale not explicitly provided.
-
----
-
-## Properties that support locale maps
 
 | Property | Where |
 |----------|-------|
@@ -52,159 +59,8 @@ The platform picks a locale using the following priority:
 3. The `locale` root key in the YAML
 4. `en` fallback — always available
 
-Set `locale: en` at the root to declare the default for visitors whose browser language is not `en` or `es`.
+Set `locale: en` at the root to declare the default for visitors whose browser language is not explicitly matched.
 
 ---
 
-## Complete `rental.yaml` with localization
-
-```yaml
-version: 1
-title:
-  en: Rental Application
-  es: Solicitud de arrendamiento
-locale: en
-
-sections:
-  - id: personal
-    title:
-      en: Personal details
-      es: Datos personales
-    fields:
-      - id: full_name
-        type: short_text
-        label:
-          en: Full name
-          es: Nombre completo
-        validators:
-          - required
-      - id: email
-        type: email
-        label:
-          en: Email address
-          es: Correo electrónico
-        validators:
-          - required
-      - id: move_in_date
-        type: date
-        label:
-          en: Desired move-in date
-          es: Fecha de mudanza deseada
-        validators:
-          - required
-    next: property
-
-  - id: property
-    title:
-      en: Property details
-      es: Detalles de la propiedad
-    fields:
-      - id: unit_type
-        type: single_select
-        label:
-          en: Unit type
-          es: Tipo de unidad
-        options:
-          - value: studio
-            label:
-              en: Studio
-              es: Estudio
-          - value: 1br
-            label:
-              en: 1 bedroom
-              es: 1 habitación
-          - value: 2br
-            label:
-              en: 2 bedrooms
-              es: 2 habitaciones
-          - value: 3br
-            label:
-              en: 3+ bedrooms
-              es: 3+ habitaciones
-        validators:
-          - required
-      - id: has_pets
-        type: single_select
-        label:
-          en: Do you have pets?
-          es: ¿Tiene mascotas?
-        options:
-          - value: "yes"
-            label:
-              en: "Yes"
-              es: "Sí"
-          - value: "no"
-            label:
-              en: "No"
-              es: "No"
-        validators:
-          - required
-      - id: pet_details
-        type: short_text
-        label:
-          en: Pet details
-          es: Detalles de la mascota
-        placeholder:
-          en: Breed, size, and number of pets
-          es: Raza, tamaño y número de mascotas
-        visible_when: "data.has_pets === 'yes'"
-    next:
-      - when: "data.unit_type === 'studio'"
-        go: done
-      - else: employment
-
-  - id: employment
-    title:
-      en: Employment
-      es: Empleo
-    fields:
-      - id: employer
-        type: short_text
-        label:
-          en: Employer name
-          es: Nombre del empleador
-        validators:
-          - required
-      - id: monthly_income
-        type: number
-        label:
-          en: Monthly income (USD)
-          es: Ingreso mensual (USD)
-        validators:
-          - required
-    next: done
-
-connections:
-  - type: email
-    to: landlord@example.com
-    subject:
-      en: "New application from {{data.full_name}}"
-      es: "Nueva solicitud de {{data.full_name}}"
-    include_responses: true
-  - type: email
-    to: "{{data.email}}"
-    subject:
-      en: "Thanks for applying, {{data.full_name}}"
-      es: "Gracias por solicitar, {{data.full_name}}"
-    body:
-      en: "<p>We received your application and will be in touch within 2 business days.</p>"
-      es: "<p>Recibimos su solicitud y nos comunicaremos en un plazo de 2 días hábiles.</p>"
-  - type: webhook
-    url: https://your-api.com/webhooks/rental
-  - type: airtable
-    connection_id: your-connection-id
-    base_id: appXXXXXXXXXXXXXX
-    table_id_or_name: Applications
-
-completion:
-  title:
-    en: "Thanks, {{data.full_name}}!"
-    es: "¡Gracias, {{data.full_name}}!"
-  message:
-    en: We'll review your application and be in touch within 2 business days.
-    es: Revisaremos su solicitud y nos comunicaremos en un plazo de 2 días hábiles.
-```
-
----
-
-Next: [Track Completions](/guides/analytics)
+Next: [Track Form Engagement](/guides/analytics)

@@ -1,0 +1,41 @@
+---
+title: Measure Satisfaction with a Scale
+description: Add a star or numeric rating scale to collect subjective feedback.
+---
+
+The `overall_rating` field in the references section asks applicants how excited they are about the property — the kind of subjective signal that works well as a rating scale.
+
+---
+
+## What to add
+
+Add a `rating` field to the `references` section of `rental.yaml`:
+
+```yaml
+      - id: overall_rating
+        type: rating
+        label: How excited are you about this property?
+        min_label: Not at all
+        max_label: Extremely excited
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`rating` renders a 1–5 scale (default). The applicant clicks a value. `min_label` and `max_label` label the endpoints of the scale to give the rating semantic meaning.
+
+**Submission value type:** `number` — the selected rating value (e.g., `4`).
+
+### Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `min_label` | `string \| LocaleMap` | No | Label for the lowest value on the scale. |
+| `max_label` | `string \| LocaleMap` | No | Label for the highest value on the scale. |
+
+---
+
+Next: [Capture a Physical Address](/guides/address-field)

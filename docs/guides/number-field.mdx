@@ -1,0 +1,38 @@
+---
+title: Collect Numeric Values
+description: Add a number input for quantities and amounts.
+---
+
+The `monthly_income` field in the employment section collects the applicant's income as a number.
+
+---
+
+## What to add
+
+Add a `number` field to the `employment` section of `rental.yaml`:
+
+```yaml
+      - id: monthly_income
+        type: number
+        label: Monthly income (USD)
+        validators:
+          - required
+```
+
+---
+
+## How it works
+
+`number` renders a numeric input. The browser restricts entry to digits and decimal points. The submission value is stored as a JavaScript number — `data.monthly_income` will be `6500`, not `"6500"`.
+
+### Validators
+
+| Validator | Description |
+|-----------|-------------|
+| `required` | Field must not be empty. |
+| `type: min` + `value` | Minimum numeric value. |
+| `type: max` + `value` | Maximum numeric value. |
+
+---
+
+Next: [Collect Website Links](/guides/url-field)

@@ -94,48 +94,38 @@ Validators run in the browser before each section is submitted. They enforce UX 
 
 ## Full example
 
-The `role` field from the job application form with fully localized options:
+The `has_pets` field from the rental application form's property section:
 
 ```yaml
 version: 1
-title:
-  en: Join the team
-  es: Únete al equipo
+title: Rental Application
 sections:
-  - id: main
-    title:
-      en: Apply to work with us
-      es: Solicita trabajar con nosotros
+  - id: property
+    title: Property preferences
     fields:
-      - id: full_name
-        type: short_text
-        label:
-          en: Full name
-          es: Nombre completo
-      - id: role
+      - id: unit_type
         type: single_select
-        label:
-          en: Role you're applying for
-          es: Puesto al que aplicas
+        label: Unit type
         options:
-          - value: eng
-            label:
-              en: Software Engineer
-              es: Ingeniero de Software
-          - value: pm
-            label:
-              en: Product Manager
-              es: Gerente de Producto
-          - value: design
-            label:
-              en: Designer
-              es: Diseñador
+          - value: studio
+            label: Studio
+          - value: 1br
+            label: 1 bedroom
+          - value: 2br
+            label: 2 bedrooms
+          - value: 3br
+            label: 3+ bedrooms
         validators:
           - required
-      - id: email
-        type: email
-        label:
-          en: Email address
-          es: Correo electrónico
+      - id: has_pets
+        type: single_select
+        label: Do you have pets?
+        options:
+          - value: "yes"
+            label: "Yes"
+          - value: "no"
+            label: "No"
+        validators:
+          - required
     next: done
 ```

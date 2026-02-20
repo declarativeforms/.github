@@ -105,14 +105,14 @@ Validators run in the browser before each section is submitted. They enforce UX 
 
 ## Full example
 
-The `full_name` field from the job application form with all validators applied:
+The `full_name` field from the rental application form with all validators applied:
 
 ```yaml
 version: 1
-title: Join the team
+title: Rental Application
 sections:
-  - id: main
-    title: Apply to work with us
+  - id: personal
+    title: Personal details
     fields:
       - id: full_name
         type: short_text
@@ -129,15 +129,15 @@ sections:
           - type: pattern
             regex: "^[A-Za-z .'-]+$"
             message: Please use letters and standard punctuation only.
-      - id: role
-        type: single_select
-        label: Role you're applying for
-        options:
-          - Software Engineer
-          - Product Manager
-          - Designer
       - id: email
         type: email
         label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
     next: done
 ```

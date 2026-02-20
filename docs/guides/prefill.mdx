@@ -1,0 +1,45 @@
+---
+title: Pre-fill Fields from the URL
+description: Populate field values automatically using query parameters.
+---
+
+Any field in a Declarative Forms form can be pre-filled by passing its `id` as a URL query parameter. This is useful for embedding the form in flows where you already know some of the applicant's information.
+
+---
+
+## What to add
+
+No YAML changes required. Pre-fill works by appending query parameters to the form URL:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/rental?full_name=Jordan+Lee&email=jordan@example.com
+```
+
+---
+
+## How it works
+
+When the form loads, the platform reads all query parameters that are not reserved system params. Any parameter whose name matches a field `id` is used to pre-populate that field's value.
+
+The applicant sees the field with the pre-filled value and can edit it before submitting.
+
+### Reserved URL parameters
+
+These parameters are used by the platform and cannot be used for prefill:
+
+| Parameter | Purpose |
+|-----------|---------|
+| `connection_id` | Identifies an OAuth connection |
+| `lang` | Sets the display language |
+| `submission_id` | Resumes an in-progress submission |
+| `step` | Sets the starting section |
+
+All other query parameter names are treated as prefill values.
+
+### Hidden fields
+
+`hidden` field types (see [Pass Data Without Showing a Field](/guides/hidden-field)) are populated exclusively via URL parameters and are never shown to the applicant. Pre-filling them works identically to visible fields — the parameter name must match the field `id`.
+
+---
+
+Next: [Set Open and Close Dates](/guides/form-availability)
