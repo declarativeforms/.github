@@ -15,32 +15,137 @@ Add a `short_text` field to the `personal` section of `rental.yaml`:
       - id: full_name
         type: short_text
         label: Full name
+        placeholder: Jane Smith
         validators:
           - required
 ```
 
 ---
 
-## How it works
+## Field properties
 
-`short_text` renders a single-line text input. The `id` becomes the key in the submission data — `data.full_name` will contain whatever the applicant typed.
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | string | Unique identifier within the section. Becomes the key in submission data (e.g. `data.full_name`). Required. |
+| `type` | string | Must be `short_text`. Required. |
+| `label` | string or locale map | Displayed above the input. Required. |
+| `placeholder` | string or locale map | Hint text shown inside the input when empty. Optional. |
+| `validators` | array | Validation rules applied before the section can be submitted. Optional. |
+| `visible_when` | string | JavaScript expression. Field is shown only when the expression evaluates to true. Optional. |
 
-The `label` is displayed above the input. You can also add a `placeholder` to show hint text inside the input when it's empty:
+---
+
+## Validators
+
+All validators run in the browser before the section is submitted. Multiple validators may be listed; all must pass.
+
+### `required`
+
+Field must not be empty before the section can be submitted.
 
 ```yaml
-        placeholder: Jane Smith
+        validators:
+          - required
 ```
 
-### Validators
+The default error message is "This field is required." To override it:
 
-| Validator | Description |
-|-----------|-------------|
-| `required` | Field must not be empty. |
-| `type: min` + `value` | Minimum character count. |
-| `type: max` + `value` | Maximum character count. |
-| `type: pattern` + `regex` | Input must match the regular expression. |
+```yaml
+        validators:
+          - type: required
+            message: Please enter your full name.
+```
 
-All validators run in the browser before the section is submitted. See [reference/short-text](/reference/short-text) for full validator details.
+### `type: min`
+
+Minimum character count.
+
+```yaml
+        validators:
+          - type: min
+            value: 2
+```
+
+To override the default error message:
+
+```yaml
+        validators:
+          - type: min
+            value: 2
+            message: Name must be at least 2 characters.
+```
+
+### `type: max`
+
+Maximum character count.
+
+```yaml
+        validators:
+          - type: max
+            value: 100
+```
+
+To override the default error message:
+
+```yaml
+        validators:
+          - type: max
+            value: 100
+            message: Name must be 100 characters or fewer.
+```
+
+### `type: pattern`
+
+Input must match a regular expression.
+
+```yaml
+        validators:
+          - type: pattern
+            regex: "^[a-zA-Z ]+$"
+```
+
+Always include a `message` with pattern validators so the user understands what format is expected:
+
+```yaml
+        validators:
+          - type: pattern
+            regex: "^[a-zA-Z ]+$"
+            message: Name may only contain letters and spaces.
+```
+
+---
+
+## Localization
+
+`label` and `placeholder` accept a locale map instead of a plain string. When the form is loaded with a `lang` URL parameter, the matching locale is used; the first key is the fallback.
+
+```yaml
+      - id: full_name
+        type: short_text
+        label:
+          en: Full name
+          fr: Nom complet
+          es: Nombre completo
+        placeholder:
+          en: Jane Smith
+          fr: Marie Dupont
+          es: María García
+```
+
+---
+
+## Conditional visibility
+
+`visible_when` takes a JavaScript expression. The field is hidden when the expression is falsy and shown when it is truthy. The expression has access to all field values in the current section via the `fields` object.
+
+```yaml
+      - id: preferred_name
+        type: short_text
+        label: Preferred name (if different)
+        visible_when: "fields.full_name.length > 0"
+```
+
+Hidden fields are excluded from validation — a hidden required field will not block submission.
 
 ---
 

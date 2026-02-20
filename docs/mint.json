@@ -31,8 +31,7 @@
       "group": "Getting Started",
       "pages": [
         "getting-started/introduction",
-        "getting-started/quickstart",
-        "getting-started/how-it-works"
+        "getting-started/quickstart"
       ]
     },
     {
@@ -43,72 +42,9 @@
           "pages": [
             "guides/add-steps",
             "guides/short-text-field",
-            "guides/long-text-field",
-            "guides/email-field",
-            "guides/mobile-number-field",
-            "guides/number-field",
-            "guides/url-field",
-            "guides/date-field",
-            "guides/single-select-field",
-            "guides/multiple-select-field",
-            "guides/dropdown-field",
-            "guides/rating-field",
-            "guides/address-field",
-            "guides/address-variants",
-            "guides/file-upload-field",
-            "guides/signature-field",
-            "guides/hidden-field"
-          ]
-        },
-        {
-          "group": "Form Behavior",
-          "pages": [
-            "guides/conditional-fields",
-            "guides/conditional-navigation",
-            "guides/email-verification",
-            "guides/prefill",
-            "guides/form-availability",
-            "guides/completion-page"
-          ]
-        },
-        {
-          "group": "Connections",
-          "pages": [
-            "guides/notify-team",
-            "guides/confirm-submission",
-            "guides/email-templates",
-            "guides/webhook",
-            "guides/airtable"
-          ]
-        },
-        {
-          "group": "Localization and Analytics",
-          "pages": [
-            "guides/localization",
-            "guides/analytics"
+            "guides/long-text-field"
           ]
         }
-      ]
-    },
-    {
-      "group": "Reference",
-      "pages": [
-        "reference/yaml-schema",
-        "reference/short-text",
-        "reference/long-text",
-        "reference/email",
-        "reference/mobile-number",
-        "reference/number",
-        "reference/url",
-        "reference/date",
-        "reference/single-select",
-        "reference/multiple-select",
-        "reference/dropdown",
-        "reference/rating",
-        "reference/address",
-        "reference/file-upload",
-        "reference/signature",
-        "reference/hidden"
       ]
     },
     {
