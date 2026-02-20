@@ -20,11 +20,11 @@
   },
   "metadata": {
     "og:title": "Declarative Forms",
-    "og:description": "Forms are the one thing AI tools can't help you ship. Write YAML, push to GitHub, share a link — free, no sign-up required.",
+    "og:description": "Define forms in YAML, push to public GitHub, and share a live hosted form URL in minutes. No account required.",
     "og:site_name": "Declarative Forms",
     "twitter:card": "summary",
     "twitter:title": "Declarative Forms",
-    "twitter:description": "Forms are the one thing AI tools can't help you ship. Write YAML, push to GitHub, share a link."
+    "twitter:description": "Define forms in YAML, push to public GitHub, and share a live form URL in minutes."
   },
   "navigation": [
     {

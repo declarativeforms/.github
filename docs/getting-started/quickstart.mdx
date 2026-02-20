@@ -3,20 +3,21 @@ title: Quickstart
 description: Build and publish your first form in under five minutes.
 ---
 
-By the end of this page you'll have a live form at a real URL. All you need is a public GitHub repository.
+By the end of this page you will have a live form URL using only a public GitHub repository.
 
 ---
 
-## Step 1 — Create the YAML file
+## Step 1 - Create your form file
 
-Create `rental.yaml` at the root of your repository (or any path — the filename becomes the form name):
+Create `intake.yaml` at the root of your repository (or any path). The filename becomes the form name in the URL.
 
 ```yaml
 version: 1
-title: Rental Application
+title: General Intake
+description: Tell us what you need and we will follow up.
 sections:
-  - id: basic_info
-    title: Basic info
+  - id: contact
+    title: Contact
     fields:
       - id: full_name
         type: short_text
@@ -25,41 +26,55 @@ sections:
           - required
       - id: email
         type: email
-        label: Email address
+        label: Work email
         validators:
           - required
-      - id: unit_type
+      - id: request_type
         type: single_select
-        label: Unit type
+        label: What do you need?
         options:
-          - Studio
-          - 1 bedroom
-          - 2 bedrooms
-        validators:
-          - required
+          - Sales inquiry
+          - Partnership
+          - Support
+      - id: team_size
+        type: dropdown
+        label: Team size
+        options:
+          - 1-10
+          - 11-50
+          - 51-200
+          - 201+
     next: done
 ```
 
-The filename — `rental` — becomes the last segment of your form's URL.
+With this file name, the form path will end in `/intake`.
 
 ---
 
-## Step 2 — Push to GitHub
+## Step 2 - Push to GitHub
 
 ```bash
-git add rental.yaml
-git commit -m "Add rental application form"
+git add intake.yaml
+git commit -m "Add intake form"
 git push
 ```
 
-That's it.
+---
+
+## Step 3 - Open the live form
+
+`https://app.declarativeforms.com/{owner}/{repo}/intake`
+
+Replace `{owner}` and `{repo}` with your GitHub username/org and repository name.
+
+No account required.
 
 ---
 
-## Step 3 — Open your form
+## Optional - Prefill fields from the URL
 
-```
-https://app.declarativeforms.com/{owner}/{repo}/rental
-```
+Any query parameter that matches a field `id` prefills that field.
 
-Replace `{owner}` and `{repo}` with your GitHub username and repository name. Your form is live — no account required.
+`https://app.declarativeforms.com/{owner}/{repo}/intake?request_type=Partnership&team_size=11-50`
+
+Reserved parameters (`connection_id`, `lang`, `submission_id`, `step`) are platform parameters and are not used for field prefill.
