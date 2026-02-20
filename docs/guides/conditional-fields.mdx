@@ -1,0 +1,114 @@
+---
+title: Show Fields Conditionally
+description: Hide or reveal fields based on earlier answers.
+---
+
+Some fields only make sense given a previous answer. This guide adds a pet-details field to the property section that only appears when the applicant says they have pets.
+
+---
+
+## What to add
+
+Add two fields to the `property` section: `has_pets` (a yes/no select) and `pet_details` (a short text with `visible_when`).
+
+```yaml
+      - id: has_pets
+        type: single_select
+        label: Do you have pets?
+        options:
+          - value: "yes"
+            label: "Yes"
+          - value: "no"
+            label: "No"
+        validators:
+          - required
+      - id: pet_details
+        type: short_text
+        label: Pet details
+        placeholder: Breed, size, and number of pets
+        visible_when: "data.has_pets === 'yes'"
+```
+
+---
+
+## How `visible_when` works
+
+`visible_when` takes a JavaScript expression evaluated against `data` — an object containing all values submitted so far in the current session, keyed by field `id`.
+
+```
+data.has_pets === 'yes'
+```
+
+When the expression evaluates to `true`, the field is shown. When it evaluates to `false` or the referenced key doesn't exist yet, the field is hidden.
+
+Hidden fields are excluded from the submission payload. If `pet_details` is hidden when the section is submitted, no `pet_details` key appears in the submission data.
+
+Expressions can reference any previously submitted field across any section — not just fields in the current section.
+
+---
+
+## Complete `rental.yaml`
+
+```yaml
+version: 1
+title: Rental Application
+
+sections:
+  - id: personal
+    title: Personal details
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
+    next: property
+
+  - id: property
+    title: Property details
+    fields:
+      - id: unit_type
+        type: single_select
+        label: Unit type
+        options:
+          - value: studio
+            label: Studio
+          - value: 1br
+            label: 1 bedroom
+          - value: 2br
+            label: 2 bedrooms
+          - value: 3br
+            label: 3+ bedrooms
+        validators:
+          - required
+      - id: has_pets
+        type: single_select
+        label: Do you have pets?
+        options:
+          - value: "yes"
+            label: "Yes"
+          - value: "no"
+            label: "No"
+        validators:
+          - required
+      - id: pet_details
+        type: short_text
+        label: Pet details
+        placeholder: Breed, size, and number of pets
+        visible_when: "data.has_pets === 'yes'"
+    next: done
+```
+
+---
+
+Next: [Branch on Answers](/guides/conditional-navigation)

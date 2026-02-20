@@ -1,0 +1,157 @@
+---
+title: Save to Airtable
+description: Create a new row in Airtable for every completed submission.
+---
+
+The Airtable connection writes each completed submission as a new row in a table you choose. No Zapier, no custom code — just OAuth once, then a few IDs in your YAML.
+
+---
+
+## Step 1 — Connect your Airtable account
+
+Go to `https://app.declarativeforms.com/oauth/airtable` and authorize access. After completing OAuth, you'll receive a `connection_id` to use in your YAML.
+
+---
+
+## Step 2 — Find your base and table IDs
+
+In Airtable, open the base you want to write to. The URL contains both IDs:
+
+```
+https://airtable.com/appXXXXXXXXXXXXXX/tblYYYYYYYYYYYYYY/...
+```
+
+- `appXXXXXXXXXXXXXX` is your `base_id`
+- `tblYYYYYYYYYYYYYY` is your `table_id_or_name` (you can also use the table's display name)
+
+---
+
+## What to add
+
+Add an Airtable entry to the `connections` block:
+
+```yaml
+connections:
+  - type: airtable
+    connection_id: your-connection-id
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Applications
+```
+
+---
+
+## Field name matching
+
+<Warning>
+Airtable column names must match your form field IDs exactly. If your field ID is `full_name`, the Airtable column must also be named `full_name`. Mismatches result in data being silently dropped for that column.
+</Warning>
+
+Create columns in your Airtable table with names that match each field `id` you want to capture: `full_name`, `email`, `move_in_date`, `unit_type`, `has_pets`, `pet_details`, `employer`, `monthly_income`.
+
+---
+
+## Timing
+
+The Airtable connection fires once when `status` becomes `completed`. It does not fire for partial saves. Hidden fields (those whose `visible_when` evaluated to false) are not included in the row.
+
+---
+
+## Complete `rental.yaml`
+
+```yaml
+version: 1
+title: Rental Application
+
+sections:
+  - id: personal
+    title: Personal details
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
+    next: property
+
+  - id: property
+    title: Property details
+    fields:
+      - id: unit_type
+        type: single_select
+        label: Unit type
+        options:
+          - value: studio
+            label: Studio
+          - value: 1br
+            label: 1 bedroom
+          - value: 2br
+            label: 2 bedrooms
+          - value: 3br
+            label: 3+ bedrooms
+        validators:
+          - required
+      - id: has_pets
+        type: single_select
+        label: Do you have pets?
+        options:
+          - value: "yes"
+            label: "Yes"
+          - value: "no"
+            label: "No"
+        validators:
+          - required
+      - id: pet_details
+        type: short_text
+        label: Pet details
+        placeholder: Breed, size, and number of pets
+        visible_when: "data.has_pets === 'yes'"
+    next:
+      - when: "data.unit_type === 'studio'"
+        go: done
+      - else: employment
+
+  - id: employment
+    title: Employment
+    fields:
+      - id: employer
+        type: short_text
+        label: Employer name
+        validators:
+          - required
+      - id: monthly_income
+        type: number
+        label: Monthly income (USD)
+        validators:
+          - required
+    next: done
+
+connections:
+  - type: email
+    to: landlord@example.com
+    subject: "New application from {{data.full_name}}"
+    include_responses: true
+  - type: email
+    to: "{{data.email}}"
+    subject: "Thanks for applying, {{data.full_name}}"
+    body: "<p>We received your application and will be in touch within 2 business days.</p>"
+  - type: webhook
+    url: https://your-api.com/webhooks/rental
+  - type: airtable
+    connection_id: your-connection-id
+    base_id: appXXXXXXXXXXXXXX
+    table_id_or_name: Applications
+```
+
+---
+
+Next: [Go Multilingual](/guides/localization)

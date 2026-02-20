@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Terraform for forms. Define in YAML, commit to GitHub, share a URL.
+description: Define forms in YAML, commit to GitHub, share a URL.
 ---
 
 Every dev tool has moved to config-as-code. Terraform provisions infrastructure from `.tf` files. Kubernetes runs from manifests. GitHub Actions runs from YAML in `.github/workflows/`. You can build, review, and version all of it without a visual editor.
@@ -18,6 +18,41 @@ Declarative Forms is the missing piece: define your form in YAML, commit it to G
 **Version controlled.** Every field change is a commit. You get history, blame, and the ability to revert — the same way you track changes to application code.
 
 **Code reviewed.** Forms go through PRs like any other config. Your team reviews them before they go live. You can see exactly what changed and why.
+
+---
+
+## The rental application example
+
+Throughout these docs, we build a rental application form — `rental.yaml`. You'll start with three fields in the Quickstart, then add multi-step sections, conditional logic, email notifications, webhooks, Airtable, localization, and analytics — one feature per guide.
+
+Here's the minimal starting point:
+
+```yaml
+version: 1
+title: Rental Application
+sections:
+  - id: main
+    title: Apply to rent
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
+    next: done
+```
+
+Three fields, one section, live in three steps.
 
 ---
 

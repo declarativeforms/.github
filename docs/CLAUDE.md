@@ -26,13 +26,13 @@ The API types file (`api/src/core/types/form.ts`) is incomplete — do not use i
 
 ```
 Getting Started: introduction, quickstart, how-it-works
-Concepts: yaml-schema, version-title-description, sections, fields, connections, localization
+Guides: add-steps, conditional-fields, conditional-navigation, notify-team, webhook, airtable, localization, analytics
 Reference: yaml-schema, short-text, long-text, multiple-select, single-select, dropdown
 Help: support
 ```
 
 - New field type → add to Reference group
-- New platform feature → add to Concepts group
+- New platform feature → add to Guides group
 - All pages must be listed in `mint.json` navigation
 
 ---
@@ -49,34 +49,36 @@ Help: support
 
 ## Quickstart canonical form
 
-`apply.yaml` — the job application form — is the canonical example throughout the docs:
+`rental.yaml` — the rental application form — is the canonical example throughout the docs:
 
 ```yaml
 version: 1
-title: Join the team
+title: Rental Application
 sections:
   - id: main
-    title: Apply to work with us
+    title: Apply to rent
     fields:
       - id: full_name
         type: short_text
         label: Full name
-      - id: role
-        type: single_select
-        label: Role you're applying for
-        options:
-          - Software Engineer
-          - Product Manager
-          - Designer
+        validators:
+          - required
       - id: email
         type: email
         label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
     next: done
 ```
 
-- File name: `apply.yaml`
-- URL pattern: `https://app.declarativeforms.com/{owner}/{repo}/apply`
-- Field IDs: `full_name`, `role`, `email`
+- File name: `rental.yaml`
+- URL pattern: `https://app.declarativeforms.com/{owner}/{repo}/rental`
+- Field IDs: `full_name`, `email`, `move_in_date`
 
 Do not change the field IDs or field types in this form without updating all pages that reference it.
 
@@ -95,15 +97,16 @@ Every field type page must follow this structure:
 
 ---
 
-## Concept page template
+## Guide page template
 
-Every concepts page must follow this structure:
+Every Guides page must follow this structure:
 
 1. **Frontmatter:** `title:`, `description:`
-2. **Opening paragraph:** what this page covers and why it matters
-3. **Progressive sections:** start with minimum useful info, add complexity
-4. **Working YAML examples throughout.** Abstract explanations must have a code anchor.
-5. **Cross-links** at the end to related pages
+2. **Opening paragraph:** what feature this page adds and why it matters
+3. **What to add:** show the YAML diff/addition (not a full rewrite of unchanged sections)
+4. **Explanation:** cover key properties, behavior, and edge cases
+5. **Complete working form:** the full `rental.yaml` as it stands after adding this feature
+6. **Cross-links** at the end to related pages
 
 ---
 
@@ -125,7 +128,7 @@ Only link to pages that exist in `mint.json` navigation. When in doubt, check `m
 2. Check `types.ts` for all applicable properties
 3. Check `field-validation.ts` for validator behavior specific to this type (`min`/`max` semantics differ by type)
 4. Add the page to the `reference` group in `mint.json`
-5. Update `concepts/fields.mdx` to link to the new page in the field types table
+5. Update `reference/yaml-schema.mdx` to link to the new page in the field types table
 
 ---
 
@@ -133,9 +136,9 @@ Only link to pages that exist in `mint.json` navigation. When in doubt, check `m
 
 | Concern | Standard |
 |---------|----------|
-| Quickstart form file | `apply.yaml` |
-| Form URL pattern | `https://app.declarativeforms.com/{owner}/{repo}/apply` |
-| Field IDs in quickstart form | `full_name`, `role`, `email` |
+| Quickstart form file | `rental.yaml` |
+| Form URL pattern | `https://app.declarativeforms.com/{owner}/{repo}/rental` |
+| Field IDs in quickstart form | `full_name`, `email`, `move_in_date` |
 | LocaleMap format | `{en: "...", es: "..."}` — always show both |
 | Validator warning | Always use `<Warning>` callout, always client-side-only |
 | Connections: when they fire | "fire once when `status` becomes `completed`" |

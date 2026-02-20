@@ -1,0 +1,131 @@
+---
+title: Add Multiple Steps
+description: Split your form across screens with sections.
+---
+
+The quickstart form puts everything in a single section. When a form grows beyond a few fields, splitting it into sections keeps each screen focused and reduces abandonment. This guide adds a second section to `rental.yaml`.
+
+---
+
+## What to add
+
+Replace the single `main` section with two sections: `personal` and `property`. Each section has its own `next` value pointing to the next step.
+
+```yaml
+sections:
+  - id: personal
+    title: Personal details
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
+    next: property
+
+  - id: property
+    title: Property details
+    fields:
+      - id: unit_type
+        type: single_select
+        label: Unit type
+        options:
+          - value: studio
+            label: Studio
+          - value: 1br
+            label: 1 bedroom
+          - value: 2br
+            label: 2 bedrooms
+          - value: 3br
+            label: 3+ bedrooms
+        validators:
+          - required
+    next: done
+```
+
+---
+
+## How sections work
+
+**`id`** — unique identifier for the section. Used in `next` values and in the URL (`?step=property`).
+
+**`title`** — displayed as the section heading.
+
+**`next`** — controls where the form goes after this section is submitted. Set to a section `id` to continue, or `done` to complete the submission.
+
+Sections are presented in the order they are navigated, not the order they appear in the file. The form always starts with the first section in the list.
+
+---
+
+## URL behavior
+
+After the user submits the first section, the URL updates:
+
+```
+https://app.declarativeforms.com/{owner}/{repo}/rental?submission_id=abc123&step=property
+```
+
+`submission_id` identifies the in-progress submission. `step` is the `id` of the next section. This URL can be bookmarked or shared — revisiting it resumes the form from that section with previously entered data pre-populated.
+
+---
+
+## Complete `rental.yaml`
+
+```yaml
+version: 1
+title: Rental Application
+
+sections:
+  - id: personal
+    title: Personal details
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
+    next: property
+
+  - id: property
+    title: Property details
+    fields:
+      - id: unit_type
+        type: single_select
+        label: Unit type
+        options:
+          - value: studio
+            label: Studio
+          - value: 1br
+            label: 1 bedroom
+          - value: 2br
+            label: 2 bedrooms
+          - value: 3br
+            label: 3+ bedrooms
+        validators:
+          - required
+    next: done
+```
+
+---
+
+Next: [Show Fields Conditionally](/guides/conditional-fields)

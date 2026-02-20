@@ -1,7 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Declarative Forms",
-  "description": "Define forms in YAML, commit to GitHub, share a URL. Works with LLMs. Version controlled. Code reviewed.",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -37,14 +36,16 @@
       ]
     },
     {
-      "group": "Concepts",
+      "group": "Guides",
       "pages": [
-        "concepts/yaml-schema",
-        "concepts/version-title-description",
-        "concepts/sections",
-        "concepts/fields",
-        "concepts/connections",
-        "concepts/localization"
+        "guides/add-steps",
+        "guides/conditional-fields",
+        "guides/conditional-navigation",
+        "guides/notify-team",
+        "guides/webhook",
+        "guides/airtable",
+        "guides/localization",
+        "guides/analytics"
       ]
     },
     {

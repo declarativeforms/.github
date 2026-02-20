@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: Get a live form in three steps.
+description: Get a live rental form in three steps.
 ---
 
 ## Prerequisites
@@ -10,42 +10,44 @@ description: Get a live form in three steps.
 
 ---
 
-## Step 1 — Create `apply.yaml`
+## Step 1 — Create `rental.yaml`
 
-Create a file named `apply.yaml` in the root of your repository:
+Create a file named `rental.yaml` in the root of your repository:
 
 ```yaml
 version: 1
-title: Join the team
+title: Rental Application
 sections:
   - id: main
-    title: Apply to work with us
+    title: Apply to rent
     fields:
       - id: full_name
         type: short_text
         label: Full name
-      - id: role
-        type: single_select
-        label: Role you're applying for
-        options:
-          - Software Engineer
-          - Product Manager
-          - Designer
+        validators:
+          - required
       - id: email
         type: email
         label: Email address
+        validators:
+          - required
+      - id: move_in_date
+        type: date
+        label: Desired move-in date
+        validators:
+          - required
     next: done
 ```
 
-This is a complete form — three different field types (`short_text`, `single_select`, `email`), no extra configuration needed.
+This is a complete form — three field types (`short_text`, `email`, `date`), required validators on each, no extra configuration needed.
 
 ---
 
 ## Step 2 — Push to `main`
 
 ```bash
-git add apply.yaml
-git commit -m "Add job application form"
+git add rental.yaml
+git commit -m "Add rental application form"
 git push
 ```
 
@@ -54,7 +56,7 @@ git push
 ## Step 3 — Visit your form
 
 ```
-https://app.declarativeforms.com/{owner}/{repo}/apply
+https://app.declarativeforms.com/{owner}/{repo}/rental
 ```
 
 Replace `{owner}` with your GitHub username or organization, and `{repo}` with your repository name. The form is live immediately — no deploy step required.
