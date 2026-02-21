@@ -1,19 +1,19 @@
 ---
-title: Short Text Field
-description: "YAML reference for `type: short_text`."
+title: Date Field
+description: "YAML reference for `type: date`."
 ---
 
 ## Minimal example
 
 ```yaml
 version: 1
-title: Short Text Minimal
+title: Date Minimal
 sections:
   - id: section_1
     title: Section 1
     fields:
       - id: field_1
-        type: short_text
+        type: date
         label: Field 1
     next: done
 ```
@@ -22,52 +22,52 @@ sections:
 
 ```yaml
 version: 1
-title: Short Text Full Configuration
+title: Date Full Configuration
 sections:
   - id: section_1
     title: Variant Coverage
     fields:
       - id: field_1
-        type: short_text
+        type: date
         label: Base variant
 
       - id: field_2
-        type: short_text
+        type: date
         label: Placeholder variant
-        placeholder: Enter text
+        placeholder: Select a date
 
       - id: field_3
-        type: short_text
+        type: date
         label: Validator variant
         validators:
           - required
           - type: min
-            value: 3
+            value: "2026-01-01"
             message:
-              en: Minimum 3 characters.
-              es: Minimo 3 caracteres.
+              en: Use a date on or after 2026-01-01.
+              es: Usa una fecha el o despues de 2026-01-01.
           - type: max
-            value: 50
+            value: "2026-12-31"
             message:
-              en: Maximum 50 characters.
-              es: Maximo 50 caracteres.
+              en: Use a date on or before 2026-12-31.
+              es: Usa una fecha el o antes de 2026-12-31.
           - type: pattern
-            regex: "^[A-Za-z0-9 _-]+$"
+            regex: "^\\d{4}-\\d{2}-\\d{2}$"
             message:
-              en: Use letters, numbers, spaces, underscore, or hyphen.
-              es: Usa letras, numeros, espacios, guion bajo o guion.
+              en: Use YYYY-MM-DD format.
+              es: Usa formato AAAA-MM-DD.
 
       - id: field_4
-        type: short_text
+        type: date
         label:
           en: Localized variant
           es: Variante localizada
         placeholder:
-          en: Enter localized text
-          es: Ingresa texto localizado
+          en: Select localized date
+          es: Selecciona fecha localizada
 
       - id: field_5
-        type: short_text
+        type: date
         label: Visible when variant
         visible_when: data.field_1 != ""
     next: done

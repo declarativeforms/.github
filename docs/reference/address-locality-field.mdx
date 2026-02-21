@@ -1,0 +1,64 @@
+---
+title: Address Locality Field
+description: "YAML reference for `type: address_locality`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Address Locality Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: address_locality
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Address Locality Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: address_locality
+        label: Base variant
+
+      - id: field_2
+        type: address_locality
+        label: Placeholder variant
+        placeholder: Enter locality
+
+      - id: field_3
+        type: address_locality
+        label: Validator variant
+        validators:
+          - required
+          - type: pattern
+            regex: ".+"
+            message:
+              en: Enter a locality value.
+              es: Ingresa un valor de localidad.
+
+      - id: field_4
+        type: address_locality
+        label:
+          en: Localized variant
+          es: Variante localizada
+        placeholder:
+          en: Enter localized locality text
+          es: Ingresa texto de localidad localizado
+
+      - id: field_5
+        type: address_locality
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```

@@ -1,0 +1,69 @@
+---
+title: File Upload Field
+description: "YAML reference for `type: file_upload`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: File Upload Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: file_upload
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: File Upload Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: file_upload
+        label: Base variant
+
+      - id: field_2
+        type: file_upload
+        label: Placeholder variant
+        placeholder: Upload one or more files
+
+      - id: field_3
+        type: file_upload
+        label: Validator variant
+        validators:
+          - required
+          - type: min
+            value: 1
+            message:
+              en: Upload at least 1 file.
+              es: Sube al menos 1 archivo.
+          - type: max
+            value: 3
+            message:
+              en: Upload at most 3 files.
+              es: Sube como maximo 3 archivos.
+
+      - id: field_4
+        type: file_upload
+        label:
+          en: Localized variant
+          es: Variante localizada
+        placeholder:
+          en: Upload localized files
+          es: Sube archivos localizados
+
+      - id: field_5
+        type: file_upload
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```

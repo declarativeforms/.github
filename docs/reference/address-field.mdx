@@ -1,0 +1,69 @@
+---
+title: Address Field
+description: "YAML reference for `type: address`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Address Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: address
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Address Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: address
+        label: Base variant
+
+      - id: field_2
+        type: address
+        label: Placeholder variant
+        placeholder: Start typing an address
+
+      - id: field_3
+        type: address
+        label: Custom variant
+        outputFormat: structured
+
+      - id: field_4
+        type: address
+        label: Validator variant
+        validators:
+          - required
+          - type: pattern
+            regex: ".+"
+            message:
+              en: Enter an address value.
+              es: Ingresa un valor de direccion.
+
+      - id: field_5
+        type: address
+        label:
+          en: Localized variant
+          es: Variante localizada
+        placeholder:
+          en: Enter localized address text
+          es: Ingresa texto de direccion localizado
+
+      - id: field_6
+        type: address
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```

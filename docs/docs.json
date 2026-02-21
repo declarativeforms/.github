@@ -34,8 +34,24 @@
           {
             "group": "Reference",
             "pages": [
+              "reference/address-field",
+              "reference/address-locality-field",
+              "reference/address-region-field",
+              "reference/address-country-field",
+              "reference/date-field",
+              "reference/dropdown-field",
+              "reference/email-field",
+              "reference/file-upload-field",
+              "reference/hidden-field",
+              "reference/long-text-field",
+              "reference/mobile-number-field",
+              "reference/multiple-select-field",
+              "reference/number-field",
+              "reference/rating-field",
+              "reference/signature-field",
               "reference/short-text-field",
-              "reference/long-text-field"
+              "reference/single-select-field",
+              "reference/url-field"
             ]
           },
           {

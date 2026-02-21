@@ -1,0 +1,64 @@
+---
+title: Address Country Field
+description: "YAML reference for `type: address_country`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Address Country Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: address_country
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Address Country Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: address_country
+        label: Base variant
+
+      - id: field_2
+        type: address_country
+        label: Placeholder variant
+        placeholder: Enter country
+
+      - id: field_3
+        type: address_country
+        label: Validator variant
+        validators:
+          - required
+          - type: pattern
+            regex: ".+"
+            message:
+              en: Enter a country value.
+              es: Ingresa un valor de pais.
+
+      - id: field_4
+        type: address_country
+        label:
+          en: Localized variant
+          es: Variante localizada
+        placeholder:
+          en: Enter localized country text
+          es: Ingresa texto de pais localizado
+
+      - id: field_5
+        type: address_country
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```

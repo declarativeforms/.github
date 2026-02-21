@@ -1,19 +1,19 @@
 ---
-title: Short Text Field
-description: "YAML reference for `type: short_text`."
+title: Number Field
+description: "YAML reference for `type: number`."
 ---
 
 ## Minimal example
 
 ```yaml
 version: 1
-title: Short Text Minimal
+title: Number Minimal
 sections:
   - id: section_1
     title: Section 1
     fields:
       - id: field_1
-        type: short_text
+        type: number
         label: Field 1
     next: done
 ```
@@ -22,52 +22,52 @@ sections:
 
 ```yaml
 version: 1
-title: Short Text Full Configuration
+title: Number Full Configuration
 sections:
   - id: section_1
     title: Variant Coverage
     fields:
       - id: field_1
-        type: short_text
+        type: number
         label: Base variant
 
       - id: field_2
-        type: short_text
+        type: number
         label: Placeholder variant
-        placeholder: Enter text
+        placeholder: Enter whole number
 
       - id: field_3
-        type: short_text
+        type: number
         label: Validator variant
         validators:
           - required
           - type: min
-            value: 3
+            value: 1
             message:
-              en: Minimum 3 characters.
-              es: Minimo 3 caracteres.
+              en: Use a value of at least 1.
+              es: Usa un valor de al menos 1.
           - type: max
-            value: 50
+            value: 100
             message:
-              en: Maximum 50 characters.
-              es: Maximo 50 caracteres.
+              en: Use a value of at most 100.
+              es: Usa un valor de como maximo 100.
           - type: pattern
-            regex: "^[A-Za-z0-9 _-]+$"
+            regex: "^\\d+$"
             message:
-              en: Use letters, numbers, spaces, underscore, or hyphen.
-              es: Usa letras, numeros, espacios, guion bajo o guion.
+              en: Use whole numbers only.
+              es: Usa solo numeros enteros.
 
       - id: field_4
-        type: short_text
+        type: number
         label:
           en: Localized variant
           es: Variante localizada
         placeholder:
-          en: Enter localized text
-          es: Ingresa texto localizado
+          en: Enter localized number
+          es: Ingresa numero localizado
 
       - id: field_5
-        type: short_text
+        type: number
         label: Visible when variant
         visible_when: data.field_1 != ""
     next: done

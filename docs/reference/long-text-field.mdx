@@ -12,9 +12,9 @@ sections:
   - id: section_1
     title: Section 1
     fields:
-      - id: feedback
+      - id: field_1
         type: long_text
-        label: Feedback
+        label: Field 1
     next: done
 ```
 
@@ -25,43 +25,50 @@ version: 1
 title: Long Text Full Configuration
 sections:
   - id: section_1
-    title: Feedback
+    title: Variant Coverage
     fields:
-      - id: feedback_type
-        type: single_select
-        label: Feedback type
-        options:
-          - bug
-          - feature
-          - general
-        validators:
-          - required
-
-      - id: feedback_details
+      - id: field_1
         type: long_text
-        label:
-          en: Feedback details
-          es: Detalles de comentarios
-        placeholder:
-          en: Tell us what happened
-          es: Cuentanos lo que paso
-        visible_when: data.feedback_type != ""
+        label: Base variant
+
+      - id: field_2
+        type: long_text
+        label: Placeholder variant
+        placeholder: Enter detailed text
+
+      - id: field_3
+        type: long_text
+        label: Validator variant
         validators:
           - required
           - type: min
             value: 20
             message:
-              en: Use at least 20 characters.
-              es: Usa al menos 20 caracteres.
+              en: Minimum 20 characters.
+              es: Minimo 20 caracteres.
           - type: max
             value: 1000
             message:
-              en: Use 1000 characters or fewer.
-              es: Usa 1000 caracteres o menos.
+              en: Maximum 1000 characters.
+              es: Maximo 1000 caracteres.
           - type: pattern
-            regex: "^[\\s\\S]*$"
+            regex: "^[A-Za-z0-9\\s.,!?'-]+$"
             message:
-              en: Invalid content.
-              es: Contenido invalido.
+              en: Use letters, numbers, spaces, and basic punctuation.
+              es: Usa letras, numeros, espacios y puntuacion basica.
+
+      - id: field_4
+        type: long_text
+        label:
+          en: Localized variant
+          es: Variante localizada
+        placeholder:
+          en: Enter localized detailed text
+          es: Ingresa texto detallado localizado
+
+      - id: field_5
+        type: long_text
+        label: Visible when variant
+        visible_when: data.field_1 != ""
     next: done
 ```

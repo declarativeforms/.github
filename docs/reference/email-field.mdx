@@ -1,0 +1,79 @@
+---
+title: Email Field
+description: "YAML reference for `type: email`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Email Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: email
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Email Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: email
+        label: Base variant
+
+      - id: field_2
+        type: email
+        label: Placeholder variant
+        placeholder: name@example.com
+
+      - id: field_3
+        type: email
+        label: Custom variant
+        otp: true
+
+      - id: field_4
+        type: email
+        label: Validator variant
+        validators:
+          - required
+          - type: min
+            value: 6
+            message:
+              en: Minimum 6 characters.
+              es: Minimo 6 caracteres.
+          - type: max
+            value: 120
+            message:
+              en: Maximum 120 characters.
+              es: Maximo 120 caracteres.
+          - type: pattern
+            regex: "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+            message:
+              en: Enter a valid email format.
+              es: Ingresa un formato de correo valido.
+
+      - id: field_5
+        type: email
+        label:
+          en: Localized variant
+          es: Variante localizada
+        placeholder:
+          en: localized@example.com
+          es: localizado@ejemplo.com
+
+      - id: field_6
+        type: email
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```

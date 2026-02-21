@@ -1,0 +1,56 @@
+---
+title: Hidden Field
+description: "YAML reference for `type: hidden`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Hidden Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: hidden
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Hidden Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: hidden
+        label: Base variant
+
+      - id: field_2
+        type: hidden
+        label: Validator variant
+        validators:
+          - required
+          - type: pattern
+            regex: "^[A-Za-z0-9_-]+$"
+            message:
+              en: Hidden value format is invalid.
+              es: El formato del valor oculto no es valido.
+
+      - id: field_3
+        type: hidden
+        label:
+          en: Localized variant
+          es: Variante localizada
+
+      - id: field_4
+        type: hidden
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```

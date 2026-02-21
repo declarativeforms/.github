@@ -1,0 +1,107 @@
+---
+title: Multiple Select Field
+description: "YAML reference for `type: multiple_select`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Multiple Select Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: multiple_select
+        label: Field 1
+        options:
+          - Option A
+          - Option B
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Multiple Select Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: multiple_select
+        label: Base variant
+        options:
+          - Option A
+          - Option B
+
+      - id: field_2
+        type: multiple_select
+        label: Placeholder variant
+        placeholder: Select options
+        options:
+          - Option A
+          - Option B
+
+      - id: field_3
+        type: multiple_select
+        label: Custom variant
+        options:
+          - value: option_a
+            label: Option A
+          - value: option_b
+            label: Option B
+          - value: option_c
+            label: Option C
+
+      - id: field_4
+        type: multiple_select
+        label: Validator variant
+        options:
+          - value: value_1
+            label: Value 1
+          - value: value_2
+            label: Value 2
+          - value: value_3
+            label: Value 3
+        validators:
+          - required
+          - type: min
+            value: 1
+            message:
+              en: Select at least 1 option.
+              es: Selecciona al menos 1 opcion.
+          - type: max
+            value: 2
+            message:
+              en: Select at most 2 options.
+              es: Selecciona como maximo 2 opciones.
+
+      - id: field_5
+        type: multiple_select
+        label:
+          en: Localized variant
+          es: Variante localizada
+        options:
+          - value: localized_1
+            label:
+              en: Localized Option 1
+              es: Opcion Localizada 1
+          - value: localized_2
+            label:
+              en: Localized Option 2
+              es: Opcion Localizada 2
+
+      - id: field_6
+        type: multiple_select
+        label: Visible when variant
+        options:
+          - value: visible_yes
+            label: Visible Yes
+          - value: visible_no
+            label: Visible No
+        visible_when: data.field_1 != ""
+    next: done
+```

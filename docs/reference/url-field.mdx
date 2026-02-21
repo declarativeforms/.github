@@ -1,19 +1,19 @@
 ---
-title: Short Text Field
-description: "YAML reference for `type: short_text`."
+title: URL Field
+description: "YAML reference for `type: url`."
 ---
 
 ## Minimal example
 
 ```yaml
 version: 1
-title: Short Text Minimal
+title: URL Minimal
 sections:
   - id: section_1
     title: Section 1
     fields:
       - id: field_1
-        type: short_text
+        type: url
         label: Field 1
     next: done
 ```
@@ -22,52 +22,52 @@ sections:
 
 ```yaml
 version: 1
-title: Short Text Full Configuration
+title: URL Full Configuration
 sections:
   - id: section_1
     title: Variant Coverage
     fields:
       - id: field_1
-        type: short_text
+        type: url
         label: Base variant
 
       - id: field_2
-        type: short_text
+        type: url
         label: Placeholder variant
-        placeholder: Enter text
+        placeholder: https://example.com
 
       - id: field_3
-        type: short_text
+        type: url
         label: Validator variant
         validators:
           - required
           - type: min
-            value: 3
+            value: 10
             message:
-              en: Minimum 3 characters.
-              es: Minimo 3 caracteres.
+              en: Minimum 10 characters.
+              es: Minimo 10 caracteres.
           - type: max
-            value: 50
+            value: 200
             message:
-              en: Maximum 50 characters.
-              es: Maximo 50 caracteres.
+              en: Maximum 200 characters.
+              es: Maximo 200 caracteres.
           - type: pattern
-            regex: "^[A-Za-z0-9 _-]+$"
+            regex: "^https?://.+$"
             message:
-              en: Use letters, numbers, spaces, underscore, or hyphen.
-              es: Usa letras, numeros, espacios, guion bajo o guion.
+              en: Use a valid HTTP or HTTPS URL.
+              es: Usa una URL valida HTTP o HTTPS.
 
       - id: field_4
-        type: short_text
+        type: url
         label:
           en: Localized variant
           es: Variante localizada
         placeholder:
-          en: Enter localized text
-          es: Ingresa texto localizado
+          en: https://localized.example
+          es: https://localizado.ejemplo
 
       - id: field_5
-        type: short_text
+        type: url
         label: Visible when variant
         visible_when: data.field_1 != ""
     next: done
