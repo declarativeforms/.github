@@ -1,49 +1,50 @@
 ---
 title: Introduction
-description: Build forms as YAML in GitHub and publish hosted form URLs without UI builder bottlenecks.
+description: Build and publish Git-native forms from YAML without a visual builder workflow.
 ---
 
-Declarative Forms is a form-building system where forms are declared in YAML and rendered as hosted forms.
+Declarative Forms is a developer-first form system that renders hosted forms from YAML files in public GitHub repositories.
 
 `https://app.declarativeforms.com/{owner}/{repository}/{file}`
 
-If your file is `rental_application.yaml`, the form URL ends with `/rental_application`.
+If your file is `bug_report.yaml`, the form URL ends with `/bug_report`.
 
 ## What it is
 
 A declarative form definition model:
 
-- Form structure is a YAML file
+- Form structure lives in a YAML file
 - Sections and fields are explicit in source
-- Routing between sections is defined in `next`
+- Section routing is defined with `next`
+- The hosted app loads the YAML and renders the form
 
 ## What problem it solves
 
-Most product work is now code-first and Git-first. Traditional form workflows still force visual builder editing, which breaks developer momentum.
+Form builders work well for one-off forms, but they become harder to manage when forms are part of real workflows and change over time.
 
-Declarative Forms keeps forms inside the same workflow as engineering work: write text, commit changes, review diffs, ship updates.
+Declarative Forms keeps forms in the same workflow as the rest of your work: write text, commit changes, review diffs, and ship updates from GitHub.
 
 ## Why it is different
 
-UI-first form tools treat forms as builder state. Declarative Forms treats forms as source definitions.
+UI-first tools hide form structure behind builder state. Declarative Forms treats the form definition as source.
 
 That gives you:
 
-- Git history for every form change
-- Pull request review for form updates
-- A workflow that matches LLM-assisted development
+- Git history for form changes
+- Pull request review for updates
+- A workflow that fits code-first and LLM-assisted development
 
 ## Core value proposition
 
-You can move from idea to live form using the same workflow you already use for code.
+You can go from idea to live form using the same workflow you already use to ship code.
 
-No parallel UI authoring flow. No hidden builder state.
+No separate builder process. No hidden editor state.
 
 ## High-level how it works
 
 1. Create a YAML form file with `version: 1`
-2. Push that file to the `main` branch of a public GitHub repository
+2. Push the file to the `main` branch of a public GitHub repository
 3. Open `https://app.declarativeforms.com/{owner}/{repository}/{file}`
-4. The hosted app loads the YAML and renders the form
+4. The hosted app reads the YAML and renders the form
 
 [Build your first form ->](/getting-started/quickstart)

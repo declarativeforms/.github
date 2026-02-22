@@ -1,11 +1,7 @@
 ---
-title: Feedback and Feature Request Template
-description: Copy-ready YAML template for collecting feedback and requests with conditional follow-up routing.
+title: Feedback and Feature Request Form Template
+description: YAML template for feedback and feature request collection with conditional follow-up routing.
 ---
-
-Use this template when you want one form to collect different types of product input and route each submission type to the most relevant follow-up questions.
-
-## Full template
 
 ```yaml
 version: 1
@@ -162,11 +158,3 @@ completion:
 # Optional localization setup (add localized strings to titles/labels when needed).
 # locale: en
 ```
-
-## Customize this template
-
-Change the `response_type` options and the `section_1.next` rule list to match the categories you collect. The template routes categories to separate sections so each path stays focused and the final preferences section can be reused.
-
-If you only need one input type, remove the unused sections and simplify `section_1.next` to a fixed section ID or `done`. The shared final section can stay in place or be removed depending on whether follow-up permission is required.
-
-Uncomment only the integration blocks you plan to use and replace placeholder values before deploying. The optional email, webhook, and analytics blocks are included so you can enable notifications without changing the core form structure.

@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: Build and publish a simple bug report triage form in minutes.
+description: Build and publish a simple bug report triage form from a single YAML file.
 ---
 
 This is the fastest path to a live form.
@@ -39,7 +39,7 @@ sections:
     next: done
 ```
 
-This demonstrates the core model: one YAML file defines the full form.
+One YAML file defines the form structure and flow.
 
 ## 2. Push to GitHub
 
@@ -56,3 +56,5 @@ git push origin main
 `https://app.declarativeforms.com/{owner}/{repository}/bug_report`
 
 Replace `{owner}` and `{repository}` with your GitHub namespace and repository name.
+
+After the push, the hosted app reads `bug_report.yaml` from your repository and renders the form from that file.

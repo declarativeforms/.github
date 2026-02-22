@@ -1,3 +1,0 @@
-Next, I want you to write a guide containing the following. The guide should explain how to use conditional navigation covering it to the full extent. I really like the way that digital ocean and stripe write their documentation. Analyse the project and the documentation of digital ocean and stripe to create a style of writing and then come up with 3 unique draft for this page. There after choose the best suited one and write the full guide. Ask clarifying questions to execute this ask to the highest quality. I also want you to create a CLAUDE.md file which will help with creating future guides.
-
-

@@ -1,11 +1,7 @@
 ---
 title: Client Intake Form Template
-description: Copy-ready YAML template for collecting client requirements with branching follow-up steps.
+description: YAML template for client intake workflows with conditional follow-up sections.
 ---
-
-Use this template when you need a structured intake flow that captures project details and routes users to different follow-up questions based on project type.
-
-## Full template
 
 ```yaml
 version: 1
@@ -149,11 +145,3 @@ completion:
 # Optional analytics.
 # mixpanel: replace_with_mixpanel_project_token
 ```
-
-## Customize this template
-
-Update `project_type` options and the conditional `next` rules to match your service categories. If you do not need branching, replace the rule list on `section_1` with a fixed section ID or `done`.
-
-Enable only the integration blocks you plan to use and replace placeholder values before deployment. The commented `connections` examples show supported patterns for internal notifications and downstream automation.
-
-If file uploads are not part of your intake process, remove the `attachments` field from `section_4` and keep the rest of the flow unchanged.
