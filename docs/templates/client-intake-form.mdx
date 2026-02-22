@@ -1,0 +1,159 @@
+---
+title: Client Intake Form Template
+description: Copy-ready YAML template for collecting client requirements with branching follow-up steps.
+---
+
+Use this template when you need a structured intake flow that captures project details and routes users to different follow-up questions based on project type.
+
+## Full template
+
+```yaml
+version: 1
+title: Client Intake Form
+description: Collect project requirements and contact details
+
+sections:
+  - id: section_1
+    title: Intake Basics
+    fields:
+      - id: client_name
+        type: short_text
+        label: Client name
+        placeholder: Enter name
+        validators:
+          - required
+
+      - id: contact_email
+        type: email
+        label: Contact email
+        placeholder: name@example.com
+        validators:
+          - required
+
+      - id: project_type
+        type: single_select
+        label: Project type
+        options:
+          - Website
+          - Mobile App
+          - Other
+        validators:
+          - required
+
+      - id: budget_range
+        type: dropdown
+        label: Budget range
+        placeholder: Select option
+        options:
+          - Less than 5,000
+          - 5,000 to 20,000
+          - 20,000+
+        validators:
+          - required
+
+      # Optional hidden field for prefilled source tracking.
+      # - id: source
+      #   type: hidden
+      #   label: Source
+      #   placeholder: website
+
+    next:
+      - when: data.project_type == "Website"
+        go: section_2
+      - when: data.project_type == "Mobile App"
+        go: section_3
+      - else: section_4
+
+  - id: section_2
+    title: Website Details
+    fields:
+      - id: website_scope
+        type: multiple_select
+        label: Scope
+        options:
+          - Marketing pages
+          - Blog
+          - CMS
+          - Ecommerce
+        validators:
+          - required
+
+      - id: existing_website
+        type: url
+        label: Existing website URL
+        placeholder: https://example.com
+    next: section_4
+
+  - id: section_3
+    title: Mobile App Details
+    fields:
+      - id: target_platforms
+        type: multiple_select
+        label: Target platforms
+        options:
+          - iOS
+          - Android
+          - Both
+        validators:
+          - required
+
+      - id: app_stage
+        type: single_select
+        label: Current stage
+        options:
+          - Idea
+          - Prototype
+          - Existing app
+        validators:
+          - required
+    next: section_4
+
+  - id: section_4
+    title: Project Requirements
+    fields:
+      - id: project_summary
+        type: long_text
+        label: Project summary
+        placeholder: Describe the project requirements
+        validators:
+          - required
+
+      - id: attachments
+        type: file_upload
+        label: Attachments
+        placeholder: Upload files
+    next: done
+
+completion:
+  title: Thank you, {{data.client_name}}!
+  message: Your intake form was submitted.
+  button:
+    label: Return to website
+    url: https://example.com
+
+# Optional notifications and integrations.
+# connections:
+#   - type: email
+#     to: team@example.com
+#     subject: "New intake - {{form.title}}"
+#     include_responses: true
+#
+#   - type: webhook
+#     url: https://example.com/webhook/intake
+#
+#   - type: airtable
+#     connection_id: replace_with_connection_id
+#     base_id: replace_with_base_id
+#     table_id_or_name: Intake Requests
+#
+# Optional analytics.
+# mixpanel: replace_with_mixpanel_project_token
+```
+
+## Customize this template
+
+Update `project_type` options and the conditional `next` rules to match your service categories. If you do not need branching, replace the rule list on `section_1` with a fixed section ID or `done`.
+
+Enable only the integration blocks you plan to use and replace placeholder values before deployment. The commented `connections` examples show supported patterns for internal notifications and downstream automation.
+
+If file uploads are not part of your intake process, remove the `attachments` field from `section_4` and keep the rest of the flow unchanged.

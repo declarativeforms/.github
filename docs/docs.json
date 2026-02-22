@@ -25,15 +25,18 @@
             ]
           },
           {
-            "group": "Guides",
+            "group": "Templates",
             "pages": [
-              "guides/multiple-sections",
-              "guides/conditional-navigation"
+              "templates/client-intake-form",
+              "templates/event-registration-rsvp",
+              "templates/feedback-feature-request"
             ]
           },
           {
             "group": "Reference",
             "pages": [
+              "reference/form-reference",
+              "reference/section-reference",
               "reference/address-field",
               "reference/address-locality-field",
               "reference/address-region-field",
