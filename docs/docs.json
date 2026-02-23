@@ -45,6 +45,7 @@
               "reference/dropdown-field",
               "reference/email-field",
               "reference/file-upload-field",
+              "reference/geolocation-field",
               "reference/hidden-field",
               "reference/long-text-field",
               "reference/mobile-number-field",

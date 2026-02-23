@@ -1,0 +1,51 @@
+---
+title: Geolocation Field
+description: "YAML reference for `type: geolocation`."
+---
+
+## Minimal example
+
+```yaml
+version: 1
+title: Geolocation Minimal
+sections:
+  - id: section_1
+    title: Section 1
+    fields:
+      - id: field_1
+        type: geolocation
+        label: Field 1
+    next: done
+```
+
+## Full configuration example
+
+```yaml
+version: 1
+title: Geolocation Full Configuration
+sections:
+  - id: section_1
+    title: Variant Coverage
+    fields:
+      - id: field_1
+        type: geolocation
+        label: Base variant
+
+      - id: field_2
+        type: geolocation
+        label: Validator variant
+        validators:
+          - required
+
+      - id: field_3
+        type: geolocation
+        label:
+          en: Localized variant
+          es: Variante localizada
+
+      - id: field_4
+        type: geolocation
+        label: Visible when variant
+        visible_when: data.field_1 != ""
+    next: done
+```
