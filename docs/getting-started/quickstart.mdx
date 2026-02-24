@@ -1,60 +1,97 @@
 ---
 title: Quickstart
-description: Build and publish a simple bug report triage form from a single YAML file.
+description: This guide shows the simplest way to publish a form with Declarative Forms.
 ---
 
-This is the fastest path to a live form.
+This guide shows the simplest way to publish a form with Declarative Forms.
 
-## 1. Create `bug_report.yaml`
+You’ll define a form in a single YAML file, push it to your repository, and access it instantly through a generated URL.
+
+No dashboard configuration. No setup panels. Just structure.
+
+---
+
+## 1. Create a YAML file
+
+Inside your repository, create a new file.
+You can name it anything you like — for example:
+
+```
+basic.yaml
+```
+
+Add the following:
 
 ```yaml
 version: 1
-title: Bug Report Triage
-description: Basic bug intake
+title: "Basic Example"
+description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dignissim orci eget risus tincidunt ultrices."
+
 sections:
   - id: section_1
-    title: Bug Details
+    title: "Section 1"
     fields:
-      - id: bug_title
-        type: short_text
-        label: Bug title
-        placeholder: Login button is unresponsive
-        validators:
-          - required
-      - id: reporter_email
+      - id: question_1
         type: email
-        label: Reporter email
-        placeholder: dev@example.com
-        validators:
-          - required
-      - id: severity
-        type: single_select
-        label: Severity
-        options:
-          - Low
-          - Medium
-          - High
+        label: What’s your email?
+        placeholder: hello@declarativeforms.com
         validators:
           - required
     next: done
 ```
 
-One YAML file defines the form structure and flow.
+This file fully defines your form — its structure, its fields, and how it flows.
 
-## 2. Push to GitHub
+---
 
-Push the file to the `main` branch of a public repository.
+## 2. Push to your repository
 
-```bash
-git add bug_report.yaml
-git commit -m "Add bug report triage form"
-git push origin main
+Commit and push the file to your GitHub repository.
+
+That’s all the setup required.
+
+Your repository is the source of truth. Declarative Forms reads directly from it.
+
+---
+
+## 3. Open your form
+
+Once the file is pushed, navigate to:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/<file-name>
 ```
 
-## 3. Open your live form
+For example:
 
-`https://app.declarativeforms.com/{owner}/{repository}/bug_report`
+```
+https://app.declarativeforms.com/acme/forms/basic
+```
 
-Replace `{owner}` and `{repository}` with your GitHub namespace and repository name.
+(Note: the `.yaml` extension is not included in the URL.)
 
-After the push, the hosted app reads `bug_report.yaml` from your repository and renders the form from that file.
+Your form is now live and ready to use.
+
+---
+
+## What Just Happened?
+
+Declarative Forms loaded the YAML definition from your repository and rendered it as a complete form.
+
+The structure you defined:
+
+* Specifies the version
+* Describes the form
+* Defines its sections
+* Defines the fields within each section
+* Controls how the form progresses
+
+There is no hidden configuration layer.
+What you define in the file is exactly what gets rendered.
+
+Because the form is declarative:
+
+* The entire structure is visible in one place
+* Changes can be version-controlled
+* The definition remains portable
+* The form can evolve predictably
