@@ -1,50 +1,51 @@
 ---
 title: Introduction
-description: Build and publish Git-native forms from YAML without a visual builder workflow.
+description: A declarative, portable, and Git-native way to define and deploy forms.
 ---
 
-Declarative Forms is a developer-first form system that renders hosted forms from YAML files in public GitHub repositories.
+Declarative Forms is a modern approach to building forms. Instead of creating them inside visual dashboards, forms are defined as structured configuration and rendered dynamically by the platform. The result is a system that prioritizes clarity, portability, and alignment with today’s Git-based and AI-assisted workflows.
 
-`https://app.declarativeforms.com/{owner}/{repository}/{file}`
+It is not a new interface layered on top of old ideas. It is a different model entirely.
 
-If your file is `bug_report.yaml`, the form URL ends with `/bug_report`.
+---
 
-## What it is
+## Why Declarative?
 
-A declarative form definition model:
+Traditional form builders were designed around visual editors. While convenient at first, they often obscure structure behind UI layers, fragment logic across screens, and make it difficult to understand a form in its entirety. As forms grow more complex, they become harder to reason about, harder to version, and harder to evolve.
 
-- Form structure lives in a YAML file
-- Sections and fields are explicit in source
-- Section routing is defined with `next`
-- The hosted app loads the YAML and renders the form
+Declarative Forms approaches the problem from the opposite direction. A form is treated as structured input — something that can be clearly defined, reviewed, versioned, and maintained as a cohesive system. The structure is explicit. The logic is visible. The definition is portable.
 
-## What problem it solves
+This makes forms easier to understand, easier to manage, and easier to integrate into modern workflows.
 
-Form builders work well for one-off forms, but they become harder to manage when forms are part of real workflows and change over time.
+---
 
-Declarative Forms keeps forms in the same workflow as the rest of your work: write text, commit changes, review diffs, and ship updates from GitHub.
+## Designed for Modern Teams
 
-## Why it is different
+Today, many teams operate in environments shaped by Git, configuration files, and increasingly, AI tools that generate and modify structured content. In these workflows, dashboards feel isolated. They sit outside the systems where the rest of the product lives.
 
-UI-first tools hide form structure behind builder state. Declarative Forms treats the form definition as source.
+Declarative Forms fits naturally into this environment. Because forms are defined declaratively, they can be version-controlled, reviewed, and iterated on in a predictable way. They are not locked behind proprietary interfaces or hidden configuration layers.
 
-That gives you:
+This approach is especially well suited for:
 
-- Git history for form changes
-- Pull request review for updates
-- A workflow that fits code-first and LLM-assisted development
+* Technical operators and startup teams
+* Founder-builders and internal tools teams
+* AI-native workflows that benefit from structured, machine-readable definitions
+* Anyone comfortable working with configuration rather than drag-and-drop interfaces
 
-## Core value proposition
+---
 
-You can go from idea to live form using the same workflow you already use to ship code.
+## Core Principles
 
-No separate builder process. No hidden editor state.
+Declarative Forms is built on a few foundational principles:
 
-## High-level how it works
+* **Declarative by design** – Forms are defined as structured configuration rather than assembled through UI layers.
+* **Git-native** – Designed to work naturally within version-controlled workflows.
+* **Portable** – Form definitions are not trapped inside dashboards.
+* **Transparent** – The full structure of a form can be understood in one place.
+* **AI-compatible** – Structured definitions work seamlessly with modern language models and automation tools.
 
-1. Create a YAML form file with `version: 1`
-2. Push the file to the `main` branch of a public GitHub repository
-3. Open `https://app.declarativeforms.com/{owner}/{repository}/{file}`
-4. The hosted app reads the YAML and renders the form
+---
 
-[Build your first form ->](/getting-started/quickstart)
+Declarative Forms is not intended to replace visual builders for everyone. It is designed for teams who value structure, clarity, and control — and who want their forms to evolve with the rest of their stack.
+
+If that approach resonates, the best next step is to explore how a declarative form is structured and how it fits into your workflow.
