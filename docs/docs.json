@@ -25,6 +25,12 @@
             ]
           },
           {
+            "group": "Guides",
+            "pages": [
+              "guides/newsletter-signup"
+            ]
+          },
+          {
             "group": "Templates",
             "pages": [
               "templates/client-intake-form",
