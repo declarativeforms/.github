@@ -1,0 +1,70 @@
+---
+title: Build a Customer Survey with Ratings
+description: Create a customer satisfaction survey with a 1–5 rating scale and endpoint labels.
+---
+
+You'll build a customer satisfaction survey that collects a name, email, a 1–5 rating, and an optional comment. By the end you'll understand how `type: rating` renders an interactive scale and how `min_label` and `max_label` add descriptive labels to the endpoints.
+
+---
+
+## Define the form
+
+Create a file called `customer_survey.yaml` in your repository:
+
+```yaml
+version: 1
+title: Customer Survey
+description: Help us improve — rate your experience and share your thoughts.
+
+sections:
+  - id: survey
+    title: Your Feedback
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+        placeholder: Jane Smith
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email
+        placeholder: jane@example.com
+        validators:
+          - required
+
+      - id: satisfaction
+        type: rating
+        label: How satisfied are you with our service?
+        min_label: Very dissatisfied
+        max_label: Very satisfied
+        validators:
+          - required
+
+      - id: comments
+        type: long_text
+        label: Any additional comments?
+        placeholder: Tell us more about your experience.
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add customer_survey.yaml
+git commit -m "add customer survey form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/customer_survey
+```
+
+(The `.yaml` extension is not included in the URL.)

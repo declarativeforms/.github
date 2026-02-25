@@ -29,7 +29,15 @@
             "pages": [
               "guides/newsletter-signup",
               "guides/event-rsvp",
-              "guides/feedback-form"
+              "guides/feedback-form",
+              "guides/job-application",
+              "guides/customer-survey",
+              "guides/contact-form",
+              "guides/registration-form",
+              "guides/booking-form",
+              "guides/order-form",
+              "guides/waitlist-signup",
+              "guides/country-selector"
             ]
           },
           {

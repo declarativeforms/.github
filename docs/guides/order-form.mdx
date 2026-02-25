@@ -1,0 +1,84 @@
+---
+title: Build an Order Form with Conditional Fields
+description: Create an order form that shows or hides fields based on the user's selections.
+---
+
+You'll build an order form where selecting "Delivery" reveals an address field, while selecting "Pickup" keeps it hidden. By the end you'll understand how `visible_when` conditionally shows or hides individual fields based on the current form data.
+
+---
+
+## Define the form
+
+Create a file called `order.yaml` in your repository:
+
+```yaml
+version: 1
+title: Place an Order
+description: Choose your item and how you'd like to receive it.
+
+sections:
+  - id: order
+    title: Your Order
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+        placeholder: Jane Smith
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email
+        placeholder: jane@example.com
+        validators:
+          - required
+
+      - id: item
+        type: single_select
+        label: Item
+        options:
+          - T-Shirt
+          - Mug
+          - Sticker Pack
+        validators:
+          - required
+
+      - id: fulfillment
+        type: single_select
+        label: How would you like to receive it?
+        options:
+          - Delivery
+          - Pickup
+        validators:
+          - required
+
+      - id: address
+        type: short_text
+        label: Delivery address
+        placeholder: 123 Main St, City, Country
+        visible_when: data.fulfillment === 'Delivery'
+        validators:
+          - required
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add order.yaml
+git commit -m "add order form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/order
+```
+
+(The `.yaml` extension is not included in the URL.)

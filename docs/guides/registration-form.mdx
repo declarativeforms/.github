@@ -1,0 +1,68 @@
+---
+title: Build a Registration Form with Email Verification
+description: Create a registration form that verifies the user's email address with a one-time code.
+---
+
+You'll build a registration form that collects a name, email, and password, then requires the user to verify their email with a one-time code before submitting. By the end you'll understand how adding `otp: true` to an email field enables built-in email verification.
+
+---
+
+## Define the form
+
+Create a file called `registration.yaml` in your repository:
+
+```yaml
+version: 1
+title: Create an Account
+description: Sign up to get started — we'll verify your email address.
+
+sections:
+  - id: registration
+    title: Your Details
+    fields:
+      - id: name
+        type: short_text
+        label: Full name
+        placeholder: Jane Smith
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email
+        placeholder: jane@example.com
+        otp: true
+        validators:
+          - required
+
+      - id: password
+        type: short_text
+        label: Password
+        placeholder: Choose a strong password
+        validators:
+          - required
+          - type: min
+            value: 8
+            message: Password must be at least 8 characters.
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add registration.yaml
+git commit -m "add registration form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/registration
+```
+
+(The `.yaml` extension is not included in the URL.)

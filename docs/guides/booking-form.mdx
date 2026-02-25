@@ -1,0 +1,109 @@
+---
+title: Build a Booking Form in Multiple Languages
+description: Create a booking form that displays in English or Spanish based on the user's language.
+---
+
+You'll build a booking form for a hotel that supports both English and Spanish. By the end you'll understand how replacing any text string with a locale map (`{ en: "...", es: "..." }`) enables multi-language forms, how `locale` sets the default language, and how `?lang=` lets users switch languages via the URL.
+
+---
+
+## Define the form
+
+Create a file called `booking.yaml` in your repository:
+
+```yaml
+version: 1
+title:
+  en: "Book a Room"
+  es: "Reservar una habitación"
+description:
+  en: "Reserve your stay — select your dates and preferences."
+  es: "Reserva tu estadía — selecciona tus fechas y preferencias."
+locale: en
+
+sections:
+  - id: booking
+    title:
+      en: "Your Booking"
+      es: "Tu reserva"
+    fields:
+      - id: name
+        type: short_text
+        label:
+          en: "Full name"
+          es: "Nombre completo"
+        placeholder:
+          en: "Jane Smith"
+          es: "María García"
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label:
+          en: "Email"
+          es: "Correo electrónico"
+        placeholder:
+          en: "jane@example.com"
+          es: "maria@ejemplo.com"
+        validators:
+          - required
+
+      - id: check_in
+        type: date
+        label:
+          en: "Check-in date"
+          es: "Fecha de llegada"
+        validators:
+          - required
+
+      - id: check_out
+        type: date
+        label:
+          en: "Check-out date"
+          es: "Fecha de salida"
+        validators:
+          - required
+
+      - id: room_type
+        type: single_select
+        label:
+          en: "Room type"
+          es: "Tipo de habitación"
+        options:
+          - value: standard
+            label:
+              en: "Standard"
+              es: "Estándar"
+          - value: deluxe
+            label:
+              en: "Deluxe"
+              es: "De lujo"
+          - value: suite
+            label:
+              en: "Suite"
+              es: "Suite"
+        validators:
+          - required
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add booking.yaml
+git commit -m "add booking form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/booking
+```
+
+(The `.yaml` extension is not included in the URL.)
