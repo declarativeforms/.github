@@ -27,7 +27,8 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/newsletter-signup"
+              "guides/newsletter-signup",
+              "guides/event-rsvp"
             ]
           },
           {

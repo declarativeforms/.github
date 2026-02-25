@@ -1,0 +1,89 @@
+---
+title: Build an Event RSVP with Conditional Logic
+description: Create a multi-step RSVP form that routes attendees based on their response.
+---
+
+You'll build a two-step event RSVP that asks for attendance, then conditionally routes "Yes" respondents to a details section while skipping it for those who decline. By the end you'll understand how `next` with `when`/`go`/`else` enables conditional branching, how multiple sections chain together, and how `single_select` with `options` works.
+
+---
+
+## Define the form
+
+Create a file called `event_rsvp.yaml` in your repository:
+
+```yaml
+version: 1
+title: Event RSVP
+description: Let us know if you can make it.
+
+sections:
+  - id: attendance
+    title: Attendance
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+        placeholder: Jane Smith
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email
+        placeholder: jane@example.com
+        validators:
+          - required
+
+      - id: attending
+        type: single_select
+        label: Will you be attending?
+        options:
+          - "Yes"
+          - "No"
+        validators:
+          - required
+    next:
+      - when: data.attending == 'Yes'
+        go: details
+      - else: done
+
+  - id: details
+    title: Event Details
+    fields:
+      - id: dietary
+        type: single_select
+        label: Dietary requirements
+        options:
+          - None
+          - Vegetarian
+          - Vegan
+          - Gluten-free
+        validators:
+          - required
+
+      - id: notes
+        type: long_text
+        label: Anything else we should know?
+        placeholder: Allergies, accessibility needs, etc.
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add event_rsvp.yaml
+git commit -m "add event rsvp form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/event_rsvp
+```
+
+(The `.yaml` extension is not included in the URL.)
