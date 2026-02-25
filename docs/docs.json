@@ -31,14 +31,6 @@
             ]
           },
           {
-            "group": "Templates",
-            "pages": [
-              "templates/client-intake-form",
-              "templates/event-registration-rsvp",
-              "templates/feedback-feature-request"
-            ]
-          },
-          {
             "group": "Reference",
             "pages": [
               "reference/form-reference",
