@@ -3,13 +3,7 @@ title: Sections
 description: How sections divide a form into steps and control navigation.
 ---
 
-Sections divide a form into discrete steps. Each section is presented one at a time — the user completes one before moving to the next.
-
----
-
-## Core properties
-
-A section has an identifier, a title, an array of fields, and a navigation target.
+Sections divide a form into discrete steps. The platform presents one section at a time — the user completes it, then moves to the next. At minimum, a section needs an identifier, a title, fields, and a navigation target.
 
 ```yaml
 sections:
@@ -30,25 +24,62 @@ sections:
 ```
 
 - **`id`** — A unique identifier for the section. Used in navigation targets and the `?step=` URL parameter.
-- **`title`** — The heading displayed above the section's fields. Can be a plain string or a [localized object](/concepts/localization).
+- **`title`** — The heading displayed above the section's fields. [Localizable](/concepts/localization).
 - **`fields`** — An ordered array of field definitions. See [Fields](/concepts/fields).
-- **`next`** — Determines what happens after the section is submitted.
+- **`next`** — Determines what happens when the user submits this section.
 
 ---
 
-## Navigation
+## Ending the form
 
-The `next` property supports three modes.
-
-**Static navigation** — a string that points to the next destination:
+The simplest navigation — `next: done` submits the form and displays the [completion screen](/concepts/form#completion-screen).
 
 ```yaml
-next: details          # Go to the section with id "details".
-next: done             # End the form and submit.
-next: "https://example.com"  # Redirect to an external URL.
+next: done
 ```
 
-**Conditional navigation** — an array of rules evaluated in order against the form data:
+- **`done`** — A reserved keyword. Submits the form data and shows the completion screen.
+
+---
+
+## Navigating to another section
+
+For multi-step forms, `next` points to the `id` of the next section.
+
+```yaml
+sections:
+  - id: contact
+    title: Contact Details
+    fields:
+      # ...
+    next: preferences
+
+  - id: preferences
+    title: Your Preferences
+    fields:
+      # ...
+    next: done
+```
+
+- **`next`** — The `id` of the section to navigate to. The form advances to that section when the user submits the current one.
+
+---
+
+## External redirect
+
+You can redirect to an external URL instead of continuing the form.
+
+```yaml
+next: "https://example.com/thank-you"
+```
+
+- **`next`** — Any value starting with `https://` triggers a browser redirect. No completion screen is shown.
+
+---
+
+## Conditional navigation
+
+For branching logic, `next` accepts an array of rules evaluated in order.
 
 ```yaml
 next:
@@ -59,12 +90,14 @@ next:
   - else: done
 ```
 
-Each `when` is a JavaScript expression with access to a `data` object containing all submitted field values. The first rule that evaluates to `true` determines the destination. The `else` entry is a fallback — if no `when` matches, it is used. If no rule matches and there is no `else`, the form ends.
+- **`when`** — A JavaScript expression evaluated against the submitted form data.
+- **`go`** — The section `id` to navigate to if the expression is true.
+- **`else`** — A fallback destination used when no `when` rule matches.
+
+Rules are evaluated in order — the first match wins. The `data` object contains all submitted field values keyed by `id`. If no rule matches and there is no `else`, the form ends.
 
 ---
 
-## Multi-section forms
+## Resuming mid-form
 
-When a form has multiple sections, the URL updates with `?step=` and `?submission_id=` as the user progresses. This means a user can bookmark or share a mid-form URL and resume where they left off.
-
-Sections are always rendered one at a time. There is no way to display multiple sections simultaneously.
+When a form has multiple sections, the URL updates with `?step=` and `?submission_id=` as the user progresses. This allows the user to bookmark or share a mid-form URL and resume where they left off.

@@ -31,6 +31,7 @@
               "concepts/form",
               "concepts/sections",
               "concepts/fields",
+              "concepts/validators",
               "concepts/connections",
               "concepts/localization",
               "concepts/analytics"

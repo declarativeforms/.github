@@ -1,0 +1,105 @@
+---
+title: Validators
+description: Rules that enforce constraints on field values before submission.
+---
+
+Validators are rules you attach to a [field](/concepts/fields) to enforce constraints on its value. They are defined as an array on the `validators` property and checked in order when the user submits a section.
+
+```yaml
+- id: name
+  type: short_text
+  label: Full Name
+  validators:
+    - required
+    - type: min
+      value: 2
+      message: Name must be at least 2 characters.
+    - type: max
+      value: 100
+```
+
+You can combine multiple validators on a single field. Each validator is checked independently.
+
+---
+
+## Required
+
+Ensures the field has a value before the section can be submitted.
+
+```yaml
+validators:
+  - required
+```
+
+- **`required`** — A string shorthand, not an object. The field must contain a non-empty value to submit.
+
+---
+
+## Minimum
+
+Enforces a lower bound on the field's value. What "minimum" means depends on the field type.
+
+```yaml
+validators:
+  - type: min
+    value: 10
+    message: Must be at least 10 characters.
+```
+
+- **`type`** — Always `min`.
+- **`value`** — The minimum threshold.
+- **`message`** — An optional custom error message. [Localizable](/concepts/localization).
+
+| Field type | What `min` enforces |
+|---|---|
+| `short_text`, `long_text`, `email`, `url` | Minimum character count |
+| `number` | Minimum numeric value |
+| `date` | Earliest allowed date (ISO date string) |
+| `rating` | Minimum rating value |
+| `file_upload` | Minimum number of files |
+| `multiple_select` | Minimum number of selections |
+
+---
+
+## Maximum
+
+Enforces an upper bound on the field's value. Interpretation mirrors the minimum validator.
+
+```yaml
+validators:
+  - type: max
+    value: 500
+    message: Must be 500 characters or fewer.
+```
+
+- **`type`** — Always `max`.
+- **`value`** — The maximum threshold.
+- **`message`** — An optional custom error message. [Localizable](/concepts/localization).
+
+| Field type | What `max` enforces |
+|---|---|
+| `short_text`, `long_text`, `email`, `url` | Maximum character count |
+| `number` | Maximum numeric value |
+| `date` | Latest allowed date (ISO date string) |
+| `rating` | Maximum rating value |
+| `file_upload` | Maximum number of files |
+| `multiple_select` | Maximum number of selections |
+
+---
+
+## Pattern
+
+Validates the field's value against a regular expression.
+
+```yaml
+validators:
+  - type: pattern
+    regex: "^[A-Za-z ]+$"
+    message: Only letters and spaces allowed.
+```
+
+- **`type`** — Always `pattern`.
+- **`regex`** — A regular expression string the value must match.
+- **`message`** — An optional custom error message. [Localizable](/concepts/localization).
+
+For `number` fields, if no pattern validator is provided, a default whole-number pattern (`^\d+$`) is applied automatically.

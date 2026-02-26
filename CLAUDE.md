@@ -75,14 +75,17 @@ git add/commit/push + URL pattern. Identical across all guides.
 ## Concept Page Rules
 
 - **Location**: `docs/concepts/`
-- **Title**: the concept name (`Form`, `Sections`, `Fields`, `Connections`, `Localization`, `Analytics`)
+- **Pages** (in learning order): `Overview`, `Form`, `Sections`, `Fields`, `Validators`, `Connections`, `Localization`, `Analytics`
 - **Description**: one sentence
-- **Voice**: second person ("you"), present tense, direct and confident
-- **Tone**: clear, calm, and purposeful — no hype, no hedging
-- **Density**: one idea per paragraph, short sentences, no filler
-- **Structure**: core/required properties first, then optional properties ordered by importance
-- **YAML snippets**: short and focused — show only the properties being discussed, not full forms
-- **Cross-references**: mention other concept pages by name with links, but never re-explain their content
-- **No bleed**: each page owns exactly its scope — Form doesn't explain sections, Fields doesn't cover connections
+- **Voice**: second person ("you"), present tense, confident and direct
+- **Tone**: calm, purposeful, and practical — like pairing with a senior engineer. No hype, no hedging.
+- **Density**: one idea per sentence. Short paragraphs (1-3 sentences). Every sentence earns its place.
+- **Opening pattern**: 1-2 sentence definition (what it is + why it matters), then the smallest valid YAML example of that concept
+- **Section rhythm**: every `##` section follows: one-sentence context → focused YAML snippet → property list → notes/caveats
+- **Property format**: `**`property`** — Explanation.` (bold backtick dash explanation)
+- **Progressive disclosure**: required before optional, simple before complex, common before rare
+- **YAML snippets**: show only the properties being discussed; use `# ...` for elided context. Exception: the first YAML on each page is a complete minimal example.
+- **Cross-references**: link to other concept pages when mentioning their scope. Never re-explain content that belongs on another page.
+- **No bleed**: each page owns exactly its scope — Form doesn't explain sections, Fields doesn't cover validators
 - **Separators**: use `---` between major sections
 - **No Mintlify components**: pure Markdown only

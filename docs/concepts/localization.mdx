@@ -3,71 +3,78 @@ title: Localization
 description: How to translate form text into multiple languages.
 ---
 
-Any text property in a form definition can be localized. Instead of providing a plain string, you provide an object keyed by language code.
+Any text property in a form definition can be translated. Instead of a plain string, you provide an object keyed by language code. The platform resolves which language to display at runtime.
+
+```yaml
+version: 1
+title:
+  en: Registration Form
+  es: Formulario de registro
+locale: en
+
+sections:
+  - id: signup
+    title:
+      en: Your Details
+      es: Tus datos
+    fields:
+      - id: name
+        type: short_text
+        label:
+          en: Full Name
+          es: Nombre completo
+    next: done
+```
+
+- **`locale`** — The default language for the form. Used when no `?lang=` parameter is present.
 
 ---
 
 ## Localized text
 
-A text property can take two forms — a plain string, or a locale map.
+Text properties accept two formats — a plain string or a locale map.
 
 ```yaml
-# Plain string — used as-is regardless of language.
+# Plain string — renders as-is regardless of language.
 title: Registration Form
 
-# Locale map — rendered based on the active language.
+# Locale map — renders the value matching the active language.
 title:
   en: Registration Form
   es: Formulario de registro
   fr: Formulaire d'inscription
 ```
 
-Both formats are valid anywhere text appears. You can mix them freely within the same form — localize the properties that matter and leave others as plain strings.
+You can mix both formats in the same form. Localize the properties that need translation and leave others as plain strings.
 
 ---
 
 ## Where it applies
 
-Localized text is supported on the following properties:
+The following properties accept localized text:
 
-- **Form** — `title`, `description`
-- **Section** — `title`
-- **Field** — `label`, `placeholder`
+- **[Form](/concepts/form)** — `title`, `description`
+- **[Section](/concepts/sections)** — `title`
+- **[Field](/concepts/fields)** — `label`, `placeholder`
 - **Options** — `label` (on `dropdown`, `single_select`, `multiple_select` options)
-- **Validators** — `message` (on `min`, `max`, `pattern`)
-- **Completion** — `title`, `message`, `button.label`, `button.url`
-- **Email connection** — `subject`, `body`
-
----
-
-## Default locale
-
-The `locale` property on the form sets the default language.
-
-```yaml
-version: 1
-title:
-  en: Booking Form
-  es: Formulario de reserva
-locale: en
-```
-
-When set, the form renders in this language unless overridden by a URL parameter.
+- **[Validators](/concepts/validators)** — `message` (on `min`, `max`, `pattern`)
+- **[Completion](/concepts/form#completion-screen)** — `title`, `message`, `button.label`, `button.url`
+- **[Email connection](/concepts/connections#email)** — `subject`, `body`
 
 ---
 
 ## Runtime switching
 
-The `?lang=` query parameter overrides the default locale at runtime.
+You override the default locale at runtime with the `?lang=` query parameter.
 
 ```
 https://app.declarativeforms.com/acme/forms/booking?lang=es
 ```
 
-The language is resolved in this order:
+The platform resolves the language in this order:
 
 1. `?lang=` query parameter (if present)
 2. `locale` form property (if set)
 3. `en` fallback
 
-Locale matching is flexible — if the exact code isn't found (e.g., `en-US`), the system tries the base language (`en`) before falling back.
+Locale matching is flexible — if the exact code is not found (e.g., `en-US`), the platform tries the base language (`en`) before falling back.

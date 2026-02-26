@@ -1,33 +1,40 @@
 ---
 title: Overview
-description: A mental model of how Declarative Forms are structured.
+description: The building blocks of a Declarative Form and how they fit together.
 ---
 
-A form is a single YAML file made up of a few building blocks. Understanding how they relate makes everything else easier to reason about.
+A Declarative Form is a single YAML file that describes what your form looks like, how it behaves, and where its data goes. You define the structure — the platform handles rendering, validation, and submission.
 
 ---
 
-## Structure
+## Building blocks
 
-At the top level, a form has a **title**, a **description**, and one or more **sections**. Each section contains **fields** — the inputs a user fills out. After all sections are completed, **connections** determine what happens with the submitted data.
+Every form is assembled from a small set of concepts. Here is how they relate:
 
 ```
 Form
 ├── Sections
 │   └── Fields
+│       └── Validators
 └── Connections
 ```
 
-**[Form](/concepts/form)** defines the top-level structure — identity, scheduling, completion behavior, and URL parameters.
+**[Form](/concepts/form)** — The top-level container. Defines the form's identity, completion screen, scheduling, and URL behavior.
 
-**[Sections](/concepts/sections)** divide the form into steps and control navigation between them.
+**[Sections](/concepts/sections)** — Divide the form into steps. Each section contains fields and controls what happens when the user submits it.
 
-**[Fields](/concepts/fields)** are the individual inputs. All fields share a common set of properties; each field type adds its own behavior.
+**[Fields](/concepts/fields)** — The inputs your users interact with. Each field has a type, a label, and optional modifiers like conditional visibility.
 
-**[Connections](/concepts/connections)** push submitted data to external systems — webhooks, email, or Airtable.
+**[Validators](/concepts/validators)** — Rules that enforce constraints on field values. Required, minimum, maximum, and pattern.
 
-Two cross-cutting features apply across the entire form:
+**[Connections](/concepts/connections)** — Integrations that fire when the form is submitted. Webhook, email, and Airtable.
 
-**[Localization](/concepts/localization)** explains how any text property can be translated into multiple languages.
+---
 
-**[Analytics](/concepts/analytics)** covers event tracking with Mixpanel.
+## Cross-cutting concepts
+
+Two capabilities apply across the entire form definition:
+
+**[Localization](/concepts/localization)** — Any text property can be translated into multiple languages using locale maps.
+
+**[Analytics](/concepts/analytics)** — Track form views and section completions with Mixpanel.

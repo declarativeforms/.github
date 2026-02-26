@@ -3,13 +3,7 @@ title: Form
 description: The top-level structure that defines a form's identity, behavior, and lifecycle.
 ---
 
-A form is a YAML file with a version, a title, and one or more sections. Everything else — scheduling, completion behavior, URL parameters — is optional and layered on top of that core.
-
----
-
-## Core properties
-
-Every form requires three things: a schema version, a title, and at least one section.
+A form is a YAML file that contains everything the platform needs to render and process a set of inputs. At minimum, it requires a schema version, a title, and one or more sections.
 
 ```yaml
 version: 1
@@ -29,8 +23,8 @@ sections:
 ```
 
 - **`version`** — Always `1`. Identifies the schema version.
-- **`title`** — The name displayed at the top of the form. Can be a plain string or a [localized object](/concepts/localization).
-- **`description`** — An optional subtitle shown below the title. Also localizable.
+- **`title`** — The name displayed at the top of the form. [Localizable](/concepts/localization).
+- **`description`** — An optional subtitle shown below the title. [Localizable](/concepts/localization).
 - **`sections`** — The form's content, defined as an ordered array. See [Sections](/concepts/sections).
 - **`connections`** — An optional array of integrations triggered on submission. See [Connections](/concepts/connections).
 
@@ -38,7 +32,7 @@ sections:
 
 ## Completion screen
 
-By default, submitting a form shows a generic thank-you page. The `completion` property lets you customize it.
+When the form is submitted, the platform shows a default thank-you page. The `completion` property lets you customize it.
 
 ```yaml
 completion:
@@ -49,35 +43,37 @@ completion:
     url: https://example.com
 ```
 
-- **`title`** — A heading for the completion page. Supports Handlebars templating — `{{data.fieldId}}` is replaced with the submitted value for that field.
+- **`title`** — The heading on the completion page. Supports Handlebars templating — `{{data.fieldId}}` is replaced with the submitted value.
 - **`message`** — Body text below the title. Also supports templating.
 - **`button`** — An optional call-to-action with a `label` and `url`. Both support templating.
 
-All three properties are localizable.
+All three properties are [localizable](/concepts/localization).
 
 ---
 
 ## Scheduling
 
-Forms can be restricted to a specific time window using `start_date` and `end_date`.
+You can restrict a form to a specific time window using `start_date` and `end_date`.
 
 ```yaml
 start_date: "2026-03-01"
 end_date: "2026-03-31"
 ```
 
-- If the current date is **before** `start_date`, visitors see a "form not yet open" message.
-- If the current date is **after** `end_date`, visitors see a "form closed" message.
+- **`start_date`** — The earliest date the form accepts submissions. Visitors who arrive before this date see a "form not yet open" message.
+- **`end_date`** — The latest date the form accepts submissions. Visitors who arrive after this date see a "form closed" message.
 
-Both values are ISO 8601 date strings. Either property can be used independently — you can set a start date without an end date, or vice versa.
+Both values are ISO 8601 date strings. You can use either property independently.
 
 ---
 
 ## URL parameters
 
-When a form is loaded in the browser, several query parameters control its behavior.
+When a form loads in the browser, query parameters control its runtime behavior.
 
-**Reserved parameters:**
+### Reserved parameters
+
+These parameters are handled by the platform and cannot be used for prefill.
 
 | Parameter | Purpose |
 |---|---|
@@ -86,8 +82,12 @@ When a form is loaded in the browser, several query parameters control its behav
 | `submission_id` | Continues an existing submission instead of creating a new one. |
 | `connection_id` | Identifies an OAuth connection for integrations like Airtable. |
 
-**Prefill:**
+### Prefill
 
-Any query parameter that is **not** reserved is treated as a field value. The parameter name is matched to a field's `id`.
+Any query parameter that is not reserved prefills a field whose `id` matches the parameter name.
 
-For example, loading a form with `?email=jane@example.com` will prefill the field with `id: email`. This is especially useful with [hidden fields](/reference/hidden) for tracking attribution.
+```
+https://app.declarativeforms.com/acme/forms/signup?email=jane@example.com
+```
+
+This sets the initial value of the field with `id: email` to `jane@example.com`. Prefill is especially useful with [hidden fields](/reference/hidden) for tracking attribution.

@@ -3,13 +3,7 @@ title: Connections
 description: Integrations that push submitted data to external systems.
 ---
 
-Connections define what happens when a form is submitted. They push data to external systems — a webhook endpoint, an email inbox, or an Airtable table.
-
----
-
-## How connections work
-
-Connections are defined as an array on the form. Each entry has a `type` that determines the integration. Multiple connections can be attached to the same form, and each fires independently.
+Connections define what happens with the data after a form is submitted. Each connection pushes data to an external system — a webhook endpoint, an email inbox, or an Airtable table. You define them as an array on the form.
 
 ```yaml
 connections:
@@ -20,26 +14,31 @@ connections:
     subject: New submission
 ```
 
+- **`type`** — The integration type. Determines how and where the data is sent.
+
+You can attach multiple connections to the same form. Each fires independently on submission.
+
 ---
 
 ## Webhook
 
-Posts the full submission as JSON to a URL. This is the most flexible connection type — the destination can be your own backend, or an automation tool like Zapier or Make.
+Posts the full submission as JSON to a URL you control.
 
 ```yaml
 - type: webhook
   url: https://example.com/hooks
 ```
 
-- **`url`** — The destination URL. Receives an HTTP POST with the complete submission object as the JSON body.
+- **`type`** — Always `webhook`.
+- **`url`** — The destination URL. Receives an HTTP POST with the complete submission as the JSON body.
 
-Webhook connections fire on **every** submission, including partial saves from multi-section forms.
+Webhook connections fire on every submission, including partial saves from multi-section forms.
 
 ---
 
 ## Email
 
-Sends a notification email when the form is submitted. Useful for alerting a team or sending a confirmation.
+Sends a notification email when the form is completed.
 
 ```yaml
 - type: email
@@ -52,18 +51,19 @@ Sends a notification email when the form is submitted. Useful for alerting a tea
   include_responses: true
 ```
 
+- **`type`** — Always `email`.
 - **`to`** — The recipient email address.
-- **`subject`** — The email subject line. Supports Handlebars templating — `{{data.fieldId}}` is replaced with the submitted value.
-- **`body`** — Optional HTML body. Also supports Handlebars templating.
+- **`subject`** — The email subject line. Supports Handlebars templating — `{{data.fieldId}}` is replaced with the submitted value. [Localizable](/concepts/localization).
+- **`body`** — Optional HTML body. Also supports Handlebars templating. [Localizable](/concepts/localization).
 - **`include_responses`** — When `true`, appends an HTML table of all submitted field values to the email body. Defaults to `false`.
 
-Email connections fire only on **completed** submissions. The `subject` and `body` properties are both [localizable](/concepts/localization).
+Email connections fire only on completed submissions.
 
 ---
 
 ## Airtable
 
-Writes a row to an Airtable table. Each field value in the submission maps to a column in the table.
+Writes each completed submission as a row in an Airtable table.
 
 ```yaml
 - type: airtable
@@ -72,8 +72,9 @@ Writes a row to an Airtable table. Each field value in the submission maps to a 
   table_id_or_name: Signups
 ```
 
+- **`type`** — Always `airtable`.
 - **`connection_id`** — The OAuth connection identifier. Created through the dashboard when linking an Airtable account.
 - **`base_id`** — The Airtable base ID.
 - **`table_id_or_name`** — The target table, specified by ID or name.
 
-Airtable connections fire only on **completed** submissions and require an OAuth connection to be set up beforehand.
+Airtable connections fire only on completed submissions and require an OAuth connection to be set up beforehand.
