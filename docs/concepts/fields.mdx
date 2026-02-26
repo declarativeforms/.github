@@ -11,9 +11,9 @@ Fields are the inputs inside a section. Every field has a type that determines h
   label: Full Name
 ```
 
-- **`id`** — A unique identifier within the form. This becomes the key in the submitted data (e.g., `{ "name": "Jane" }`). Also used for [URL prefill](/concepts/form#prefill) and [Handlebars templating](/concepts/form#completion-screen) via `{{data.id}}`.
+- **`id`** — A unique identifier within the form. This becomes the key in the submitted data (e.g., `{ "name": "Jane" }`). Also used for [prefill](#prefill) and [Handlebars templating](/concepts/completion) via `{{data.id}}`.
 - **`type`** — Determines the input's rendering and behavior. See [Field types](#field-types) below.
-- **`label`** — The text displayed above the input. [Localizable](/concepts/localization).
+- **`label`** — The text displayed above the input.
 
 ---
 
@@ -28,7 +28,7 @@ An optional hint shown inside the input when it is empty.
   placeholder: jane@example.com
 ```
 
-- **`placeholder`** — Hint text displayed when the input is empty. [Localizable](/concepts/localization).
+- **`placeholder`** — Hint text displayed when the input is empty.
 
 ---
 
@@ -52,6 +52,27 @@ The `data` object contains the live values of all fields in the form, keyed by t
 ## Validators
 
 You can enforce rules on field values using the `validators` property. Validators are covered in detail on their own page — see [Validators](/concepts/validators).
+
+---
+
+## Prefill
+
+You can set a field's initial value using URL query parameters. The parameter name matches the field's `id`.
+
+```
+https://app.declarativeforms.com/acme/forms/signup?email=jane@example.com
+```
+
+This sets the initial value of the field with `id: email` to `jane@example.com`. Prefill is especially useful with [hidden fields](/reference/hidden) for tracking attribution.
+
+A small set of parameter names are reserved by the platform and cannot be used for prefill:
+
+| Parameter | Purpose |
+|---|---|
+| `lang` | Sets the display language. See [Localization](/concepts/localization). |
+| `step` | Resumes the form at a specific section by its `id`. |
+| `submission_id` | Continues an existing submission instead of creating a new one. |
+| `connection_id` | Identifies an OAuth connection for integrations like Airtable. |
 
 ---
 
@@ -79,6 +100,6 @@ Each type determines the input's rendering, behavior, and how [validators](/conc
 | `address_region` | Google Places filtered to administrative regions. |
 | `address_country` | Google Places filtered to countries. |
 | `geolocation` | Captures the user's location via the browser Geolocation API. |
-| `hidden` | Invisible field. Value set via [URL prefill](/concepts/form#prefill) matching the field `id`. |
+| `hidden` | Invisible field. Value set via [prefill](#prefill) matching the field `id`. |
 
 See the [Reference](/reference/short-text) pages for the full specification of each type.

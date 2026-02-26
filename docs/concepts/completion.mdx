@@ -1,0 +1,51 @@
+---
+title: Completion
+description: How to customize the screen shown after a form is submitted.
+---
+
+When a form is submitted, the platform displays a default thank-you page. The `completion` property on the form lets you customize it with your own heading, message, and call-to-action.
+
+```yaml
+version: 1
+title: Contact Form
+
+sections:
+  - id: contact
+    title: Get in Touch
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+      - id: email
+        type: email
+        label: Email
+    next: done
+
+completion:
+  title: "Thanks, {{data.name}}!"
+  message: We'll be in touch within 24 hours.
+  button:
+    label: Visit our website
+    url: https://example.com
+```
+
+- **`title`** — The heading on the completion page.
+- **`message`** — Body text below the title.
+- **`button`** — An optional call-to-action with a `label` and `url`.
+
+---
+
+## Templating
+
+All three properties support Handlebars templating. Use `{{data.fieldId}}` to insert a submitted value into the completion screen.
+
+```yaml
+completion:
+  title: "Welcome, {{data.name}}!"
+  message: "A confirmation has been sent to {{data.email}}."
+  button:
+    label: View your profile
+    url: "https://example.com/users/{{data.email}}"
+```
+
+- **`{{data.fieldId}}`** — Replaced with the submitted value for the field matching that `id`. Works in `title`, `message`, `button.label`, and `button.url`.

@@ -19,11 +19,11 @@ Form
 └── Connections
 ```
 
-**[Form](/concepts/form)** — The top-level container. Defines the form's identity, completion screen, scheduling, and URL behavior.
+**[Form](/concepts/form)** — The top-level container. Defines the form's identity with a version, title, and description.
 
 **[Sections](/concepts/sections)** — Divide the form into steps. Each section contains fields and controls what happens when the user submits it.
 
-**[Fields](/concepts/fields)** — The inputs your users interact with. Each field has a type, a label, and optional modifiers like conditional visibility.
+**[Fields](/concepts/fields)** — The inputs your users interact with. Each field has a type, a label, and optional modifiers like conditional visibility and URL prefill.
 
 **[Validators](/concepts/validators)** — Rules that enforce constraints on field values. Required, minimum, maximum, and pattern.
 
@@ -31,10 +31,14 @@ Form
 
 ---
 
-## Cross-cutting concepts
+## Customization
 
-Two capabilities apply across the entire form definition:
+Once you have the core structure in place, these concepts let you refine the experience:
 
-**[Localization](/concepts/localization)** — Any text property can be translated into multiple languages using locale maps.
+**[Completion](/concepts/completion)** — Customize the thank-you screen shown after submission.
+
+**[Localization](/concepts/localization)** — Translate any text property into multiple languages using locale maps.
+
+**[Scheduling](/concepts/scheduling)** — Restrict a form to a specific time window.
 
 **[Analytics](/concepts/analytics)** — Track form views and section completions with Mixpanel.

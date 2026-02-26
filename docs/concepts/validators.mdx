@@ -33,6 +33,8 @@ validators:
 
 - **`required`** — A string shorthand, not an object. The field must contain a non-empty value to submit.
 
+The `required` validator applies to all field types.
+
 ---
 
 ## Minimum
@@ -48,7 +50,7 @@ validators:
 
 - **`type`** — Always `min`.
 - **`value`** — The minimum threshold.
-- **`message`** — An optional custom error message. [Localizable](/concepts/localization).
+- **`message`** — An optional custom error message.
 
 | Field type | What `min` enforces |
 |---|---|
@@ -74,7 +76,7 @@ validators:
 
 - **`type`** — Always `max`.
 - **`value`** — The maximum threshold.
-- **`message`** — An optional custom error message. [Localizable](/concepts/localization).
+- **`message`** — An optional custom error message.
 
 | Field type | What `max` enforces |
 |---|---|
@@ -100,6 +102,6 @@ validators:
 
 - **`type`** — Always `pattern`.
 - **`regex`** — A regular expression string the value must match.
-- **`message`** — An optional custom error message. [Localizable](/concepts/localization).
+- **`message`** — An optional custom error message.
 
-For `number` fields, if no pattern validator is provided, a default whole-number pattern (`^\d+$`) is applied automatically.
+The `pattern` validator applies to text-based field types: `short_text`, `long_text`, `email`, `url`, and `number`. For `number` fields, if no pattern validator is provided, a default whole-number pattern (`^\d+$`) is applied automatically.

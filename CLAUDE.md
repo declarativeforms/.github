@@ -75,7 +75,7 @@ git add/commit/push + URL pattern. Identical across all guides.
 ## Concept Page Rules
 
 - **Location**: `docs/concepts/`
-- **Pages** (in learning order): `Overview`, `Form`, `Sections`, `Fields`, `Validators`, `Connections`, `Localization`, `Analytics`
+- **Pages** (in learning order): `Overview`, `Form`, `Sections`, `Fields`, `Validators`, `Connections`, `Completion`, `Localization`, `Scheduling`, `Analytics`
 - **Description**: one sentence
 - **Voice**: second person ("you"), present tense, confident and direct
 - **Tone**: calm, purposeful, and practical — like pairing with a senior engineer. No hype, no hedging.

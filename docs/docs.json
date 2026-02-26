@@ -33,7 +33,9 @@
               "concepts/fields",
               "concepts/validators",
               "concepts/connections",
+              "concepts/completion",
               "concepts/localization",
+              "concepts/scheduling",
               "concepts/analytics"
             ]
           },
