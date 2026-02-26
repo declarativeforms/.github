@@ -1,0 +1,50 @@
+---
+title: Analytics
+description: How to track form views and section completions with Mixpanel.
+---
+
+Forms can track user interactions using Mixpanel. When enabled, the platform automatically records page views and section completions — no custom code required.
+
+---
+
+## Setup
+
+Add a `mixpanel` property to the form with your Mixpanel project token.
+
+```yaml
+version: 1
+title: Feedback Form
+mixpanel: abc123def456
+
+sections:
+  - id: feedback
+    title: Your Feedback
+    fields:
+      - id: message
+        type: long_text
+        label: Message
+        validators:
+          - required
+    next: done
+```
+
+That's all the configuration needed. Events are tracked automatically.
+
+---
+
+## Tracked events
+
+Two events are recorded:
+
+| Event | Fires when | Properties |
+|---|---|---|
+| `page_view` | The form loads | `form_id` |
+| `section_completed` | A section is submitted | `form_id`, `section_id` |
+
+These events give you visibility into how many people view the form, how far they progress, and where they drop off.
+
+---
+
+## Data routing
+
+Events are sent to Mixpanel's EU endpoint (`api-eu.mixpanel.com`). No additional configuration is needed to control the data region.

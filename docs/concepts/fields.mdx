@@ -1,0 +1,116 @@
+---
+title: Fields
+description: The shared anatomy of a field — properties, validators, and conditional visibility.
+---
+
+Fields are the individual inputs inside a section. Every field has a type that determines how it renders and what data it collects, but all fields share a common set of properties.
+
+---
+
+## Core properties
+
+At minimum, a field needs an identifier, a type, and a label.
+
+```yaml
+- id: name
+  type: short_text
+  label: Full Name
+```
+
+- **`id`** — A unique identifier within the form. This becomes the key in the submitted data (e.g., `{ "name": "Jane" }`). Also used for [URL prefill](/concepts/form#url-parameters) and [Handlebars templating](/concepts/form#completion-screen) via `{{data.id}}`.
+- **`type`** — Determines the input's behavior and rendering. See [Field types](#field-types) below.
+- **`label`** — The text displayed above the input. Can be a plain string or a [localized object](/concepts/localization).
+
+---
+
+## Placeholder
+
+An optional hint shown inside the input when it is empty.
+
+```yaml
+- id: email
+  type: email
+  label: Email
+  placeholder: jane@example.com
+```
+
+Localizable, like all text properties.
+
+---
+
+## Conditional visibility
+
+The `visible_when` property controls whether a field is shown. It accepts a JavaScript expression that is evaluated against the current form data.
+
+```yaml
+- id: delivery_address
+  type: address
+  label: Delivery Address
+  visible_when: data.fulfillment === 'Delivery'
+```
+
+When the expression evaluates to `false` (or any falsy value), the field is hidden and excluded from validation. The `data` object contains the live values of all fields in the form, keyed by their `id`.
+
+---
+
+## Validators
+
+Validators enforce rules on a field's value. They are defined as an array on the `validators` property.
+
+```yaml
+validators:
+  - required
+  - type: min
+    value: 10
+    message: Must be at least 10 characters.
+  - type: max
+    value: 500
+  - type: pattern
+    regex: "^[A-Za-z ]+$"
+    message: Only letters and spaces allowed.
+```
+
+**`required`** — A string shorthand. The field must have a value to submit.
+
+**`min`** — An object with a numeric `value` and an optional `message`. What "minimum" means depends on the field type:
+
+| Field type | `min` enforces |
+|---|---|
+| `short_text`, `long_text`, `email`, `url` | Minimum character count |
+| `number` | Minimum numeric value |
+| `date` | Earliest allowed date (ISO string) |
+| `rating` | Minimum rating value (default: 1) |
+| `file_upload` | Minimum number of files |
+| `multiple_select` | Minimum number of selections |
+
+**`max`** — Same structure as `min`. Enforces an upper bound using the same per-type logic.
+
+**`pattern`** — An object with a `regex` string and an optional `message`. The value must match the regular expression. For `number` fields, if no pattern is provided, a default whole-number pattern (`^\d+$`) is applied automatically.
+
+---
+
+## Field types
+
+Each type determines the input's rendering, behavior, and how validators apply. See the [Reference](/reference/short-text) pages for the full specification of each type.
+
+| Type | Description |
+|---|---|
+| `short_text` | Single-line text input. |
+| `long_text` | Multi-line textarea. |
+| `email` | Email input. Supports [OTP verification](/reference/email) with `otp: true`. |
+| `number` | Whole-number input. Numeric keyboard on mobile. |
+| `date` | Date picker. |
+| `url` | URL input. |
+| `mobile_number` | Phone number input. |
+| `dropdown` | Select menu. Supports `searchable: true` for a filterable combobox. |
+| `single_select` | Radio-style single choice from `options`. |
+| `multiple_select` | Checkbox-style multiple choice from `options`. |
+| `rating` | Numeric scale (default 1–5). Supports `min_label` and `max_label`. |
+| `file_upload` | Drag-and-drop file attachment. |
+| `signature` | Canvas-based drawing. Automatically uploads as PNG. |
+| `address` | Google Places autocomplete for full addresses. |
+| `address_locality` | Google Places filtered to cities. |
+| `address_region` | Google Places filtered to administrative regions. |
+| `address_country` | Google Places filtered to countries. |
+| `geolocation` | Captures the user's location via the browser Geolocation API. |
+| `hidden` | Invisible field. Value set via URL query parameter matching the field `id`. |

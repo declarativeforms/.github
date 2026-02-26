@@ -48,6 +48,7 @@ git add/commit/push + URL pattern. Identical across all guides.
 | 17 | Build a Volunteer Signup Form with Address Autocomplete | Volunteer signup | Address field | `type: address`, Google Places autocomplete |
 | 18 | Build a Consent Form with a Signature Field | Photo release consent | Signature field | `type: signature`, canvas drawing, auto-upload PNG |
 | 19 | Build a Contest Entry Form with Scheduling | Contest entry | Scheduling | `start_date`, `end_date`, date-based form availability |
+| 20 | Build a Review Form with Minimum Length Validation | Product review | Min validator | `type: min`, `value`, `message`, character count enforcement on text fields |
 | 19 | Build a Workshop Registration Form with Airtable Integration | Workshop registration | Airtable connection | `connections`, `type: airtable`, `connection_id`, `base_id`, `table_id_or_name` |
 
 ## Authoring Rules
@@ -69,4 +70,19 @@ git add/commit/push + URL pattern. Identical across all guides.
 - **Property order**: `id` → `type` → `label` → `placeholder` → type-specific props → `visible_when` → `validators`
 - **Validator order**: `required` → `min` → `max` → `pattern`
 - **Commented-out lines**: show alternative syntax or optional properties
+- **No Mintlify components**: pure Markdown only
+
+## Concept Page Rules
+
+- **Location**: `docs/concepts/`
+- **Title**: the concept name (`Form`, `Sections`, `Fields`, `Connections`, `Localization`, `Analytics`)
+- **Description**: one sentence
+- **Voice**: second person ("you"), present tense, direct and confident
+- **Tone**: clear, calm, and purposeful — no hype, no hedging
+- **Density**: one idea per paragraph, short sentences, no filler
+- **Structure**: core/required properties first, then optional properties ordered by importance
+- **YAML snippets**: short and focused — show only the properties being discussed, not full forms
+- **Cross-references**: mention other concept pages by name with links, but never re-explain their content
+- **No bleed**: each page owns exactly its scope — Form doesn't explain sections, Fields doesn't cover connections
+- **Separators**: use `---` between major sections
 - **No Mintlify components**: pure Markdown only

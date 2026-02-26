@@ -1,0 +1,79 @@
+---
+title: Connections
+description: Integrations that push submitted data to external systems.
+---
+
+Connections define what happens when a form is submitted. They push data to external systems — a webhook endpoint, an email inbox, or an Airtable table.
+
+---
+
+## How connections work
+
+Connections are defined as an array on the form. Each entry has a `type` that determines the integration. Multiple connections can be attached to the same form, and each fires independently.
+
+```yaml
+connections:
+  - type: webhook
+    url: https://example.com/hooks
+  - type: email
+    to: team@example.com
+    subject: New submission
+```
+
+---
+
+## Webhook
+
+Posts the full submission as JSON to a URL. This is the most flexible connection type — the destination can be your own backend, or an automation tool like Zapier or Make.
+
+```yaml
+- type: webhook
+  url: https://example.com/hooks
+```
+
+- **`url`** — The destination URL. Receives an HTTP POST with the complete submission object as the JSON body.
+
+Webhook connections fire on **every** submission, including partial saves from multi-section forms.
+
+---
+
+## Email
+
+Sends a notification email when the form is submitted. Useful for alerting a team or sending a confirmation.
+
+```yaml
+- type: email
+  to: team@example.com
+  subject: "New signup from {{data.name}}"
+  body: |
+    <p>You received a new signup.</p>
+    <p><strong>Name:</strong> {{data.name}}</p>
+    <p><strong>Email:</strong> {{data.email}}</p>
+  include_responses: true
+```
+
+- **`to`** — The recipient email address.
+- **`subject`** — The email subject line. Supports Handlebars templating — `{{data.fieldId}}` is replaced with the submitted value.
+- **`body`** — Optional HTML body. Also supports Handlebars templating.
+- **`include_responses`** — When `true`, appends an HTML table of all submitted field values to the email body. Defaults to `false`.
+
+Email connections fire only on **completed** submissions. The `subject` and `body` properties are both [localizable](/concepts/localization).
+
+---
+
+## Airtable
+
+Writes a row to an Airtable table. Each field value in the submission maps to a column in the table.
+
+```yaml
+- type: airtable
+  connection_id: conn_abc123
+  base_id: appXXXXXXXXXXXXXX
+  table_id_or_name: Signups
+```
+
+- **`connection_id`** — The OAuth connection identifier. Created through the dashboard when linking an Airtable account.
+- **`base_id`** — The Airtable base ID.
+- **`table_id_or_name`** — The target table, specified by ID or name.
+
+Airtable connections fire only on **completed** submissions and require an OAuth connection to be set up beforehand.

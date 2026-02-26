@@ -7,6 +7,25 @@ You'll build a workshop registration form that collects attendee details and wri
 
 ---
 
+## Connect to Airtable
+
+Open the Airtable authorization page in your browser:
+
+```
+https://app.declarativeforms.com/oauth/airtable
+```
+
+Sign in to Airtable and authorize access. You'll be redirected to a success page that displays your `connection_id` — copy it.
+
+You'll also need two values from Airtable:
+
+- **Base ID** — open your base in Airtable, then copy the ID from the URL: `https://airtable.com/appXXXXXXXXXXXXXX/...`
+- **Table name** — the name of the table where submissions should be written (e.g. `Registrations`)
+
+Use all three values in the `connections` block below.
+
+---
+
 ## Define the form
 
 Create a file called `workshop_registration.yaml` in your repository:

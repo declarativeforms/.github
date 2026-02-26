@@ -1,0 +1,93 @@
+---
+title: Form
+description: The top-level structure that defines a form's identity, behavior, and lifecycle.
+---
+
+A form is a YAML file with a version, a title, and one or more sections. Everything else — scheduling, completion behavior, URL parameters — is optional and layered on top of that core.
+
+---
+
+## Core properties
+
+Every form requires three things: a schema version, a title, and at least one section.
+
+```yaml
+version: 1
+title: Registration Form
+description: Sign up for early access.
+
+sections:
+  - id: signup
+    title: Your Details
+    fields:
+      - id: email
+        type: email
+        label: Email
+        validators:
+          - required
+    next: done
+```
+
+- **`version`** — Always `1`. Identifies the schema version.
+- **`title`** — The name displayed at the top of the form. Can be a plain string or a [localized object](/concepts/localization).
+- **`description`** — An optional subtitle shown below the title. Also localizable.
+- **`sections`** — The form's content, defined as an ordered array. See [Sections](/concepts/sections).
+- **`connections`** — An optional array of integrations triggered on submission. See [Connections](/concepts/connections).
+
+---
+
+## Completion screen
+
+By default, submitting a form shows a generic thank-you page. The `completion` property lets you customize it.
+
+```yaml
+completion:
+  title: "Thanks, {{data.name}}!"
+  message: We'll be in touch within 24 hours.
+  button:
+    label: Visit our website
+    url: https://example.com
+```
+
+- **`title`** — A heading for the completion page. Supports Handlebars templating — `{{data.fieldId}}` is replaced with the submitted value for that field.
+- **`message`** — Body text below the title. Also supports templating.
+- **`button`** — An optional call-to-action with a `label` and `url`. Both support templating.
+
+All three properties are localizable.
+
+---
+
+## Scheduling
+
+Forms can be restricted to a specific time window using `start_date` and `end_date`.
+
+```yaml
+start_date: "2026-03-01"
+end_date: "2026-03-31"
+```
+
+- If the current date is **before** `start_date`, visitors see a "form not yet open" message.
+- If the current date is **after** `end_date`, visitors see a "form closed" message.
+
+Both values are ISO 8601 date strings. Either property can be used independently — you can set a start date without an end date, or vice versa.
+
+---
+
+## URL parameters
+
+When a form is loaded in the browser, several query parameters control its behavior.
+
+**Reserved parameters:**
+
+| Parameter | Purpose |
+|---|---|
+| `lang` | Sets the display language. See [Localization](/concepts/localization). |
+| `step` | Resumes the form at a specific section by its `id`. |
+| `submission_id` | Continues an existing submission instead of creating a new one. |
+| `connection_id` | Identifies an OAuth connection for integrations like Airtable. |
+
+**Prefill:**
+
+Any query parameter that is **not** reserved is treated as a field value. The parameter name is matched to a field's `id`.
+
+For example, loading a form with `?email=jane@example.com` will prefill the field with `id: email`. This is especially useful with [hidden fields](/reference/hidden) for tracking attribution.

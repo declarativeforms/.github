@@ -1,0 +1,71 @@
+---
+title: "Build a Review Form with Minimum Length Validation"
+description: Build a product review form that requires a minimum number of characters in the review text.
+---
+
+You'll build a product review form that collects a reviewer's name, a star rating, and a written review. You'll learn how to use the `min` validator to enforce a minimum character count on text fields, ensuring reviewers provide enough detail.
+
+---
+
+## Define the form
+
+Create a file called `review_form.yaml` in your repository:
+
+```yaml
+version: 1
+title: Product Review
+description: Share your experience with this product.
+
+sections:
+  - id: review
+    title: Your Review
+    fields:
+      - id: name
+        type: short_text
+        label: Your Name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email Address
+        placeholder: you@example.com
+        validators:
+          - required
+      - id: rating
+        type: rating
+        label: Overall Rating
+        min_label: Poor
+        max_label: Excellent
+        validators:
+          - required
+      - id: review_text
+        type: long_text
+        label: Your Review
+        placeholder: Tell us what you liked or disliked...
+        validators:
+          - required
+          - type: min
+            value: 50
+            message: Please write at least 50 characters.
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add review_form.yaml
+git commit -m "add product review form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/review_form
+```
+
+(The `.yaml` extension is not included in the URL.)

@@ -1,0 +1,70 @@
+---
+title: Sections
+description: How sections divide a form into steps and control navigation.
+---
+
+Sections divide a form into discrete steps. Each section is presented one at a time — the user completes one before moving to the next.
+
+---
+
+## Core properties
+
+A section has an identifier, a title, an array of fields, and a navigation target.
+
+```yaml
+sections:
+  - id: contact
+    title: Contact Information
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email
+        validators:
+          - required
+    next: done
+```
+
+- **`id`** — A unique identifier for the section. Used in navigation targets and the `?step=` URL parameter.
+- **`title`** — The heading displayed above the section's fields. Can be a plain string or a [localized object](/concepts/localization).
+- **`fields`** — An ordered array of field definitions. See [Fields](/concepts/fields).
+- **`next`** — Determines what happens after the section is submitted.
+
+---
+
+## Navigation
+
+The `next` property supports three modes.
+
+**Static navigation** — a string that points to the next destination:
+
+```yaml
+next: details          # Go to the section with id "details".
+next: done             # End the form and submit.
+next: "https://example.com"  # Redirect to an external URL.
+```
+
+**Conditional navigation** — an array of rules evaluated in order against the form data:
+
+```yaml
+next:
+  - when: data.attending == 'Yes'
+    go: event_details
+  - when: data.attending == 'Maybe'
+    go: follow_up
+  - else: done
+```
+
+Each `when` is a JavaScript expression with access to a `data` object containing all submitted field values. The first rule that evaluates to `true` determines the destination. The `else` entry is a fallback — if no `when` matches, it is used. If no rule matches and there is no `else`, the form ends.
+
+---
+
+## Multi-section forms
+
+When a form has multiple sections, the URL updates with `?step=` and `?submission_id=` as the user progresses. This means a user can bookmark or share a mid-form URL and resume where they left off.
+
+Sections are always rendered one at a time. There is no way to display multiple sections simultaneously.

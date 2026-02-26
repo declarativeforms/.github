@@ -1,0 +1,33 @@
+---
+title: Overview
+description: A mental model of how Declarative Forms are structured.
+---
+
+A form is a single YAML file made up of a few building blocks. Understanding how they relate makes everything else easier to reason about.
+
+---
+
+## Structure
+
+At the top level, a form has a **title**, a **description**, and one or more **sections**. Each section contains **fields** — the inputs a user fills out. After all sections are completed, **connections** determine what happens with the submitted data.
+
+```
+Form
+├── Sections
+│   └── Fields
+└── Connections
+```
+
+**[Form](/concepts/form)** defines the top-level structure — identity, scheduling, completion behavior, and URL parameters.
+
+**[Sections](/concepts/sections)** divide the form into steps and control navigation between them.
+
+**[Fields](/concepts/fields)** are the individual inputs. All fields share a common set of properties; each field type adds its own behavior.
+
+**[Connections](/concepts/connections)** push submitted data to external systems — webhooks, email, or Airtable.
+
+Two cross-cutting features apply across the entire form:
+
+**[Localization](/concepts/localization)** explains how any text property can be translated into multiple languages.
+
+**[Analytics](/concepts/analytics)** covers event tracking with Mixpanel.

@@ -25,6 +25,18 @@
             ]
           },
           {
+            "group": "Concepts",
+            "pages": [
+              "concepts/overview",
+              "concepts/form",
+              "concepts/sections",
+              "concepts/fields",
+              "concepts/connections",
+              "concepts/localization",
+              "concepts/analytics"
+            ]
+          },
+          {
             "group": "Guides",
             "pages": [
               "guides/newsletter-signup-form",
@@ -46,7 +58,8 @@
               "guides/volunteer-signup-form",
               "guides/consent-form",
               "guides/contest-entry-form",
-              "guides/workshop-registration-form"
+              "guides/workshop-registration-form",
+              "guides/review-form"
             ]
           },
           {
