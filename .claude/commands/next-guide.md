@@ -10,13 +10,11 @@ Explore the source code to build a complete inventory of every documentable capa
 
 - **`core/src/components/declarative-form/`** — types, field components, validation logic
 - **`api/src/core/`** — connection types, services (email, OTP, webhooks)
-- **`examples/*.yaml`** — real-world usage of every capability
 
 ### How to explore
 
 1. **Glob for type definitions** in the entry-point directories, read them, and extract every field type, validator, modifier, connection type, and form-level property
 2. **Follow references into implementation files** — field components, validation functions, services — to understand *runtime behavior*, not just type signatures
-3. **Read the example YAML files** to see how capabilities are actually used in practice
 
 ### What to look for
 
@@ -68,15 +66,14 @@ From the ranked table, pick the highest-scoring capability. Apply these tiebreak
 
 1. **Builds on prior knowledge** — reuses concepts from earlier guides, introduces exactly ONE new thing
 2. **Unlocks future guides** — opens the door to related features
-3. **Has a reference example** — prefer capabilities with a matching `../examples/*.yaml` file
 
-Output: the winning capability, the use case, the proposed title (following the pattern "Build a [Use Case] with [Capability]"), and a one-sentence justification.
+Output: the winning capability, the use case, the proposed title (following the pattern "Build a [Use Case] Form with [Capability]"), and a one-sentence justification.
 
 ---
 
 ## Phase 4 — Write the Guide
 
-Create three outputs. Follow the authoring rules in CLAUDE.md exactly.
+Create two outputs. Follow the authoring rules in CLAUDE.md exactly.
 
 ### 4a. Guide file: `docs/guides/<kebab-case>.mdx`
 
@@ -128,17 +125,22 @@ Rules:
 - **Pure Markdown**: no Mintlify components (`<Card>`, `<Tabs>`, etc.) — use `---` separators
 - **Deploy section is identical** across all guides (only the filename changes)
 
-### 4b. Example file: `examples/<snake_case>.yaml`
-
-Write the exact same YAML from the guide as a standalone file.
-
-### 4c. Update `docs/docs.json`
+### 4b. Update `docs/docs.json`
 
 Add the new guide slug (`"guides/<kebab-case>"`) to the end of the Guides `pages` array.
 
 ---
 
 ## Phase 5 — Validate & Update CLAUDE.md
+
+### Use-case realism review
+
+Before reviewing prose or structure, validate that the guide's example form is something a real user would build on this platform:
+
+1. **Platform fit** — would someone actually use a form builder for this? Declarative Forms collects submissions and stores them as-is — it is NOT an authentication system, payment processor, or database. Reject use cases that imply capabilities the platform doesn't have (e.g., collecting passwords, processing payments, managing user accounts)
+2. **Field appropriateness** — does every field in the example make sense for submission storage? Flag fields that collect sensitive data the platform isn't designed to handle securely (passwords, credit card numbers, SSNs)
+3. **Real-world credibility** — would a real organization deploy this exact form? The example should feel like something you'd actually encounter, not a contrived scenario built solely to showcase a YAML property
+4. **Fix or replace** — if the use case fails any check, choose a different use case that demonstrates the same capability without the realism problem. Rewrite the guide accordingly
 
 ### Factual review of guide prose
 
@@ -166,12 +168,11 @@ Before running structural checks, grep and read the source code to verify every 
 Run through every item. If any check fails, fix it before proceeding.
 
 - [ ] Frontmatter has `title` + `description`
-- [ ] Title matches "Build a [Use Case]" or "Build a [Use Case] with [Capability]"
+- [ ] Title matches "Build a [Use Case] Form" or "Build a [Use Case] Form with [Capability]"
 - [ ] Exactly two `##` headings: `## Define the form` and `## Deploy it`
 - [ ] One complete YAML block with `version: 1`, semantic IDs, proper `next`
 - [ ] Deploy section matches the standard template (only filename differs)
 - [ ] No Mintlify components (no `<Card>`, `<Tabs>`, etc.)
-- [ ] `examples/<snake_case>.yaml` matches guide YAML exactly
 - [ ] `docs/docs.json` is valid JSON with the new slug present in the Guides pages array
 
 ### Update CLAUDE.md

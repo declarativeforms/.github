@@ -3,7 +3,7 @@ title: Build a Registration Form with Email Verification
 description: Create a registration form that verifies the user's email address with a one-time code.
 ---
 
-You'll build a registration form that collects a name, email, and password, then requires the user to verify their email with a one-time code before submitting. By the end you'll understand how adding `otp: true` to an email field enables built-in email verification.
+You'll build a registration form that collects a name, email, and company, then requires the user to verify their email with a one-time code before submitting. By the end you'll understand how adding `otp: true` to an email field enables built-in email verification.
 
 ---
 
@@ -35,15 +35,12 @@ sections:
         validators:
           - required
 
-      - id: password
+      - id: company
         type: short_text
-        label: Password
-        placeholder: Choose a strong password
+        label: Company
+        placeholder: Acme Inc.
         validators:
           - required
-          - type: min
-            value: 8
-            message: Password must be at least 8 characters.
     next: done
 ```
 

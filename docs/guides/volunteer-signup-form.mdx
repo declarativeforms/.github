@@ -1,0 +1,58 @@
+---
+title: Build a Volunteer Signup Form with Address Autocomplete
+description: Create a volunteer signup form with a Google Places autocomplete address field.
+---
+
+You'll build a volunteer signup form that collects a name, email, and mailing address. You'll learn how to use the `address` field type, which gives users Google Places autocomplete as they type.
+
+---
+
+## Define the form
+
+Create a file called `volunteer_signup.yaml` in your repository:
+
+```yaml
+version: 1
+title: Volunteer Signup
+description: Sign up to volunteer and provide your mailing address.
+sections:
+  - id: signup
+    title: Your Details
+    fields:
+      - id: name
+        type: short_text
+        label: Full Name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email Address
+        validators:
+          - required
+      - id: address
+        type: address
+        label: Mailing Address
+        validators:
+          - required
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add volunteer_signup.yaml
+git commit -m "add volunteer signup form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/volunteer_signup
+```
+
+(The `.yaml` extension is not included in the URL.)
