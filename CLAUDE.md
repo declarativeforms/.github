@@ -41,6 +41,9 @@ git add/commit/push + URL pattern. Identical across all guides.
 | 10 | Build a Waitlist Signup with a Custom Completion Screen | Waitlist signup | Completion screen | `completion`, `title`, `message`, `button`, `{{data.fieldId}}` |
 | 11 | Build a Country Selector with a Searchable Dropdown | Country selector | Searchable dropdown | `type: dropdown`, `searchable: true` |
 | 12 | Build a Referral Form with URL Prefill | Referral form | URL prefill | Query parameters as initial field values, reserved params (`connection_id`, `lang`, `submission_id`, `step`) |
+| 13 | Build an Invite Form with Pattern Validation | Invite-only signup | Pattern validator | `type: pattern`, `regex`, `message` |
+| 14 | Build an Interest Survey with Multiple Selection | Interest survey | Multiple select field | `type: multiple_select`, `options`, array submission |
+| 15 | Build a Donation Form with a Number Field | Donation form | Number field | `type: number`, whole-number validation, numeric keyboard |
 
 ## Authoring Rules
 

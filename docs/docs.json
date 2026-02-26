@@ -38,7 +38,10 @@
               "guides/order-form",
               "guides/waitlist-signup",
               "guides/country-selector",
-              "guides/referral-form"
+              "guides/referral-form",
+              "guides/invite-form",
+              "guides/interest-survey",
+              "guides/donation-form"
             ]
           },
           {

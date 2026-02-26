@@ -1,0 +1,71 @@
+---
+title: Build an Interest Survey with Multiple Selection
+description: Create a survey form that lets respondents pick more than one option from a list.
+---
+
+You'll build a short interest survey where respondents choose one or more topics from a checkbox list. By the end you'll understand how `type: multiple_select` renders checkboxes and submits the selected values as an array.
+
+---
+
+## Define the form
+
+Create a file called `interest_survey.yaml` in your repository:
+
+```yaml
+version: 1
+title: Interest Survey
+description: Tell us what topics you care about.
+
+sections:
+  - id: survey
+    title: Your Interests
+    fields:
+      - id: name
+        type: short_text
+        label: Name
+        placeholder: Jane Smith
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email
+        placeholder: jane@example.com
+        validators:
+          - required
+
+      - id: topics
+        type: multiple_select
+        label: Which topics interest you?
+        options:
+          - Design
+          - Engineering
+          - Marketing
+          - Product
+          - Sales
+        validators:
+          - required
+    next: done
+```
+
+The `multiple_select` field uses the same `options` format as `single_select` — a list of strings or objects with `label` and `value`. The difference is that respondents can check more than one option, and the submitted value is an array of their selections.
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add interest_survey.yaml
+git commit -m "add interest survey form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/interest_survey
+```
+
+(The `.yaml` extension is not included in the URL.)
