@@ -140,6 +140,18 @@ Add the new guide slug (`"guides/<kebab-case>"`) to the end of the Guides `pages
 
 ## Phase 5 — Validate & Update CLAUDE.md
 
+### Factual review of guide prose
+
+Before checking YAML properties and validators, verify every prose claim in the guide:
+
+1. **Re-read the generated guide file** end-to-end — the outcome statement, description, and every sentence that describes what the platform does or what the reader will achieve
+2. **Extract every factual claim** — list each statement that asserts a platform capability, behavior, or integration
+3. **Verify each claim against source code** — grep and read the implementing code to confirm the claim is accurate and supported
+4. **Check scope** — ensure the guide doesn't imply the platform can do things it can't (e.g., direct third-party integrations when it only provides generic webhooks, or features that require external tools without saying so)
+5. **Fix inaccuracies** — rewrite any claim that is misleading, overstated, or unsupported by source code
+
+Only proceed to source-code verification once every prose claim is confirmed accurate.
+
 ### Source-code verification
 
 Before running structural checks, grep and read the source code to verify every claim the guide makes:

@@ -40,6 +40,7 @@ git add/commit/push + URL pattern. Identical across all guides.
 | 9 | Build an Order Form with Conditional Fields | Order form | Conditional field visibility | `visible_when` |
 | 10 | Build a Waitlist Signup with a Custom Completion Screen | Waitlist signup | Completion screen | `completion`, `title`, `message`, `button`, `{{data.fieldId}}` |
 | 11 | Build a Country Selector with a Searchable Dropdown | Country selector | Searchable dropdown | `type: dropdown`, `searchable: true` |
+| 12 | Build a Referral Form with URL Prefill | Referral form | URL prefill | Query parameters as initial field values, reserved params (`connection_id`, `lang`, `submission_id`, `step`) |
 
 ## Authoring Rules
 
