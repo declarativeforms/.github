@@ -1,0 +1,29 @@
+---
+title: address_region
+description: State or region autocomplete field powered by Google Places.
+---
+
+```yaml
+- id: state
+  type: address_region
+
+  label: State / Region                # Required. String or localized object.
+  placeholder: Start typing...         # Optional. String or localized object.
+
+  # visible_when: data.needs_address == 'Yes'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. Field must not be empty.
+
+    - type: min                        # Optional. Minimum character count.
+      value: 2
+      # message: Must be at least 2 characters.  # Optional. String or localized.
+
+    - type: max                        # Optional. Maximum character count.
+      value: 100
+      # message: Must be 100 characters or fewer.
+
+    - type: pattern                    # Optional. Custom regex validation.
+      regex: "^[A-Za-z ]+$"
+      # message: Only letters and spaces allowed.
+```

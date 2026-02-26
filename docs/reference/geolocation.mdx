@@ -1,0 +1,17 @@
+---
+title: geolocation
+description: Captures the user's GPS coordinates via the browser Geolocation API.
+---
+
+```yaml
+- id: location
+  type: geolocation
+
+  label: Your Location                 # Required. String or localized object.
+  # Returns an object: {latitude, longitude, accuracy, timestamp}
+
+  # visible_when: data.share_location == 'Yes'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. Location must be captured.
+```

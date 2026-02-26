@@ -43,7 +43,36 @@
               "guides/interest-survey-form",
               "guides/donation-form",
               "guides/lead-capture-form",
-              "guides/volunteer-signup-form"
+              "guides/volunteer-signup-form",
+              "guides/consent-form",
+              "guides/contest-entry-form",
+              "guides/workshop-registration-form"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/form",
+              "reference/section",
+              "reference/address",
+              "reference/address-country",
+              "reference/address-locality",
+              "reference/address-region",
+              "reference/date",
+              "reference/dropdown",
+              "reference/email",
+              "reference/file-upload",
+              "reference/geolocation",
+              "reference/hidden",
+              "reference/long-text",
+              "reference/mobile-number",
+              "reference/multiple-select",
+              "reference/number",
+              "reference/rating",
+              "reference/short-text",
+              "reference/signature",
+              "reference/single-select",
+              "reference/url"
             ]
           },
           {

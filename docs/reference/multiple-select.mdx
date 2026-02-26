@@ -1,0 +1,34 @@
+---
+title: multiple_select
+description: Multi-selection field that submits an array of chosen values.
+---
+
+```yaml
+- id: interests
+  type: multiple_select
+
+  label: Interests                     # Required. String or localized object.
+
+  options:                             # Required. Array of strings or {label, value} objects.
+    - Design                           # String shorthand: label and value are the same.
+    - Engineering
+    - value: pm                        # Object form: value submitted, label displayed.
+      label: Product Management
+    # - value: marketing               # Localized label variant:
+    #   label:
+    #     en: Marketing
+    #     es: Mercadotecnia
+
+  # visible_when: data.role == 'Member'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. At least one option must be selected.
+
+    - type: min                        # Optional. Minimum number of selections.
+      value: 1
+      # message: Select at least 1 option.  # Optional. String or localized.
+
+    - type: max                        # Optional. Maximum number of selections.
+      value: 3
+      # message: Select no more than 3 options.
+```

@@ -46,6 +46,9 @@ git add/commit/push + URL pattern. Identical across all guides.
 | 15 | Build a Donation Form with a Number Field | Donation form | Number field | `type: number`, whole-number validation, numeric keyboard |
 | 16 | Build a Lead Capture Form with a Hidden Field | Lead capture | Hidden field | `type: hidden`, no visible UI, value from URL query params |
 | 17 | Build a Volunteer Signup Form with Address Autocomplete | Volunteer signup | Address field | `type: address`, Google Places autocomplete |
+| 18 | Build a Consent Form with a Signature Field | Photo release consent | Signature field | `type: signature`, canvas drawing, auto-upload PNG |
+| 19 | Build a Contest Entry Form with Scheduling | Contest entry | Scheduling | `start_date`, `end_date`, date-based form availability |
+| 19 | Build a Workshop Registration Form with Airtable Integration | Workshop registration | Airtable connection | `connections`, `type: airtable`, `connection_id`, `base_id`, `table_id_or_name` |
 
 ## Authoring Rules
 
@@ -55,3 +58,15 @@ git add/commit/push + URL pattern. Identical across all guides.
 - **Semantic IDs**: use `signup`, `name`, `email` — never `section_1` / `question_1`
 - **"Deploy it" is identical**: copy-paste the same deploy section across all guides
 - **Pure Markdown**: no Mintlify components — use `---` separators between sections
+
+## Reference Page Rules
+
+- **Location**: `docs/reference/`
+- **Title**: `Form`, `Section` for structural pages; exact type name for fields (`short_text`, `email`, `dropdown`)
+- **Description**: one sentence
+- **Content**: a single fenced YAML code block with inline `#` comments — no prose, no headings below frontmatter
+- **Comment style**: `# Required.` or `# Optional.` first, then type/default, then behavior notes
+- **Property order**: `id` → `type` → `label` → `placeholder` → type-specific props → `visible_when` → `validators`
+- **Validator order**: `required` → `min` → `max` → `pattern`
+- **Commented-out lines**: show alternative syntax or optional properties
+- **No Mintlify components**: pure Markdown only

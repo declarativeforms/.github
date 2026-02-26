@@ -1,0 +1,29 @@
+---
+title: dropdown
+description: Single-selection dropdown with optional search filtering.
+---
+
+```yaml
+- id: country
+  type: dropdown
+
+  label: Country                       # Required. String or localized object.
+  placeholder: Select a country        # Optional. String or localized object.
+
+  searchable: true                     # Optional. Boolean. Default: false.
+                                       # Adds a text filter to the dropdown.
+
+  options:                             # Required. Array of strings or {label, value} objects.
+    - United States                    # String shorthand: label and value are the same.
+    - value: gb                        # Object form: value submitted, label displayed.
+      label: United Kingdom
+    # - value: de                      # Localized label variant:
+    #   label:
+    #     en: Germany
+    #     es: Alemania
+
+  # visible_when: data.has_address == 'Yes'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. Selection must not be empty.
+```

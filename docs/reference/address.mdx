@@ -1,0 +1,35 @@
+---
+title: address
+description: Google Places autocomplete field that submits a full or structured address.
+---
+
+```yaml
+- id: home_address
+  type: address
+
+  label: Home Address                  # Required. String or localized object.
+  placeholder: Start typing...         # Optional. String or localized object.
+
+  outputFormat: structured             # Optional. "string" (default) or "structured".
+                                       # "string" submits: "123 Main St, City, State 12345, US"
+                                       # "structured" submits an object:
+                                       #   formatted_address, street_number, route, locality,
+                                       #   administrative_area_level_1, country, postal_code, place_id
+
+  # visible_when: data.needs_shipping == 'Yes'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. Field must not be empty.
+
+    - type: min                        # Optional. Minimum character count.
+      value: 5
+      # message: Must be at least 5 characters.  # Optional. String or localized.
+
+    - type: max                        # Optional. Maximum character count.
+      value: 200
+      # message: Must be 200 characters or fewer.
+
+    - type: pattern                    # Optional. Custom regex validation.
+      regex: "^[A-Za-z0-9 ,.-]+$"
+      # message: Only letters, numbers, and basic punctuation allowed.
+```

@@ -1,0 +1,29 @@
+---
+title: mobile_number
+description: Phone number input that shows a numeric keyboard on mobile devices.
+---
+
+```yaml
+- id: phone
+  type: mobile_number
+
+  label: Mobile Number                 # Required. String or localized object.
+  placeholder: "+1 555 123 4567"       # Optional. String or localized object.
+
+  # visible_when: data.contact_method == 'Phone'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. Field must not be empty.
+
+    - type: min                        # Optional. Minimum character count.
+      value: 7
+      # message: Must be at least 7 characters.  # Optional. String or localized.
+
+    - type: max                        # Optional. Maximum character count.
+      value: 20
+      # message: Must be 20 characters or fewer.
+
+    - type: pattern                    # Optional. Custom regex validation.
+      regex: "^\\+?[0-9 ()-]+$"
+      # message: Only numbers, spaces, and basic punctuation allowed.
+```

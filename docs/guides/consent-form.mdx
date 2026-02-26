@@ -1,0 +1,60 @@
+---
+title: "Build a Consent Form with a Signature Field"
+description: Build a photo release consent form that captures a drawn signature.
+---
+
+You'll build a photo release consent form that collects a participant's name, email, and a hand-drawn signature. You'll learn how to use the `signature` field type, which provides a canvas for drawing and automatically uploads the result as a PNG image.
+
+---
+
+## Define the form
+
+Create a file called `consent_form.yaml` in your repository:
+
+```yaml
+version: 1
+title: Photo Release Consent Form
+description: Please review and sign the photo release consent below.
+
+sections:
+  - id: consent
+    title: Participant Details
+    fields:
+      - id: name
+        type: short_text
+        label: Full Name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email Address
+        placeholder: you@example.com
+        validators:
+          - required
+      - id: signature
+        type: signature
+        label: Signature
+        validators:
+          - required
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add consent_form.yaml
+git commit -m "add photo release consent form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/consent_form
+```
+
+(The `.yaml` extension is not included in the URL.)

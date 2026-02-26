@@ -1,0 +1,66 @@
+---
+title: "Build a Contest Entry Form with Scheduling"
+description: Build a contest entry form that is only open for submissions during a set date range.
+---
+
+You'll build a photo contest entry form that accepts submissions only within a specific date window. You'll learn how to use the `start_date` and `end_date` properties to control when a form is open, automatically showing a "not yet open" or "form closed" message outside the scheduled dates.
+
+---
+
+## Define the form
+
+Create a file called `contest_entry_form.yaml` in your repository:
+
+```yaml
+version: 1
+title: Photo Contest Entry
+description: Submit your best photo for a chance to win.
+start_date: "2026-03-01"
+end_date: "2026-03-31"
+
+sections:
+  - id: entry
+    title: Your Entry
+    fields:
+      - id: name
+        type: short_text
+        label: Full Name
+        validators:
+          - required
+      - id: email
+        type: email
+        label: Email Address
+        placeholder: you@example.com
+        validators:
+          - required
+      - id: photo
+        type: file_upload
+        label: Photo
+        validators:
+          - required
+      - id: caption
+        type: long_text
+        label: Caption
+        placeholder: Describe your photo in a few words.
+    next: done
+```
+
+---
+
+## Deploy it
+
+Commit and push the file to your repository:
+
+```bash
+git add contest_entry_form.yaml
+git commit -m "add contest entry form"
+git push
+```
+
+Then open your form at:
+
+```
+https://app.declarativeforms.com/<organization>/<repository>/contest_entry_form
+```
+
+(The `.yaml` extension is not included in the URL.)

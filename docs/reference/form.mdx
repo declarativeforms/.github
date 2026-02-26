@@ -1,0 +1,73 @@
+---
+title: Form
+description: Top-level form configuration including metadata, sections, connections, and completion screen.
+---
+
+```yaml
+# ── Form ──────────────────────────────────────────────
+
+version: 1                            # Required. Schema version. Always 1.
+
+title: Volunteer Signup                # Required. String or localized object.
+# title:
+#   en: Volunteer Signup
+#   es: Registro de voluntarios
+
+description: Sign up to volunteer.     # Optional. String or localized object.
+
+locale: en                             # Optional. Default language for localized text.
+                                       # Override at runtime with ?lang= in the URL.
+
+start_date: "2025-06-01T00:00:00Z"    # Optional. ISO 8601. Form blocked before this date.
+end_date: "2025-12-31T23:59:59Z"      # Optional. ISO 8601. Form blocked after this date.
+
+mixpanel: abc123def456                 # Optional. Mixpanel project token for analytics.
+
+# ── Sections ──────────────────────────────────────────
+# Required. See reference/section for full section properties.
+
+sections:
+  - id: signup
+    title: Your Details
+    fields:
+      - id: name
+        type: short_text
+        label: Full Name
+        validators:
+          - required
+    next: done
+
+# ── Connections ───────────────────────────────────────
+# Optional. Integrations triggered on submission.
+
+connections:
+  # Webhook — POST full submission as JSON.
+  - type: webhook                      # Required.
+    url: https://example.com/hooks     # Required. Destination URL.
+
+  # Email — send a notification email.
+  - type: email                        # Required.
+    to: team@example.com               # Required. Supports Handlebars: {{data.email}}
+    subject: New signup                 # Required. String or localized. Supports Handlebars.
+    body: |                            # Optional. HTML body. Supports Handlebars.
+      <p>{{data.name}} signed up.</p>
+    include_responses: true            # Optional. Boolean. Default: false.
+                                       # Appends an HTML table of all field values.
+
+  # Airtable — write a row to an Airtable table.
+  - type: airtable                     # Required.
+    connection_id: conn_abc123         # Required. OAuth connection from the dashboard.
+    base_id: appXXXXXXXXXXXXXX        # Required. Airtable base ID.
+    table_id_or_name: Signups          # Required. Airtable table ID or name.
+
+# ── Completion ────────────────────────────────────────
+# Optional. Customizes the screen shown after submission.
+# All text supports Handlebars: {{data.fieldId}}
+
+completion:
+  title: "Thanks, {{data.name}}!"      # Optional. String or localized.
+  message: We'll be in touch soon.     # Optional. String or localized.
+  button:                              # Optional. Call-to-action button.
+    label: Visit our website           # Required (if button). String or localized.
+    url: https://example.com           # Required (if button). Supports Handlebars.
+```

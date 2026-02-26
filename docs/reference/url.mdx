@@ -1,0 +1,29 @@
+---
+title: url
+description: URL input field with browser-level URL format validation.
+---
+
+```yaml
+- id: website
+  type: url
+
+  label: Website                       # Required. String or localized object.
+  placeholder: https://example.com     # Optional. String or localized object.
+
+  # visible_when: data.has_website == 'Yes'  # Optional. JavaScript expression.
+
+  validators:
+    - required                         # Optional. Field must not be empty.
+
+    - type: min                        # Optional. Minimum character count.
+      value: 10
+      # message: Must be at least 10 characters.  # Optional. String or localized.
+
+    - type: max                        # Optional. Maximum character count.
+      value: 2000
+      # message: Must be 2000 characters or fewer.
+
+    - type: pattern                    # Optional. Custom regex validation.
+      regex: "^https://"
+      # message: URL must use HTTPS.
+```
