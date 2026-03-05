@@ -25,6 +25,21 @@
             ]
           },
           {
+            "group": "Concepts",
+            "pages": [
+              "concepts/forms",
+              "concepts/sections",
+              "concepts/fields",
+              "concepts/completion",
+              "concepts/connections",
+              "concepts/validation",
+              "concepts/conditional-logic",
+              "concepts/templating",
+              "concepts/localization",
+              "concepts/analytics"
+            ]
+          },
+          {
             "group": "Help",
             "pages": [
               "help/support"
