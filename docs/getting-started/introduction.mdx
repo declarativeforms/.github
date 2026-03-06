@@ -1,0 +1,40 @@
+---
+title: Introduction
+description: Welcome to the Declarative Forms Documentation!
+---
+
+Declarative Forms is a developer-first alternative to traditional form platforms. Instead of building forms through visual editors, you define forms as YAML configuration in a GitHub repository.
+
+---
+
+## Forms as configuration
+
+A form is a YAML file. You write what the form should contain — its sections, fields, validation rules, and data destinations — and the platform handles the rest.
+
+```yaml
+version: 1
+title: "Quick Feedback"
+sections:
+  - id: main
+    title: "Your Feedback"
+    fields:
+      - id: feedback
+        type: long_text
+        label: "What can we improve?"
+        validators:
+          - required
+    next: done
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/form
+```
+
+This file defines a complete, working form. One section, one field, one connection. Push it to your repository and it is live.
+
+---
+
+## Why configuration instead of a builder
+
+Form builders store your work behind a UI. You cannot diff two versions of a form. You cannot review a teammate's changes before they go live. When something breaks, you check an activity log instead of a commit history.
+
+A YAML file changes this. The form definition is readable, diffable, and version-controlled. You open a pull request to change a field label. You revert a broken form with `git revert`. You copy a form to a new environment by copying a file.

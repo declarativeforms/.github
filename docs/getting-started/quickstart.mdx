@@ -1,0 +1,69 @@
+---
+title: Quickstart
+description: Create and deploy a working form in under 60 seconds.
+---
+
+This guide takes you from an empty repository to a live form. You will create a YAML file, push it to GitHub, and open your form in the browser.
+
+---
+
+## 1. Create a form file
+
+Add a file named `feedback.yaml` to the root of your GitHub repository:
+
+```yaml
+version: 1
+title: "Quick Feedback"
+sections:
+  - id: main
+    title: "Quick Feedback"
+    fields:
+      - id: name
+        type: short_text
+        label: "Your name"
+        validators:
+          - required
+      - id: feedback
+        type: long_text
+        label: "What can we improve?"
+        validators:
+          - required
+    next: done
+connections:
+  - type: webhook
+    url: https://your-api.com/hooks/form
+```
+
+This defines a single-section form with two fields and a webhook connection. When a user submits the form, the response data is sent to the webhook URL as a POST request.
+
+---
+
+## 2. Push to GitHub
+
+Commit and push the file to your repository:
+
+```bash
+git add feedback.yaml
+git commit -m "Add feedback form"
+git push
+```
+
+---
+
+## 3. Open your form
+
+Your form is live immediately at:
+
+```
+https://app.declarativeforms.com/<owner>/<repo>/feedback
+```
+
+Replace `<owner>` with your GitHub username or organization, and `<repo>` with the repository name. The form name matches the filename without the `.yaml` extension.
+
+---
+
+## What just happened
+
+You defined a form as a YAML file, committed it to your repository, and the platform made it available at a predictable URL. No dashboard, no build step, no deployment configuration.
+
+The YAML file is the form. To change the form, change the file. To review a change, open a pull request. To roll back, revert the commit.
