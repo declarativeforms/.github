@@ -84,3 +84,5 @@ I want you to take each of these tasks below and understand them in detail by ex
 - Finalize the copywriting blueprint and save it in a file called `copywriting_blueprint.md`.
 - Now that you have a copywriting blueprint, create a draft for the introduction.mdx and quickstart.mdx based on your understanding of the product and then use the copywriting_blueprint to refine it. 
 - Next, create a draft for the concept called sections.mdx and then use the blueprint to refine it, the getting-started section will be baised towards marketing while the concepts directory will be bias towards technical style.
+
+Next, I want you to identify all the other concepts by researching the `/Users/barenderasmus/development/examples/core` project. Once you have an extensive list of the concepts which you should cover, write the concept pages for each following the guidelines in the copywriting_blueprint.md
