@@ -1,40 +1,49 @@
 ---
 title: Introduction
-description: Welcome to the Declarative Forms Documentation!
+description: Welcome to Declarative Forms!
 ---
+
+## What is Declarative Forms?
 
 Declarative Forms is a developer-first alternative to traditional form platforms. Instead of building forms through visual editors, you define forms as YAML configuration in a GitHub repository.
 
 ---
 
-## Forms as configuration
+## Forms as Code
 
-A form is a YAML file. You write what the form should contain — its sections, fields, validation rules, and data destinations — and the platform handles the rest.
+A form is a YAML file. You write what the form should contain and the platform handles the rest.
 
 ```yaml
 version: 1
-title: "Quick Feedback"
+title: ""
+description: ""
+
+locale: "en"
+
+start_date: "2026-01-01"
+end_date: "2026-03-31"
+
+completion:
+    # ...
+
 sections:
-  - id: main
-    title: "Your Feedback"
+  - id: section_1
+    title: "Section 1"
     fields:
-      - id: feedback
-        type: long_text
-        label: "What can we improve?"
+      - id: question_1
+        type: email
+        label: What’s your email?
+        placeholder: hello@declarativeforms.com
         validators:
           - required
     next: done
+
 connections:
-  - type: webhook
-    url: https://your-api.com/hooks/form
+    # ...
 ```
 
-This file defines a complete, working form. One section, one field, one connection. Push it to your repository and it is live.
+## Why code instead of a visual editor
 
----
+Visual editors are a good fit when you need to publish a few simple forms quickly. But when forms become part of a product or an operational workflow, the editing model starts to matter. If the form only lives inside a third-party editor, it becomes harder to review changes, track history, and manage it alongside the rest of your system.
 
-## Why configuration instead of a builder
-
-Form builders store your work behind a UI. You cannot diff two versions of a form. You cannot review a teammate's changes before they go live. When something breaks, you check an activity log instead of a commit history.
-
-A YAML file changes this. The form definition is readable, diffable, and version-controlled. You open a pull request to change a field label. You revert a broken form with `git revert`. You copy a form to a new environment by copying a file.
+Defining forms in code keeps the form close to the product it belongs to. You can version it, review it in pull requests, collaborate in GitHub, and move it with the rest of your codebase. It is not a better model for every team. It is a better model for teams that want direct control over how their forms are defined.
