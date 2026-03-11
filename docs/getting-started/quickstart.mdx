@@ -1,0 +1,70 @@
+---
+title: Quickstart
+description: Create and publish your first form.
+---
+
+After you complete this guide, you’ll have a live form backed by a YAML file in GitHub.
+
+---
+
+## What you need
+
+Declarative Forms uses a forms-as-code approach. Each form is a YAML file stored in a GitHub repository.
+
+If you already have a repository where the form should live, use that. If not, create a new one using the GitHub guide [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
+
+---
+
+## Create the form file
+
+Go to the repository where you want to define your form and create a YAML file, for example, `feedback.yaml`. Paste the example below into that file.
+
+```yaml
+version: 1
+title: "Feedback"
+description: "Help us improve our product!"
+
+sections:
+  - id: section_1
+    title: "Section 1"
+    fields:
+      - id: question_1
+        type: email
+        label: What’s your email?
+        placeholder: hello@declarativeforms.com
+        validators:
+          - required
+    next: done
+
+connections:
+  - type: email
+    to: "{{data.question_1}}"
+    subject: Thanks for your submission
+    body: |
+      Hi {{data.question_1}}, we received your response.
+
+```
+
+This example defines a form with a title, a short description, one section, and one email field. It also includes a connection that sends a confirmation email after a submission is received.
+
+The important part for this guide is the structure. `sections` defines what the form asks for, `fields` defines the input types, and `connections` defines what should happen after the form is submitted.
+
+---
+
+## Open the live form
+
+Once the file is in your repository, you can open it at:
+
+`https://app.declarativeforms.com/<org>/<repo>/<file>`
+
+`<org>` is your GitHub username or organization, `<repo>` is the repository name, and `<file>` is the form filename without the `.yaml` extension.
+
+If your GitHub username is `acme`, your repository is `octocat`, and your file is `feedback.yaml`, the URL becomes `https://app.declarativeforms.com/acme/octocat/feedback`.
+
+---
+
+## Check the result
+
+If the URL is correct, the hosted page should render the form defined in your YAML file. In this example, you should see the title `Feedback`, the description text, and a single email field.
+
+At that point, the form is live. Any further changes to the YAML file can be managed in GitHub the same way you manage the rest of your code.
