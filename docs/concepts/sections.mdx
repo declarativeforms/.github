@@ -1,0 +1,41 @@
+---
+title: Sections
+---
+
+## Structure
+
+```yaml
+# ...
+
+sections:
+  - id: section_1
+    title: "Section 1"
+    fields:
+      - id: question_1
+        type: email
+        label: What’s your email?
+        placeholder: hello@declarativeforms.com
+        validators:
+          - required
+    next: done
+
+# ...
+```
+
+## Fields
+
+<ParamField path="id" type="string" required>
+  TODO
+</ParamField>
+
+<ParamField path="title" type="string | object" required>
+  TODO
+</ParamField>
+
+<ParamField path="fields" type="array" required>
+  TODO
+</ParamField>
+
+<ParamField path="next" type="string" required>
+  TODO
+</ParamField>
