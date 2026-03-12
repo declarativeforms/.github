@@ -25,10 +25,12 @@
             ]
           },
           {
+            "group": "Concepts",
+            "pages": ["concepts/form"]
+          },
+          {
             "group": "Help",
-            "pages": [
-              "help/support"
-            ]
+            "pages": ["help/support"]
           }
         ]
       }

@@ -1,0 +1,78 @@
+---
+title: Form
+---
+
+## Structure
+
+```yaml
+version: 1
+title: "Feedback"
+description: "Help us improve our product!"
+
+locale: "en"
+measurements:
+  # ...
+
+start_date: "2026-01-01"
+end_date: "2026-03-31"
+
+completion:
+    # ...
+
+sections:
+  - id: section_1
+    title: "Section 1"
+    fields:
+      - id: question_1
+        type: email
+        label: What’s your email?
+        placeholder: hello@declarativeforms.com
+        validators:
+          - required
+    next: done
+
+connections:
+    # ...
+```
+
+## Fields
+
+<ParamField path="version" type="string" required>
+  Defines the schema version used by the form.
+</ParamField>
+
+<ParamField path="title" type="string | object" required>
+  Defines the title shown at the top of the form.
+</ParamField>
+
+<ParamField path="description" type="string | object">
+  Defines the description shown below the title.
+</ParamField>
+
+<ParamField path="locale" type="string">
+  An example of a parameter field
+</ParamField>
+
+<ParamField path="measurements" type="object">
+  An example of a parameter field
+</ParamField>
+
+<ParamField path="start_date" type="string">
+  An example of a parameter field
+</ParamField>
+
+<ParamField path="end_date" type="string">
+  An example of a parameter field
+</ParamField>
+
+<ParamField path="completion" type="object">
+  An example of a parameter field
+</ParamField>
+
+<ParamField path="sections" type="array">
+  An example of a parameter field
+</ParamField>
+
+<ParamField path="connections" type="array">
+  Defines integrations used to deliver submissions to external systems.
+</ParamField>
