@@ -59,7 +59,7 @@
     "primary": {
       "type": "button",
       "label": "Open App",
-      "href": "https://app.declarativeforms.com"
+      "href": "https://frms.dev"
     }
   },
   "footer": {

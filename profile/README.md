@@ -46,7 +46,7 @@ connections:
 Save this as `feedback.yaml` in your repo, then open it at:
 
 ```
-https://app.declarativeforms.com/<org>/<repo>/feedback
+https://frms.dev/<org>/<repo>/feedback
 ```
 
 ## Who is it for?
@@ -56,6 +56,6 @@ Declarative Forms is built for teams that manage multiple forms as part of an op
 ## Links
 
 - [Documentation](https://docs.declarativeforms.com)
-- [Open the App](https://app.declarativeforms.com)
+- [Open the App](https://frms.dev)
 - [GitHub](https://github.com/declarativeforms)
 - [Support & Issues](https://github.com/declarativeforms/.github/issues)
