@@ -1,0 +1,35 @@
+---
+title: Completion
+---
+
+## Structure
+
+```yaml
+title: "Thank you!"
+message: "We have received your submission."
+button:
+  label: "Continue"
+  url: "https://example.com"
+```
+
+## Fields
+
+<ParamField path="title" type="string | object">
+  Defines the title shown after the form is completed.
+</ParamField>
+
+<ParamField path="message" type="string | object">
+  Defines the message shown below the completion title.
+</ParamField>
+
+<ParamField path="button" type="object">
+  Defines the optional button shown on the completion screen.
+</ParamField>
+
+<ParamField path="button.label" type="string | object">
+  Defines the label shown on the completion button.
+</ParamField>
+
+<ParamField path="button.url" type="string | object">
+  Defines the URL opened when the completion button is clicked.
+</ParamField>

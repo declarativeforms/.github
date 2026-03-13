@@ -26,7 +26,14 @@
           },
           {
             "group": "Concepts",
-            "pages": ["concepts/form", "concepts/sections"]
+            "pages": [
+              "concepts/form",
+              "concepts/sections",
+              "concepts/fields",
+              "concepts/field_types",
+              "concepts/completion",
+              "concepts/measurements"
+            ]
           },
           {
             "group": "Help",

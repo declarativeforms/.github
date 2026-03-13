@@ -1,0 +1,41 @@
+---
+title: Fields
+---
+
+## Structure
+
+```yaml
+id: question_1
+type: email
+label: What’s your email?
+placeholder: hello@declarativeforms.com
+validators:
+  - required
+visible_when: data.contact_method === 'email'
+```
+
+## Fields
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="string" required>
+  Defines which field type is rendered. See [field types](/concepts/field_types) for more details.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field, for example whether a value is required.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>

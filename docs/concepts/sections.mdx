@@ -5,21 +5,16 @@ title: Sections
 ## Structure
 
 ```yaml
-# ...
-
-sections:
-  - id: section_1
-    title: "Section 1"
-    fields:
-      - id: question_1
-        type: email
-        label: What’s your email?
-        placeholder: hello@declarativeforms.com
-        validators:
-          - required
-    next: done
-
-# ...
+id: section_1
+title: "Section 1"
+fields:
+  - id: question_1
+    type: email
+    label: What’s your email?
+    placeholder: hello@declarativeforms.com
+    validators:
+      - required
+next: done
 ```
 
 ## Fields
@@ -37,5 +32,5 @@ sections:
 </ParamField>
 
 <ParamField path="next" type="string" required>
-  Defines where the form should go after the section is submitted. See [conditional navigation](/concepts/conditional_navigation) for more details.
+  Defines where the form should go after the section is submitted. In the simplest case, use `done` to complete the form.
 </ParamField>

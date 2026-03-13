@@ -3,13 +3,13 @@ title: Quickstart
 description: Create and publish your first form.
 ---
 
-After you complete this guide, you’ll have a live form backed by a YAML file in GitHub.
+After you complete this guide, you’ll have a live form generated from a YAML definition.
 
 ---
 
 ## What you need
 
-Declarative Forms uses a forms-as-code approach. Each form is a YAML file stored in a GitHub repository.
+Declarative Forms uses a forms-as-code approach. Each form is defined in a YAML file stored in a GitHub repository.
 
 If you already have a repository where the form should live, use that. If not, create a new one using the GitHub guide [here](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
 
@@ -49,6 +49,8 @@ This example defines a form with a title, a short description, one section, and 
 
 The important part for this guide is the structure. `sections` defines what the form asks for, `fields` defines the input types, and `connections` defines what should happen after the form is submitted.
 
+This example is intentionally small. As forms become more advanced, you keep the same overall model and expand it with more sections, more fields, validation, and additional post-submit behavior.
+
 ---
 
 ## Open the live form
@@ -61,10 +63,14 @@ Once the file is in your repository, you can open it at:
 
 If your GitHub username is `acme`, your repository is `octocat`, and your file is `feedback.yaml`, the URL becomes `https://app.declarativeforms.com/acme/octocat/feedback`.
 
+At that URL, the hosted app renders the form defined in your file. The form definition controls what people see and what happens when they submit it.
+
 ---
 
 ## Check the result
 
 If the URL is correct, the hosted page should render the form defined in your YAML file. In this example, you should see the title `Feedback`, the description text, and a single email field.
 
-At that point, the form is live. Any further changes to the YAML file can be managed in GitHub the same way you manage the rest of your code.
+At that point, the form is live. When you update the form definition, the hosted form follows that definition.
+
+This guide focuses on creating and publishing a basic form. More advanced topics, such as broader form structures and deeper configuration details, build on the same model.

@@ -38,7 +38,7 @@ connections:
 ## Fields
 
 <ParamField path="version" type="string" required>
-  Defines the schema version used by the form.
+  Defines which schema version the platform should use to interpret the form file.
 </ParamField>
 
 <ParamField path="title" type="string | object" required>
@@ -50,11 +50,11 @@ connections:
 </ParamField>
 
 <ParamField path="locale" type="string">
-  Defines the default locale used to resolve localized content across the form. See [localization](/concepts/localization) for more details.
+  Defines the default locale used to resolve localized content across the form.
 </ParamField>
 
 <ParamField path="measurements" type="object">
-  Defines measurement integrations used to track form activity. See [measurements](/concepts/measurements) for more details.
+  Defines measurement settings used to track form activity. See [measurements](/concepts/measurements) for more details.
 </ParamField>
 
 <ParamField path="start_date" type="string">
@@ -74,5 +74,5 @@ connections:
 </ParamField>
 
 <ParamField path="connections" type="array">
-  Defines integrations used to deliver submissions to external systems. See [connections](/concepts/connections) for more details.
+  Defines what should happen after a submission is received, such as sending data to external systems.
 </ParamField>

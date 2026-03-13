@@ -1,0 +1,650 @@
+---
+title: Field Types
+---
+
+## `short_text`
+
+```yaml
+id: question_1
+type: short_text
+label: What's your name?
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="short_text" required>
+  Defines the field as a short text input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `long_text`
+
+```yaml
+id: question_1
+type: long_text
+label: Tell us more
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="long_text" required>
+  Defines the field as a long text input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `email`
+
+```yaml
+id: question_1
+type: email
+label: What's your email?
+otp: true
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="email" required>
+  Defines the field as an email input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="otp" type="boolean">
+  Defines whether the email field requires one-time passcode verification.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `mobile_number`
+
+```yaml
+id: question_1
+type: mobile_number
+label: What's your mobile number?
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="mobile_number" required>
+  Defines the field as a mobile number input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `number`
+
+```yaml
+id: question_1
+type: number
+label: How many attendees?
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="number" required>
+  Defines the field as a numeric input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `url`
+
+```yaml
+id: question_1
+type: url
+label: What's your website?
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="url" required>
+  Defines the field as a URL input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `date`
+
+```yaml
+id: question_1
+type: date
+label: When should we contact you?
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="date" required>
+  Defines the field as a date input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `single_select`
+
+```yaml
+id: question_1
+type: single_select
+label: Choose one option
+options:
+  - Option A
+  - Option B
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="single_select" required>
+  Defines the field as a single-select input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="options" type="array">
+  Defines the options available for the field.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `multiple_select`
+
+```yaml
+id: question_1
+type: multiple_select
+label: Choose all that apply
+options:
+  - Option A
+  - Option B
+  - Option C
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="multiple_select" required>
+  Defines the field as a multiple-select input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="options" type="array">
+  Defines the options available for the field.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `dropdown`
+
+```yaml
+id: question_1
+type: dropdown
+label: Select your country
+searchable: true
+options:
+  - Netherlands
+  - Germany
+  - Spain
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="dropdown" required>
+  Defines the field as a dropdown input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="searchable" type="boolean">
+  Defines whether the dropdown field supports searching options.
+</ParamField>
+
+<ParamField path="options" type="array">
+  Defines the options available for the field.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `rating`
+
+```yaml
+id: question_1
+type: rating
+label: How satisfied are you?
+min_label: Not satisfied
+max_label: Very satisfied
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="rating" required>
+  Defines the field as a rating input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="min_label" type="string | object">
+  Defines the label shown for the lowest rating value.
+</ParamField>
+
+<ParamField path="max_label" type="string | object">
+  Defines the label shown for the highest rating value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `file_upload`
+
+```yaml
+id: question_1
+type: file_upload
+label: Upload your resume
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="file_upload" required>
+  Defines the field as a file upload input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `address`
+
+```yaml
+id: question_1
+type: address
+label: What's your address?
+outputFormat: structured
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="address" required>
+  Defines the field as an address input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="outputFormat" type="string | structured">
+  Defines the format used to store the selected address value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `address_locality`
+
+```yaml
+id: question_1
+type: address_locality
+label: Which city are you in?
+outputFormat: structured
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="address_locality" required>
+  Defines the field as a locality input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="outputFormat" type="string | structured">
+  Defines the format used to store the selected address value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `address_region`
+
+```yaml
+id: question_1
+type: address_region
+label: Which region are you in?
+outputFormat: structured
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="address_region" required>
+  Defines the field as a region input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="outputFormat" type="string | structured">
+  Defines the format used to store the selected address value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `address_country`
+
+```yaml
+id: question_1
+type: address_country
+label: Which country are you in?
+outputFormat: structured
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="address_country" required>
+  Defines the field as a country input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="placeholder" type="string | object">
+  Defines the placeholder shown when the field has no value.
+</ParamField>
+
+<ParamField path="outputFormat" type="string | structured">
+  Defines the format used to store the selected address value.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `geolocation`
+
+```yaml
+id: question_1
+type: geolocation
+label: Share your location
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="geolocation" required>
+  Defines the field as a geolocation input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `signature`
+
+```yaml
+id: question_1
+type: signature
+label: Sign here
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="signature" required>
+  Defines the field as a signature input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label shown for the field.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
+
+## `hidden`
+
+```yaml
+id: question_1
+type: hidden
+label: Campaign source
+```
+
+<ParamField path="id" type="string" required>
+  Defines the unique identifier used to store and reference the field value.
+</ParamField>
+
+<ParamField path="type" type="hidden" required>
+  Defines the field as a hidden input.
+</ParamField>
+
+<ParamField path="label" type="string | object">
+  Defines the label associated with the field.
+</ParamField>
+
+<ParamField path="validators" type="array">
+  Defines the validation rules applied to the field.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+  Defines the expression used to determine whether the field is shown.
+</ParamField>
