@@ -2,6 +2,12 @@
 title: Measurements
 ---
 
+Measurements define the analytics settings attached to a form. Use them when you want to track how respondents interact with the form over time.
+
+## Overview
+
+The measurements object contains analytics configuration for the form. At the moment, the platform supports Mixpanel only, using a project token provided in the form configuration.
+
 ## Structure
 
 ```yaml
@@ -13,3 +19,9 @@ mixpanel: "your-project-token"
 <ParamField path="mixpanel" type="string">
   Defines the Mixpanel project token used to track form activity.
 </ParamField>
+
+## Details
+
+When configured, Mixpanel is initialized for the form.
+
+The form currently tracks `page_view` when the form loads and `section_completed` after each section is submitted.

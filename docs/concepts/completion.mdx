@@ -2,6 +2,12 @@
 title: Completion
 ---
 
+Completion defines the thank-you experience shown after a form is submitted successfully. Use it when you want to control the final message and optional next step shown to the respondent.
+
+## Overview
+
+The completion object controls the content rendered on the form's completion screen. It can define a title, a message, and an optional button, all at the form level.
+
 ## Structure
 
 ```yaml
@@ -33,3 +39,11 @@ button:
 <ParamField path="button.url" type="string | object">
   Defines the URL opened when the completion button is clicked.
 </ParamField>
+
+## Details
+
+When `completion` is not provided, the platform shows the default thank-you title and description.
+
+The completion button is only shown when a button URL is provided.
+
+The completion title, message, and button URL support template interpolation using submission data.

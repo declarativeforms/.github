@@ -2,7 +2,15 @@
 title: Field Types
 ---
 
+Field types define the specific input experience a field renders. Use them to choose the simplest input that fits the kind of data you want to collect.
+
+## Overview
+
+Each field type shares the base field properties documented in the [fields](/concepts/fields) page, then adds any type-specific settings such as options, rating labels, or address output formats. Start with the simplest field that fits the use case, then move to more specialized field types only when the interaction requires it.
+
 ## `short_text`
+
+Use a short text field for simple single-line answers such as names, short identifiers, or brief responses.
 
 ```yaml
 id: question_1
@@ -36,6 +44,8 @@ label: What's your name?
 
 ## `long_text`
 
+Use a long text field when respondents need more space for written answers or free-form feedback.
+
 ```yaml
 id: question_1
 type: long_text
@@ -67,6 +77,8 @@ label: Tell us more
 </ParamField>
 
 ## `email`
+
+Use an email field when you need a respondent to provide an email address. Enable OTP when that address should be verified before the form can continue.
 
 ```yaml
 id: question_1
@@ -105,6 +117,8 @@ otp: true
 
 ## `mobile_number`
 
+Use a mobile number field for phone-number style input captured as a single line.
+
 ```yaml
 id: question_1
 type: mobile_number
@@ -136,6 +150,8 @@ label: What's your mobile number?
 </ParamField>
 
 ## `number`
+
+Use a number field when the response should be captured as a numeric value.
 
 ```yaml
 id: question_1
@@ -169,6 +185,8 @@ label: How many attendees?
 
 ## `url`
 
+Use a URL field when you want respondents to provide a website or link.
+
 ```yaml
 id: question_1
 type: url
@@ -201,6 +219,8 @@ label: What's your website?
 
 ## `date`
 
+Use a date field when the response should be a calendar date.
+
 ```yaml
 id: question_1
 type: date
@@ -232,6 +252,8 @@ label: When should we contact you?
 </ParamField>
 
 ## `single_select`
+
+Use a single-select field when the respondent must choose one option from a fixed set.
 
 ```yaml
 id: question_1
@@ -268,6 +290,8 @@ options:
 
 ## `multiple_select`
 
+Use a multiple-select field when the respondent may choose more than one option from a fixed set.
+
 ```yaml
 id: question_1
 type: multiple_select
@@ -303,6 +327,8 @@ options:
 </ParamField>
 
 ## `dropdown`
+
+Use a dropdown field when you want a compact choice input, especially when the list of options is longer.
 
 ```yaml
 id: question_1
@@ -349,6 +375,8 @@ options:
 
 ## `rating`
 
+Use a rating field when respondents should choose a score from a defined range.
+
 ```yaml
 id: question_1
 type: rating
@@ -387,6 +415,8 @@ max_label: Very satisfied
 
 ## `file_upload`
 
+Use a file upload field when respondents need to attach one or more files as part of their submission.
+
 ```yaml
 id: question_1
 type: file_upload
@@ -418,6 +448,8 @@ label: Upload your resume
 </ParamField>
 
 ## `address`
+
+Use an address field when you want respondents to search for and select a full address.
 
 ```yaml
 id: question_1
@@ -456,6 +488,8 @@ outputFormat: structured
 
 ## `address_locality`
 
+Use an address locality field when you only need the locality or city portion of an address.
+
 ```yaml
 id: question_1
 type: address_locality
@@ -492,6 +526,8 @@ outputFormat: structured
 </ParamField>
 
 ## `address_region`
+
+Use an address region field when you only need the region or administrative area portion of an address.
 
 ```yaml
 id: question_1
@@ -530,6 +566,8 @@ outputFormat: structured
 
 ## `address_country`
 
+Use an address country field when you only need the country portion of an address.
+
 ```yaml
 id: question_1
 type: address_country
@@ -567,6 +605,8 @@ outputFormat: structured
 
 ## `geolocation`
 
+Use a geolocation field when respondents should share their current device location.
+
 ```yaml
 id: question_1
 type: geolocation
@@ -595,6 +635,8 @@ label: Share your location
 
 ## `signature`
 
+Use a signature field when respondents need to draw and submit a signature.
+
 ```yaml
 id: question_1
 type: signature
@@ -622,6 +664,8 @@ label: Sign here
 </ParamField>
 
 ## `hidden`
+
+Use a hidden field when a value should be submitted with the form without being shown to the respondent.
 
 ```yaml
 id: question_1
