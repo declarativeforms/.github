@@ -1,0 +1,48 @@
+version: 1
+title: "Declarative Forms"
+description: "Get early access to forms-as-code."
+
+completion:
+  title: "Thanks, {{data.question_2}}!"
+  message: "You're on the list. Explore the docs to start building forms-as-code."
+  button:
+    label: "Explore the docs"
+    url: "https://docs.declarativeforms.com"
+
+sections:
+  - id: section_1
+    fields:
+      - id: question_1
+        type: email
+        label: What's your email?
+        placeholder: you@company.com
+        otp: true
+        validators:
+          - required
+
+      - id: question_2
+        type: short_text
+        label: What's your name?
+        placeholder: Jane
+        validators:
+          - required
+
+      - id: question_3
+        type: single_select
+        label: What best describes your role?
+        options:
+          - Developer
+          - Founder / CTO
+          - Engineering Manager
+          - Other
+
+connections:
+  - type: email
+    to: "{{data.question_1}}"
+    subject: "Welcome to Declarative Forms"
+    body: |
+      Hey {{data.question_2}},
+
+      Thanks for signing up. Start building forms-as-code: https://docs.declarativeforms.com
+
+      — Declarative Forms
