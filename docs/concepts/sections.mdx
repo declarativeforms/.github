@@ -6,7 +6,7 @@ Sections split a form into steps. Use them to group related fields and control h
 
 ## Overview
 
-Each section defines the content rendered for one step in the flow. A section contains its own fields and points to what should happen next. In the simplest case, `next: done` completes the form, while more advanced navigation will be covered in its own concept page.
+Each section defines the content rendered for one step in the flow. A section contains its own fields and points to what should happen next. In the simplest case, `next: done` completes the form, while more advanced flow control is covered in [conditional navigation](/concepts/conditional_navigation).
 
 ## Structure
 
@@ -37,6 +37,6 @@ next: done
   Defines the fields rendered within the section. See [fields](/concepts/fields) for more details.
 </ParamField>
 
-<ParamField path="next" type="string" required>
-  Defines where the form should go after the section is submitted. In the simplest case, use `done` to complete the form.
+<ParamField path="next" type="string | array" required>
+  Defines where the form should go after the section is submitted. See [conditional navigation](/concepts/conditional_navigation) for more details.
 </ParamField>
