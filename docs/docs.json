@@ -32,6 +32,7 @@
               "concepts/fields",
               "concepts/field_types",
               "concepts/completion",
+              "concepts/connections",
               "concepts/measurements"
             ]
           },
