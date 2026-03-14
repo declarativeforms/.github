@@ -15,57 +15,22 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Guides",
         "groups": [
           {
             "group": "Getting Started",
             "pages": [
-              "getting-started/introduction",
-              "getting-started/quickstart"
+              "getting-started/create-your-first-form",
+              "getting-started/create-a-multi-step-form",
+              "getting-started/show-follow-up-fields-based-on-answers",
+              "getting-started/route-people-to-different-next-steps",
+              "getting-started/send-submissions-to-a-webhook",
+              "getting-started/customize-the-thank-you-page",
+              "getting-started/pre-fill-a-form-from-the-url"
             ]
-          },
-          {
-            "group": "Concepts",
-            "pages": [
-              "concepts/form",
-              "concepts/sections",
-              "concepts/conditional_navigation",
-              "concepts/fields",
-              "concepts/validators",
-              "concepts/field_types",
-              "concepts/conditional_visibility",
-              "concepts/expressions",
-              "concepts/prefilling_fields",
-              "concepts/localization",
-              "concepts/completion",
-              "concepts/connections",
-              "concepts/measurements"
-            ]
-          },
-          {
-            "group": "Help",
-            "pages": ["help/support"]
           }
         ]
       }
     ]
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "GitHub",
-        "href": "https://github.com/declarativeforms"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Open App",
-      "href": "https://frms.dev"
-    }
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/declarativeforms"
-    }
   }
 }

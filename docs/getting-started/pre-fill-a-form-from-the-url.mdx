@@ -1,0 +1,111 @@
+---
+title: Pre-fill a form from the URL
+description: Open a form with field values already filled in from the URL.
+---
+
+Open a form with some answers already filled in. By the end of this guide, you will have a contact form that can prefill the person's name and email from the URL.
+
+Start from the `contact.yaml` form in the first guide and keep it in a public GitHub repository on the `main` branch.
+
+## Start with
+
+Start with a standard contact form:
+
+```yaml
+version: 1
+title: "Contact us"
+description: "Send us a message and we will get back to you."
+
+sections:
+  - id: contact
+    title: "Your details"
+    fields:
+      - id: full_name
+        type: short_text
+        label: "Full name"
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: "Email address"
+        validators:
+          - required
+
+      - id: message
+        type: long_text
+        label: "Message"
+        validators:
+          - required
+
+    next: done
+```
+
+This form works normally and does not need any special schema changes for prefilling.
+
+## Build it
+
+Use a URL where the query parameter names match your field IDs:
+
+```text
+https://frms.dev/<owner>/<repo>/contact?full_name=Jane%20Smith&email=jane@example.com
+```
+
+In this example:
+
+- `full_name` fills the `full_name` field
+- `email` fills the `email` field
+
+You can use any field IDs from your form the same way.
+
+## Final version
+
+Your `contact.yaml` file can stay the same:
+
+```yaml
+version: 1
+title: "Contact us"
+description: "Send us a message and we will get back to you."
+
+sections:
+  - id: contact
+    title: "Your details"
+    fields:
+      - id: full_name
+        type: short_text
+        label: "Full name"
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: "Email address"
+        validators:
+          - required
+
+      - id: message
+        type: long_text
+        label: "Message"
+        validators:
+          - required
+
+    next: done
+
+connections:
+  - type: email
+    to: "hello@example.com"
+    subject: "New contact form submission"
+    include_responses: true
+```
+
+Use it with a prefilled URL like this:
+
+```text
+https://frms.dev/<owner>/<repo>/contact?full_name=Jane%20Smith&email=jane@example.com
+```
+
+## Try it
+
+Commit `contact.yaml` to the `main` branch, then open your prefilled URL.
+
+When the form loads, the **Full name** and **Email address** fields should already be filled in. You can then complete the rest of the form and submit it as usual.

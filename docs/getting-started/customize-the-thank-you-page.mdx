@@ -1,0 +1,126 @@
+---
+title: Customize the thank-you page
+description: Show a custom thank-you page after someone submits your form.
+---
+
+Replace the default thank-you screen with something more useful. By the end of this guide, your form will show a custom thank-you title, message, and button after submission.
+
+Start from the `contact.yaml` form in the first guide and keep it in a public GitHub repository on the `main` branch.
+
+## Start with
+
+Start with a form that uses the default thank-you screen:
+
+```yaml
+version: 1
+title: "Contact us"
+description: "Send us a message and we will get back to you."
+
+sections:
+  - id: contact
+    title: "Your details"
+    fields:
+      - id: full_name
+        type: short_text
+        label: "Full name"
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: "Email address"
+        validators:
+          - required
+
+      - id: message
+        type: long_text
+        label: "Message"
+        validators:
+          - required
+
+    next: done
+```
+
+In this version, the platform shows the default thank-you screen after submission.
+
+## Build it
+
+Add a `completion` block:
+
+```yaml
+completion:
+  title: "Thanks, {{data.full_name}}"
+  message: "We have your message and will reply soon."
+  button:
+    label: "Back to homepage"
+    url: "https://example.com"
+```
+
+This replaces the default thank-you screen with your own content. `{{data.full_name}}` uses the submitted answer in the title.
+
+Keep the same email connection:
+
+```yaml
+connections:
+  - type: email
+    to: "hello@example.com"
+    subject: "New contact form submission"
+    include_responses: true
+```
+
+## Final version
+
+Your full `contact.yaml` file should now look like this:
+
+```yaml
+version: 1
+title: "Contact us"
+description: "Send us a message and we will get back to you."
+
+completion:
+  title: "Thanks, {{data.full_name}}"
+  message: "We have your message and will reply soon."
+  button:
+    label: "Back to homepage"
+    url: "https://example.com"
+
+sections:
+  - id: contact
+    title: "Your details"
+    fields:
+      - id: full_name
+        type: short_text
+        label: "Full name"
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: "Email address"
+        validators:
+          - required
+
+      - id: message
+        type: long_text
+        label: "Message"
+        validators:
+          - required
+
+    next: done
+
+connections:
+  - type: email
+    to: "hello@example.com"
+    subject: "New contact form submission"
+    include_responses: true
+```
+
+## Try it
+
+Commit the updated `contact.yaml` file to the `main` branch, then open:
+
+`https://frms.dev/<owner>/<repo>/contact`
+
+Replace `<owner>` with your GitHub username or organization, and `<repo>` with your repository name.
+
+Open the form and submit it once. After submission, the form should show your custom thank-you title, your message, and the button you added.
