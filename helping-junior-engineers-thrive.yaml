@@ -1,0 +1,79 @@
+version: 1
+title: "Helping Junior Engineers Thrive"
+description: "Share your experience to help junior engineers navigate today's market. 5 respondents will be selected to win a Takealot voucher!"
+
+completion:
+  title: "Thank you, {{data.full_name}}!"
+  message: "Your insights will help junior engineers navigate today's market. We appreciate you taking the time. If you're one of the 5 selected winners, we'll notify you via email."
+
+sections:
+  - id: about_you
+    fields:
+      - id: full_name
+        type: short_text
+        label: Full name
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: Email address
+        otp: true
+        validators:
+          - required
+
+      - id: based_in_sa
+        type: single_select
+        label: Are you based in South Africa?
+        options:
+          - "Yes"
+          - "No"
+
+      - id: current_role
+        type: short_text
+        label: Current role
+        placeholder: "e.g. Senior Software Engineer"
+        validators:
+          - required
+
+      - id: years_of_experience
+        type: single_select
+        label: Years of experience
+        options:
+          - "0–2"
+          - "3–5"
+          - "6–10"
+          - "10+"
+    next: your_response
+
+  - id: your_response
+    fields:
+      - id: key_focus
+        type: short_text
+        label: What is the one most important thing a junior engineer should focus on right now to enter or grow in today's market?
+        validators:
+          - required
+
+      - id: advice
+        type: long_text
+        label: Why does this matter, and what practical advice would you give a junior engineer trying to stand out in today's market?
+        validators:
+          - required
+    next: done
+
+connections:
+  - type: email
+    to: "{{data.email}}"
+    subject: "Thank you for sharing your insights"
+    body: |
+      Hey {{data.full_name}},
+
+      Thanks for taking the time to share your experience. Your insights will help junior engineers navigate today's market.
+
+      You're also in the running — 5 respondents will be selected to win a Takealot voucher. If you're one of the winners, we'll reach out to this email address.
+
+      — Helping Junior Engineers Thrive
+  - type: email
+    to: "hirebarend@gmail.com"
+    subject: "New submission - {{form.title}}"
+    include_responses: true
