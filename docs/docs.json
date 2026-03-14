@@ -14,23 +14,7 @@
   },
   "navigation": {
     "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting Started",
-            "pages": [
-              "getting-started/create-your-first-form",
-              "getting-started/create-a-multi-step-form",
-              "getting-started/show-follow-up-fields-based-on-answers",
-              "getting-started/route-people-to-different-next-steps",
-              "getting-started/send-submissions-to-a-webhook",
-              "getting-started/customize-the-thank-you-page",
-              "getting-started/pre-fill-a-form-from-the-url"
-            ]
-          }
-        ]
-      }
+
     ]
   }
 }
