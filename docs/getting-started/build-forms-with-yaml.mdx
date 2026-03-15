@@ -1,3 +1,43 @@
+---
+title: "Build forms with YAML"
+description: "Define forms in YAML, store them in GitHub, and render them at a public URL. Everything you need to get started."
+---
+
+Declarative Forms lets you define a form entirely in a YAML file. Store it in a GitHub repository, and the platform renders it as an interactive form at a public URL. There is no visual editor, no account to create, and nothing to deploy. The YAML file is the source of truth.
+
+This page covers everything you need to build, publish, and configure forms.
+
+## Create and publish a form
+
+<Steps>
+  <Step title="Create a YAML file">
+    In the root of a **public** GitHub repository, create a `.yaml` file on the `main` branch. The filename becomes part of the URL — for example, `contact.yaml` becomes `/contact`.
+  </Step>
+
+  <Step title="Define your form">
+    Use the annotated example below as a starting point. Copy the active (uncommented) YAML for a working contact form, or uncomment sections to add more features.
+  </Step>
+
+  <Step title="Commit and open">
+    Commit to `main`, then open:
+
+    ```text
+    https://frms.dev/<owner>/<repo>/<filename>
+    ```
+
+    Replace `<owner>` with your GitHub username or organization, `<repo>` with the repository name, and `<filename>` with the YAML filename without the `.yaml` extension.
+
+    Changes you commit to `main` are reflected the next time the form is loaded.
+  </Step>
+</Steps>
+
+Want to see a live form before building your own? [Open this example](https://frms.dev/c979ac5b).
+
+## Annotated example
+
+The active YAML below is a complete, working contact form. Copy it as-is to get started. Commented-out blocks show progressively advanced alternatives — uncomment what you need.
+
+```yaml
 # ============================================================================
 # FORM — top-level properties
 # ============================================================================
@@ -382,3 +422,4 @@ connections:
 # Utility:
 #   hidden    — invisible field (pre-populate via URL: ?field_id=value)
 #   turnstile — Cloudflare CAPTCHA (always required, auto-injected)
+```
