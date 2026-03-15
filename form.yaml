@@ -27,22 +27,8 @@ sections:
         validators:
           - required
 
-      - id: question_3
-        type: single_select
-        label: What best describes your role?
-        options:
-          - Developer
-          - Founder / CTO
-          - Engineering Manager
-          - Other
-
 connections:
   - type: email
-    to: "{{data.question_1}}"
-    subject: "Welcome to Declarative Forms"
-    body: |
-      Hey {{data.question_2}},
-
-      Thanks for signing up. Start building forms-as-code: https://docs.declarativeforms.com
-
-      — Declarative Forms
+    to: "hirebarend@gmail.com"
+    subject: "New submission - {{form.title}}"
+    include_responses: true
