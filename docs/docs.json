@@ -22,6 +22,12 @@
             "pages": [
               "getting-started/create-a-form"
             ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "examples/add-another-section"
+            ]
           }
         ]
       }
