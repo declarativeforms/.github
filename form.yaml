@@ -9,6 +9,9 @@ completion:
     label: "Explore the docs"
     url: "https://docs.declarativeforms.com"
 
+measurements:
+  mixpanel: fffd6fab3138c0c0af6609cd986ece5e
+
 sections:
   - id: section_1
     fields:
