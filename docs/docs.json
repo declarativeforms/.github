@@ -14,7 +14,110 @@
   },
   "navigation": {
     "tabs": [
-
+      {
+        "tab": "Help",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "getting-started/create-your-first-form"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Schema",
+            "pages": [
+              "reference/form",
+              "reference/sections",
+              "reference/completion",
+              "reference/form-availability"
+            ]
+          },
+          {
+            "group": "Fields",
+            "pages": [
+              "reference/fields/overview",
+              "reference/fields/shared-properties",
+              {
+                "group": "Text & Input",
+                "pages": [
+                  "reference/fields/short-text",
+                  "reference/fields/long-text",
+                  "reference/fields/email",
+                  "reference/fields/number",
+                  "reference/fields/date",
+                  "reference/fields/url",
+                  "reference/fields/mobile-number"
+                ]
+              },
+              {
+                "group": "Selection",
+                "pages": [
+                  "reference/fields/dropdown",
+                  "reference/fields/single-select",
+                  "reference/fields/multiple-select",
+                  "reference/fields/rating"
+                ]
+              },
+              {
+                "group": "Location & Address",
+                "pages": [
+                  "reference/fields/address",
+                  "reference/fields/address-locality",
+                  "reference/fields/address-region",
+                  "reference/fields/address-country",
+                  "reference/fields/geolocation"
+                ]
+              },
+              {
+                "group": "Media & Capture",
+                "pages": [
+                  "reference/fields/camera",
+                  "reference/fields/file-upload",
+                  "reference/fields/signature"
+                ]
+              },
+              {
+                "group": "Utility",
+                "pages": [
+                  "reference/fields/hidden",
+                  "reference/fields/turnstile"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Behavior",
+            "pages": [
+              "reference/validation",
+              "reference/conditional-logic",
+              "reference/localization",
+              "reference/templating"
+            ]
+          },
+          {
+            "group": "Connections",
+            "pages": [
+              "reference/connections/overview",
+              "reference/connections/webhook",
+              "reference/connections/airtable",
+              "reference/connections/email"
+            ]
+          },
+          {
+            "group": "Data & Analytics",
+            "pages": [
+              "reference/submission-data",
+              "reference/measurements",
+              "reference/error-messages"
+            ]
+          }
+        ]
+      }
     ]
   }
 }

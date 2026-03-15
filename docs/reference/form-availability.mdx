@@ -1,0 +1,65 @@
+---
+title: "Form Availability"
+description: "Date-based form availability reference for Declarative Forms."
+---
+
+The `start_date` and `end_date` properties on the [form object](/reference/form) control when a form accepts submissions. Both properties are optional and can be used independently or together.
+
+## Properties
+
+<ParamField path="start_date" type="string">
+  ISO 8601 date string (e.g. `"2025-09-01"`). The form will not accept submissions before this date. When a user visits the form before the start date, a **"Form Not Yet Open"** message is displayed. See [Error Messages](/reference/error-messages).
+</ParamField>
+
+<ParamField path="end_date" type="string">
+  ISO 8601 date string (e.g. `"2025-10-15"`). The form will not accept submissions after this date. When a user visits the form after the end date, a **"Form Closed"** message is displayed. See [Error Messages](/reference/error-messages).
+</ParamField>
+
+## Behavior
+
+| Condition | Result |
+|-----------|--------|
+| Current date is before `start_date` | Form is not displayed. "Form Not Yet Open" message shown. |
+| Current date is after `end_date` | Form is not displayed. "Form Closed" message shown. |
+| Only `start_date` set, current date is after it | Form accepts submissions indefinitely. |
+| Only `end_date` set, current date is before it | Form accepts submissions from any prior date. |
+| Neither set | Form accepts submissions at any time. |
+
+## Example
+
+### Time-bounded form
+
+```yaml
+version: 1
+title: "Summer Camp Registration"
+start_date: "2025-06-01"
+end_date: "2025-08-15"
+
+sections:
+  - id: registration
+    title: "Register"
+    fields:
+      - id: name
+        type: short_text
+        label: "Full Name"
+    next: "done"
+
+connections: []
+```
+
+### Open-ended start date
+
+```yaml
+start_date: "2025-01-01"
+```
+
+### Deadline only
+
+```yaml
+end_date: "2025-12-31"
+```
+
+## Related
+
+- [Form](/reference/form)
+- [Error Messages](/reference/error-messages)

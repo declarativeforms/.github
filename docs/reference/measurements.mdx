@@ -1,0 +1,23 @@
+---
+title: "Measurements"
+description: "Reference for the measurements configuration."
+---
+
+The `measurements` object configures analytics tracking for a form. It is defined at the top level of the form YAML.
+
+## Properties
+
+<ParamField path="measurements.mixpanel" type="string">
+  Mixpanel project token. When provided, enables analytics tracking for the form.
+</ParamField>
+
+## Example
+
+```yaml
+measurements:
+  mixpanel: "your_mixpanel_project_token"
+```
+
+## See Also
+
+- [Form Object](/reference/form) — top-level form configuration where `measurements` is defined.

@@ -1,0 +1,64 @@
+---
+title: "Short Text"
+description: "Single-line text input field."
+---
+
+A standard single-line text input for collecting short string values.
+
+## Type
+
+```yaml
+type: short_text
+```
+
+## Properties
+
+This field type has no type-specific properties.
+
+Shared properties (`id`, `type`, `label`, `placeholder`, `validators`, `visible_when`) are documented on the [Shared Properties](/reference/fields/shared-properties) page.
+
+## Validation behavior
+
+The following validators are supported:
+
+| Validator    | Behavior                                      |
+| ------------ | --------------------------------------------- |
+| `required`   | Field must not be empty.                      |
+| `pattern`    | Value must match the provided regex.          |
+| `min_length` | Value must meet the minimum character count.  |
+| `max_length` | Value must not exceed the maximum character count. |
+| `expression` | Value must satisfy the custom expression.     |
+
+## Submission format
+
+```json
+{
+  "field_id": "string"
+}
+```
+
+The submitted value is a `string`.
+
+## Example
+
+```yaml
+- id: full_name
+  type: short_text
+  label: Full name
+  placeholder: Jane Doe
+  validators:
+    - type: required
+      message: Full name is required.
+    - type: min_length
+      value: 2
+      message: Name must be at least 2 characters.
+    - type: max_length
+      value: 100
+      message: Name must not exceed 100 characters.
+```
+
+## Related
+
+- [Long Text](/reference/fields/long-text) — multi-line variant
+- [Email](/reference/fields/email) — email-specific input
+- [URL](/reference/fields/url) — URL-specific input

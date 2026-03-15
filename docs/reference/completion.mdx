@@ -1,0 +1,72 @@
+---
+title: "Completion"
+description: "Completion screen reference for Declarative Forms."
+---
+
+The completion object defines the screen displayed after a form is successfully submitted.
+
+## Properties
+
+<ParamField path="title" type="LocalizedText">
+  Heading displayed on the completion screen. Accepts a plain string or a [locale map object](/reference/localization). Supports [Handlebars templating](/reference/templating). Default: `"Thank You!"`.
+</ParamField>
+
+<ParamField path="message" type="LocalizedText">
+  Body text displayed below the heading. Accepts a plain string or a [locale map object](/reference/localization). Supports [Handlebars templating](/reference/templating). Default: `"Your submission has been received."`.
+</ParamField>
+
+<ParamField path="button" type="object">
+  Optional call-to-action button. Contains `label` and `url` properties.
+</ParamField>
+
+<ParamField path="button.label" type="LocalizedText">
+  Button text. Accepts a plain string or a [locale map object](/reference/localization). Supports [Handlebars templating](/reference/templating).
+</ParamField>
+
+<ParamField path="button.url" type="LocalizedText">
+  URL the button links to. Accepts a plain string or a [locale map object](/reference/localization). Supports [Handlebars templating](/reference/templating).
+</ParamField>
+
+## Example
+
+```yaml
+completion:
+  title: "Application Submitted"
+  message: "Thank you, {{data.full_name}}. We will contact you at {{data.email}}."
+  button:
+    label: "Return to Homepage"
+    url: "https://example.com"
+```
+
+### Localized completion example
+
+```yaml
+completion:
+  title:
+    en: "Application Submitted"
+    fr: "Candidature soumise"
+  message:
+    en: "Thank you, {{data.full_name}}."
+    fr: "Merci, {{data.full_name}}."
+  button:
+    label:
+      en: "Return to Homepage"
+      fr: "Retour à l'accueil"
+    url: "https://example.com"
+```
+
+### Default behavior
+
+When the `completion` property is omitted from the [form object](/reference/form), the following defaults are shown:
+
+| Property | Default |
+|----------|---------|
+| `title` | `"Thank You!"` |
+| `message` | `"Your submission has been received."` |
+| `button` | Not displayed |
+
+## Related
+
+- [Form](/reference/form)
+- [Templating](/reference/templating)
+- [Localization](/reference/localization)

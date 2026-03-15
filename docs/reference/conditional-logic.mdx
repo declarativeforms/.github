@@ -1,0 +1,174 @@
+---
+title: Conditional Logic
+description: Field visibility expressions and conditional section navigation.
+---
+
+# Conditional Logic
+
+Conditional logic controls field visibility and section navigation using JavaScript expressions. Expressions have access to a `data` object containing all current field values keyed by field `id`.
+
+See also: [Validation](/reference/validation) for expression-based validators, [Templating](/reference/templating) for dynamic content, [Localization](/reference/localization) for localized labels.
+
+---
+
+## Expression syntax
+
+Expressions are full JavaScript expressions that must return a boolean (truthy/falsy).
+
+<ParamField body="data" type="object">
+  Contains all current field values, keyed by field `id`. For example, a field with `id: "country"` is accessible as `data.country`.
+</ParamField>
+
+If an expression throws an error, it defaults to `false`.
+
+**Examples:**
+
+| Expression | Description |
+| --- | --- |
+| `data.country === 'US'` | Exact string match |
+| `data.age >= 18` | Numeric comparison |
+| `data.plan !== 'free'` | Inequality check |
+| `data.score > 50 && data.verified` | Compound condition |
+
+---
+
+## Field visibility
+
+Use `visible_when` on a field to control whether it is displayed. The field is hidden when the expression evaluates to `false` (or throws an error).
+
+<ParamField body="visible_when" type="string">
+  A JavaScript expression. The field is visible only when this evaluates to `true`.
+</ParamField>
+
+```yaml
+sections:
+  - title: "Shipping"
+    fields:
+      - id: "country"
+        type: "dropdown"
+        label: "Country"
+        options:
+          - label: "United States"
+            value: "US"
+          - label: "Canada"
+            value: "CA"
+          - label: "Other"
+            value: "other"
+
+      - id: "state"
+        type: "short_text"
+        label: "State"
+        visible_when: "data.country === 'US'"
+
+      - id: "province"
+        type: "short_text"
+        label: "Province"
+        visible_when: "data.country === 'CA'"
+
+      - id: "region"
+        type: "short_text"
+        label: "Region"
+        visible_when: "data.country === 'other'"
+```
+
+Hidden fields are excluded from validation while not visible.
+
+---
+
+## Conditional navigation
+
+Use the `next` array on a section to control which section the user navigates to after completing the current one. Rules are evaluated top-to-bottom; the first match wins.
+
+Each entry in the `next` array is either a condition rule or an else rule.
+
+### Condition rule
+
+<ParamField body="when" type="string" required>
+  A JavaScript expression. If it evaluates to `true`, this rule matches.
+</ParamField>
+<ParamField body="go" type="string" required>
+  The navigation target. Can be a section `id`, `"done"` (form complete), or an `https://` URL (external redirect).
+</ParamField>
+
+### Else rule
+
+<ParamField body="else" type="string" required>
+  The fallback navigation target. Used when no `when` condition matches. Same values as `go`.
+</ParamField>
+
+If no rule matches and no `else` is specified, navigation defaults to `"done"` (form complete).
+
+```yaml
+sections:
+  - id: "intro"
+    title: "Welcome"
+    fields:
+      - id: "role"
+        type: "dropdown"
+        label: "Your role"
+        options:
+          - label: "Student"
+            value: "student"
+          - label: "Teacher"
+            value: "teacher"
+          - label: "Parent"
+            value: "parent"
+    next:
+      - when: "data.role === 'student'"
+        go: "student_section"
+      - when: "data.role === 'teacher'"
+        go: "teacher_section"
+      - else: "parent_section"
+
+  - id: "student_section"
+    title: "Student Information"
+    fields:
+      - id: "grade"
+        type: "number"
+        label: "Grade level"
+    next:
+      - when: "data.grade >= 9"
+        go: "highschool"
+      - else: "done"
+
+  - id: "teacher_section"
+    title: "Teacher Information"
+    fields:
+      - id: "subject"
+        type: "short_text"
+        label: "Subject"
+
+  - id: "parent_section"
+    title: "Parent Information"
+    fields:
+      - id: "children_count"
+        type: "number"
+        label: "Number of children"
+
+  - id: "highschool"
+    title: "High School Details"
+    fields:
+      - id: "college_bound"
+        type: "dropdown"
+        label: "Planning for college?"
+        options:
+          - label: "Yes"
+            value: "yes"
+          - label: "No"
+            value: "no"
+```
+
+### Navigation targets
+
+| Value | Behavior |
+| --- | --- |
+| Section `id` | Navigate to the section with that `id` |
+| `"done"` | Mark the form as complete |
+| `https://` URL | Redirect to an external URL |
+
+```yaml
+next:
+  - when: "data.eligible === true"
+    go: "https://example.com/welcome"
+  - else: "done"
+```

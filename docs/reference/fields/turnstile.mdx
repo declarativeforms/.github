@@ -1,0 +1,46 @@
+---
+title: Turnstile
+description: A CAPTCHA field that verifies human interaction using Cloudflare Turnstile.
+---
+
+## Type
+
+```yaml
+type: turnstile
+```
+
+## Properties
+
+For shared properties (`id`, `title`, `description`, `required`, `validators`, etc.), see [Shared Properties](/reference/fields/shared-properties).
+
+This field has no type-specific properties.
+
+## Behavior
+
+The field renders the **Cloudflare Turnstile** CAPTCHA widget. It verifies that the form is being submitted by a human. Verification is performed automatically.
+
+A `required` validator is **automatically added** if one is not explicitly specified.
+
+<Note>
+  The field requires no configuration beyond adding it to the form.
+</Note>
+
+## Submission Format
+
+`string` — Verification token.
+
+## Supported Validators
+
+- `required` (auto-added if not specified)
+- Expression validators
+
+## Example
+
+```yaml
+- id: captcha
+  type: turnstile
+```
+
+## Related
+
+- [Hidden](/reference/fields/hidden)

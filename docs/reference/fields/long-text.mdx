@@ -1,0 +1,59 @@
+---
+title: "Long Text"
+description: "Multi-line textarea input field."
+---
+
+A multi-line textarea for collecting longer string values such as descriptions, comments, or notes.
+
+## Type
+
+```yaml
+type: long_text
+```
+
+## Properties
+
+This field type has no type-specific properties.
+
+Shared properties (`id`, `type`, `label`, `placeholder`, `validators`, `visible_when`) are documented on the [Shared Properties](/reference/fields/shared-properties) page.
+
+## Validation behavior
+
+The following validators are supported:
+
+| Validator    | Behavior                                      |
+| ------------ | --------------------------------------------- |
+| `required`   | Field must not be empty.                      |
+| `pattern`    | Value must match the provided regex.          |
+| `min_length` | Value must meet the minimum character count.  |
+| `max_length` | Value must not exceed the maximum character count. |
+| `expression` | Value must satisfy the custom expression.     |
+
+## Submission format
+
+```json
+{
+  "field_id": "string"
+}
+```
+
+The submitted value is a `string`.
+
+## Example
+
+```yaml
+- id: bio
+  type: long_text
+  label: Biography
+  placeholder: Tell us about yourself...
+  validators:
+    - type: required
+      message: Biography is required.
+    - type: max_length
+      value: 500
+      message: Biography must not exceed 500 characters.
+```
+
+## Related
+
+- [Short Text](/reference/fields/short-text) — single-line variant

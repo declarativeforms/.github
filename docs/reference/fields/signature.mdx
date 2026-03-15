@@ -1,0 +1,47 @@
+---
+title: Signature
+description: A field that captures a hand-drawn signature.
+---
+
+## Type
+
+```yaml
+type: signature
+```
+
+## Properties
+
+For shared properties (`id`, `title`, `description`, `required`, `validators`, etc.), see [Shared Properties](/reference/fields/shared-properties).
+
+This field has no type-specific properties.
+
+## Behavior
+
+The field renders as a **drawing canvas** where users can draw their signature using touch or mouse input. A **"Clear"** button resets the canvas.
+
+The drawn signature is automatically uploaded as a **PNG image**. High-DPI and retina displays are supported.
+
+## Submission Format
+
+`string` — URL of the signature image.
+
+## Supported Validators
+
+- `required`
+- Expression validators
+
+## Example
+
+```yaml
+- id: applicant_signature
+  type: signature
+  title: Your signature
+  validators:
+    - type: required
+      message: A signature is required.
+```
+
+## Related
+
+- [Camera](/reference/fields/camera)
+- [File Upload](/reference/fields/file-upload)

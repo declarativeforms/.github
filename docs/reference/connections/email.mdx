@@ -1,0 +1,67 @@
+---
+title: "Email Connection"
+description: "Reference for the email connection type."
+---
+
+An email connection sends an email when a form submission is completed. Fires **only** on completed submissions. Email fields support [Handlebars](https://handlebarsjs.com/) templates.
+
+## Properties
+
+<ParamField path="type" type="string" required>
+  Must be `"email"`.
+</ParamField>
+
+<ParamField path="to" type="string" required>
+  Recipient email address. Supports Handlebars templates (e.g. `"{{data.email_field}}"`).
+</ParamField>
+
+<ParamField path="subject" type="LocalizedText" required>
+  Email subject line. Supports Handlebars templates.
+</ParamField>
+
+<ParamField path="body" type="LocalizedText">
+  HTML email body. Supports Handlebars templates. When omitted, a default body is used.
+</ParamField>
+
+<ParamField path="include_responses" type="boolean" default="false">
+  When `true`, appends an HTML table of all submitted field values to the email body. Hidden fields are excluded from this table.
+</ParamField>
+
+## Handlebars Context
+
+The following variables are available in Handlebars templates:
+
+| Variable | Description |
+| --- | --- |
+| `data.<fieldId>` | The submitted value for a specific field |
+| `form.title` | The title of the form |
+| `form` | Form metadata object |
+
+## Examples
+
+### Static recipient
+
+```yaml
+connections:
+  - type: email
+    to: "admin@example.com"
+    subject:
+      en: "New submission for {{form.title}}"
+    body:
+      en: "<h1>New Submission</h1><p>Name: {{data.name}}</p><p>Email: {{data.email}}</p>"
+    include_responses: true
+```
+
+### Dynamic recipient
+
+```yaml
+connections:
+  - type: email
+    to: "{{data.email_field}}"
+    subject:
+      en: "Thank you for your submission"
+      fr: "Merci pour votre soumission"
+    body:
+      en: "<p>Hi {{data.name}}, we received your submission.</p>"
+      fr: "<p>Bonjour {{data.name}}, nous avons reçu votre soumission.</p>"
+```

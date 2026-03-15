@@ -1,0 +1,72 @@
+---
+title: "Address Country"
+description: "Google Places autocomplete field restricted to countries."
+---
+
+## Type
+
+```yaml
+type: address_country
+```
+
+## Description
+
+Renders an autocomplete input powered by Google Places, restricted to country-level suggestions. The user types a country name and selects from suggested results.
+
+<Note>
+  The `address_country` field shares the same properties and behavior as [`address`](/reference/fields/address), differing only in the type of autocomplete suggestions shown. It restricts results to countries.
+</Note>
+
+## Type-Specific Properties
+
+<ParamField body="outputFormat" type="string" default="string">
+  Controls the format of the submitted value.
+
+  | Value          | Description                                              |
+  | -------------- | -------------------------------------------------------- |
+  | `"string"`     | Submits the formatted address as a plain string.         |
+  | `"structured"` | Submits an object with individual address components.    |
+</ParamField>
+
+For shared properties available on all field types, see [Shared Properties](/reference/fields/shared-properties).
+
+## Submission Format
+
+When `outputFormat` is `"string"` (default), the field submits a formatted country string:
+
+```
+"United States"
+```
+
+When `outputFormat` is `"structured"`, the field submits an object:
+
+```json
+{
+  "formatted_address": "United States",
+  "country": "US",
+  "place_id": "ChIJ..."
+}
+```
+
+All properties except `formatted_address` are optional and depend on the selected place.
+
+## Supported Validators
+
+- `required`
+- Expression validators
+
+## Example
+
+```yaml
+- id: country
+  type: address_country
+  label: Country
+  required: true
+  outputFormat: string
+```
+
+## Related Fields
+
+- [Address](/reference/fields/address) — searches across all address types
+- [Address Locality](/reference/fields/address-locality) — restricts suggestions to cities and towns
+- [Address Region](/reference/fields/address-region) — restricts suggestions to states and provinces

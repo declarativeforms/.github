@@ -1,0 +1,116 @@
+---
+title: "Form"
+description: "Top-level form object reference for Declarative Forms."
+---
+
+The top-level form object defines the structure, behavior, and metadata of a declarative form.
+
+## Properties
+
+<ParamField path="version" type="number" required>
+  Schema version number.
+</ParamField>
+
+<ParamField path="title" type="LocalizedText" required>
+  Display title of the form. Accepts a plain string or a [locale map object](/reference/localization). Supports [Handlebars templating](/reference/templating) (e.g. `{{data.fieldId}}`).
+</ParamField>
+
+<ParamField path="description" type="LocalizedText">
+  Description displayed below the form title. Accepts a plain string or a [locale map object](/reference/localization). Supports [Handlebars templating](/reference/templating).
+</ParamField>
+
+<ParamField path="sections" type="Section[]" required>
+  Ordered array of [section objects](/reference/sections). Defines the pages and fields of the form.
+</ParamField>
+
+<ParamField path="connections" type="Connection[]" required>
+  Array of [connection objects](/reference/connections/overview) that define integrations triggered on form submission. Defaults to `[]`.
+</ParamField>
+
+<ParamField path="completion" type="Completion">
+  [Completion screen](/reference/completion) displayed after the form is submitted. When omitted, a default thank-you screen is shown.
+</ParamField>
+
+<ParamField path="start_date" type="string">
+  ISO 8601 date string. The form will not accept submissions before this date. See [Form Availability](/reference/form-availability).
+</ParamField>
+
+<ParamField path="end_date" type="string">
+  ISO 8601 date string. The form will not accept submissions after this date. See [Form Availability](/reference/form-availability).
+</ParamField>
+
+<ParamField path="locale" type="string">
+  Default locale used as a fallback when a [localized text](/reference/localization) value does not include the viewer's locale.
+</ParamField>
+
+<ParamField path="measurements" type="object">
+  Analytics configuration for the form. See [Measurements](/reference/measurements).
+</ParamField>
+
+<ParamField path="id" type="string">
+  Unique form identifier. Auto-generated when not provided.
+</ParamField>
+
+## Example
+
+```yaml
+version: 1
+title: "Event Registration"
+description: "Register for the upcoming conference."
+locale: "en"
+start_date: "2025-09-01"
+end_date: "2025-10-15"
+
+sections:
+  - id: personal_info
+    title: "Personal Information"
+    fields:
+      - id: full_name
+        type: short_text
+        label: "Full Name"
+      - id: email
+        type: email
+        label: "Email Address"
+    next: "preferences"
+
+  - id: preferences
+    title: "Preferences"
+    fields:
+      - id: meal
+        type: dropdown
+        label: "Meal Preference"
+        options:
+          - label: "Vegetarian"
+            value: "vegetarian"
+          - label: "Non-Vegetarian"
+            value: "non_vegetarian"
+    next: "done"
+
+connections:
+  - type: email
+    to: "admin@example.com"
+    subject: "New Registration: {{data.full_name}}"
+
+completion:
+  title: "You're Registered!"
+  message: "Thanks, {{data.full_name}}. A confirmation has been sent to {{data.email}}."
+```
+
+### Localized title example
+
+```yaml
+title:
+  en: "Event Registration"
+  fr: "Inscription à l'événement"
+  es: "Registro del evento"
+```
+
+## Related
+
+- [Sections](/reference/sections)
+- [Completion](/reference/completion)
+- [Connections Overview](/reference/connections/overview)
+- [Localization](/reference/localization)
+- [Templating](/reference/templating)
+- [Form Availability](/reference/form-availability)
+- [Measurements](/reference/measurements)

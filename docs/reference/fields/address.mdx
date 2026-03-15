@@ -1,0 +1,73 @@
+---
+title: "Address"
+description: "Google Places autocomplete field for full address lookup."
+---
+
+## Type
+
+```yaml
+type: address
+```
+
+## Description
+
+Renders an autocomplete input powered by Google Places. The user types an address and selects from suggested results. Searches across all address types, including street addresses, cities, regions, and countries.
+
+## Type-Specific Properties
+
+<ParamField body="outputFormat" type="string" default="string">
+  Controls the format of the submitted value.
+
+  | Value          | Description                                              |
+  | -------------- | -------------------------------------------------------- |
+  | `"string"`     | Submits the formatted address as a plain string.         |
+  | `"structured"` | Submits an object with individual address components.    |
+</ParamField>
+
+For shared properties available on all field types, see [Shared Properties](/reference/fields/shared-properties).
+
+## Submission Format
+
+When `outputFormat` is `"string"` (default), the field submits a formatted address string:
+
+```
+"123 Main St, Springfield, IL 62704, USA"
+```
+
+When `outputFormat` is `"structured"`, the field submits an object:
+
+```json
+{
+  "formatted_address": "123 Main St, Springfield, IL 62704, USA",
+  "street_number": "123",
+  "route": "Main St",
+  "locality": "Springfield",
+  "administrative_area_level_1": "IL",
+  "country": "US",
+  "postal_code": "62704",
+  "place_id": "ChIJ..."
+}
+```
+
+All properties except `formatted_address` are optional and depend on the selected place.
+
+## Supported Validators
+
+- `required`
+- Expression validators
+
+## Example
+
+```yaml
+- id: home_address
+  type: address
+  label: Home Address
+  required: true
+  outputFormat: structured
+```
+
+## Related Fields
+
+- [Address Locality](/reference/fields/address-locality) — restricts suggestions to cities and towns
+- [Address Region](/reference/fields/address-region) — restricts suggestions to states and provinces
+- [Address Country](/reference/fields/address-country) — restricts suggestions to countries

@@ -1,0 +1,67 @@
+---
+title: "Number"
+description: "Numeric input field for whole numbers."
+---
+
+A text input that collects whole numbers. Displays a numeric keyboard on mobile devices.
+
+## Type
+
+```yaml
+type: number
+```
+
+## Properties
+
+This field type has no type-specific properties.
+
+Shared properties (`id`, `type`, `label`, `placeholder`, `validators`, `visible_when`) are documented on the [Shared Properties](/reference/fields/shared-properties) page.
+
+## Validation behavior
+
+The following validators are supported:
+
+| Validator    | Behavior                                      |
+| ------------ | --------------------------------------------- |
+| `required`   | Field must not be empty.                      |
+| `pattern`    | Value must match the provided regex. **Overrides** the default whole-number validation. |
+| `min`        | Performs **numeric comparison** — the value must be greater than or equal to the specified number. |
+| `max`        | Performs **numeric comparison** — the value must be less than or equal to the specified number. |
+| `expression` | Value must satisfy the custom expression.     |
+
+By default, the field validates that the value is a whole number (equivalent to the pattern `^\d+$`). Specifying a custom `pattern` validator replaces this default.
+
+The `min` and `max` validators compare values numerically, not as strings.
+
+## Submission format
+
+```json
+{
+  "field_id": "string"
+}
+```
+
+The submitted value is a `string` containing the numeric value.
+
+## Example
+
+```yaml
+- id: age
+  type: number
+  label: Age
+  placeholder: "25"
+  validators:
+    - type: required
+      message: Age is required.
+    - type: min
+      value: 18
+      message: You must be at least 18.
+    - type: max
+      value: 120
+      message: Please enter a valid age.
+```
+
+## Related
+
+- [Short Text](/reference/fields/short-text) — general-purpose text input
+- [Date](/reference/fields/date) — date input with date-based min/max

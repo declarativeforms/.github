@@ -1,0 +1,60 @@
+---
+title: "Mobile Number"
+description: "Telephone input field for mobile numbers."
+---
+
+A telephone input for collecting mobile phone numbers. Displays a numeric keyboard on mobile devices.
+
+## Type
+
+```yaml
+type: mobile_number
+```
+
+## Properties
+
+This field type has no type-specific properties.
+
+Shared properties (`id`, `type`, `label`, `placeholder`, `validators`, `visible_when`) are documented on the [Shared Properties](/reference/fields/shared-properties) page.
+
+## Validation behavior
+
+The following validators are supported:
+
+| Validator    | Behavior                                      |
+| ------------ | --------------------------------------------- |
+| `required`   | Field must not be empty.                      |
+| `pattern`    | Value must match the provided regex.          |
+| `min_length` | Value must meet the minimum character count.  |
+| `max_length` | Value must not exceed the maximum character count. |
+| `expression` | Value must satisfy the custom expression.     |
+
+## Submission format
+
+```json
+{
+  "field_id": "string"
+}
+```
+
+The submitted value is a `string`.
+
+## Example
+
+```yaml
+- id: phone
+  type: mobile_number
+  label: Mobile number
+  placeholder: "+1 (555) 000-0000"
+  validators:
+    - type: required
+      message: Mobile number is required.
+    - type: pattern
+      value: "^\\+?[1-9]\\d{6,14}$"
+      message: Please enter a valid mobile number.
+```
+
+## Related
+
+- [Short Text](/reference/fields/short-text) — general-purpose text input
+- [Number](/reference/fields/number) — numeric value input

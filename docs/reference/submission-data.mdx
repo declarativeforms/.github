@@ -1,0 +1,93 @@
+---
+title: "Submission Data Formats"
+description: "Data formats for each field type in form submissions."
+---
+
+Each field type produces a specific data format in the submission `data` object. This reference documents the format for every field type.
+
+## Formats by Field Type
+
+| Field Type | Submission Format | Notes |
+| --- | --- | --- |
+| `short_text` | `string` | |
+| `long_text` | `string` | |
+| `email` | `string` | Email address |
+| `number` | `string` | Numeric value as string |
+| `date` | `string` | Date value |
+| `url` | `string` | URL value |
+| `mobile_number` | `string` | Phone number |
+| `dropdown` | `string` | Selected option value |
+| `single_select` | `string` | Selected option value |
+| `multiple_select` | `string[]` | Array of selected option values |
+| `rating` | `string` | Numeric rating as string (e.g. `"3"`) |
+| `address` / `address_*` | `string` or `IStructuredAddress` | Depends on `outputFormat` |
+| `geolocation` | `object` | `{ latitude, longitude, accuracy, timestamp }` |
+| `camera` | `string` | Uploaded image URL |
+| `file_upload` | `string` or `string[]` | URL(s) of uploaded files |
+| `signature` | `string` | Uploaded signature image URL |
+| `hidden` | `string` | Pre-set value |
+| `turnstile` | `string` | Verification token |
+
+## Structured Address Format (`IStructuredAddress`)
+
+When an address field uses a structured `outputFormat`, the submission value is an object with the following properties:
+
+<ParamField path="formatted_address" type="string" required>
+  The full formatted address string. Always present.
+</ParamField>
+
+<ParamField path="street_number" type="string">
+  Street number component.
+</ParamField>
+
+<ParamField path="route" type="string">
+  Street name / route component.
+</ParamField>
+
+<ParamField path="locality" type="string">
+  City or locality component.
+</ParamField>
+
+<ParamField path="administrative_area_level_1" type="string">
+  State, province, or region component.
+</ParamField>
+
+<ParamField path="country" type="string">
+  Country component.
+</ParamField>
+
+<ParamField path="postal_code" type="string">
+  Postal or ZIP code component.
+</ParamField>
+
+<ParamField path="place_id" type="string" required>
+  The place identifier. Always present.
+</ParamField>
+
+### Example
+
+```yaml
+# Submission data for a structured address field:
+# {
+#   "formatted_address": "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
+#   "street_number": "1600",
+#   "route": "Amphitheatre Parkway",
+#   "locality": "Mountain View",
+#   "administrative_area_level_1": "CA",
+#   "country": "US",
+#   "postal_code": "94043",
+#   "place_id": "ChIJ2eUgeAK6j4ARbn5u_wAGqWA"
+# }
+```
+
+## Geolocation Format
+
+```yaml
+# Submission data for a geolocation field:
+# {
+#   "latitude": 37.4220936,
+#   "longitude": -122.083922,
+#   "accuracy": 20.5,
+#   "timestamp": 1700000000000
+# }
+```

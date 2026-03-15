@@ -1,0 +1,90 @@
+---
+title: "Multiple Select"
+description: "A checkbox group for selecting one or more options from a list."
+---
+
+## Purpose
+
+The `multiple_select` field renders a group of checkboxes. Users can select any number of options from the list, subject to optional `min`/`max` constraints.
+
+## Type
+
+```yaml
+type: multiple_select
+```
+
+## Type-Specific Properties
+
+<ParamField path="options" type="Option[]" optional>
+  List of selectable options. Each option is either:
+  - A plain string — used as both the label and value.
+  - An object with `label` (LocalizedText) and `value` (string) — the label is displayed, the value is submitted.
+
+  Option labels support HTML.
+</ParamField>
+
+For shared properties (`id`, `label`, `required`, `validators`, `visibility`, etc.), see [Shared Properties](/reference/fields/shared-properties).
+
+## Validation Behavior
+
+- **required** — ensures at least one option is selected before submission.
+- **min** — sets the minimum number of selections. Displays helper text: *"Select at least {min} option(s)"*.
+- **max** — sets the maximum number of selections. Displays helper text: *"Select up to {max} options"*. When the maximum is reached, all remaining unchecked options are disabled.
+- **min + max** — when both are specified, displays combined helper text: *"Select {min}-{max} options"*.
+- **expression** — custom expression validators can be applied to the selected values.
+
+A live count is displayed as selections are made: *"{count} selected"*.
+
+## Submission Format
+
+```
+string[]
+```
+
+An array of `value` strings for each selected option.
+
+## Example
+
+```yaml
+- type: multiple_select
+  id: interests
+  label: Select your interests
+  required: true
+  validators:
+    - type: min
+      value: 2
+      message: Please select at least 2 interests.
+    - type: max
+      value: 5
+      message: You can select up to 5 interests.
+  options:
+    - label: Technology
+      value: tech
+    - label: Science
+      value: science
+    - label: Art
+      value: art
+    - label: Music
+      value: music
+    - label: Sports
+      value: sports
+    - label: Travel
+      value: travel
+```
+
+```yaml
+- type: multiple_select
+  id: toppings
+  label: Choose your toppings
+  options:
+    - Cheese
+    - Pepperoni
+    - Mushrooms
+    - Onions
+    - Peppers
+```
+
+## Related
+
+- [Dropdown](/reference/fields/dropdown)
+- [Single Select](/reference/fields/single-select)

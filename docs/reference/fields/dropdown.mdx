@@ -1,0 +1,75 @@
+---
+title: "Dropdown"
+description: "A dropdown select field that presents options in a collapsible list."
+---
+
+## Purpose
+
+The `dropdown` field renders a dropdown select control. Users choose a single option from a collapsible list. When `searchable` is enabled, a search box allows filtering options by text.
+
+## Type
+
+```yaml
+type: dropdown
+```
+
+## Type-Specific Properties
+
+<ParamField path="options" type="Option[]" optional>
+  List of selectable options. Each option is either:
+  - A plain string — used as both the label and value.
+  - An object with `label` (LocalizedText) and `value` (string) — the label is displayed, the value is submitted.
+
+  Option labels support HTML.
+</ParamField>
+
+<ParamField path="searchable" type="boolean" optional default="false">
+  Enables a search/filter input within the dropdown. When `true`, users can type to filter the visible options.
+</ParamField>
+
+For shared properties (`id`, `label`, `required`, `validators`, `visibility`, etc.), see [Shared Properties](/reference/fields/shared-properties).
+
+## Validation Behavior
+
+- **required** — ensures a selection is made before submission.
+- **expression** — custom expression validators can be applied to the selected value.
+
+## Submission Format
+
+```
+string
+```
+
+The `value` of the selected option.
+
+## Example
+
+```yaml
+- type: dropdown
+  id: country
+  label: Country
+  required: true
+  searchable: true
+  options:
+    - label: United States
+      value: us
+    - label: Canada
+      value: ca
+    - label: United Kingdom
+      value: uk
+```
+
+```yaml
+- type: dropdown
+  id: color
+  label: Favorite color
+  options:
+    - Red
+    - Green
+    - Blue
+```
+
+## Related
+
+- [Single Select](/reference/fields/single-select)
+- [Multiple Select](/reference/fields/multiple-select)

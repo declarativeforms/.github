@@ -1,0 +1,98 @@
+---
+title: "Shared Properties"
+description: "Properties common to all field types in Declarative Forms."
+---
+
+# Shared Properties
+
+Every field in a Declarative Form accepts the following properties regardless of its `type`. Individual field types may define additional properties documented on their respective pages. See [Field Types](/reference/fields/overview) for a full index.
+
+## Properties
+
+<ParamField path="id" type="string" required>
+Unique field identifier. Used as the key in submission data.
+</ParamField>
+
+<ParamField path="type" type="string" required>
+Field type discriminator. Determines rendering and validation behavior.
+
+Allowed values: `short_text`, `long_text`, `email`, `number`, `date`, `url`, `mobile_number`, `dropdown`, `single_select`, `multiple_select`, `rating`, `address`, `address_locality`, `address_region`, `address_country`, `geolocation`, `camera`, `file_upload`, `signature`, `hidden`, `turnstile`
+</ParamField>
+
+<ParamField path="label" type="LocalizedText" required>
+Field label displayed to the user. Supports Handlebars templating (e.g. `{{data.name}}`). Falls back to `id` if empty after localization. See [Templating](/reference/templating).
+</ParamField>
+
+<ParamField path="placeholder" type="LocalizedText">
+Placeholder text shown when the field is empty. Each field type provides a sensible default if not specified.
+</ParamField>
+
+<ParamField path="validators" type="Validator[]">
+Array of validation rules applied to this field. See [Validation](/reference/validation) for all validator types and field-type-specific behavior.
+</ParamField>
+
+<ParamField path="visible_when" type="string">
+JavaScript expression that controls field visibility. The expression receives a `data` object containing all current field values. When the expression evaluates to `false`, the field is hidden. When omitted, the field is always visible. See [Conditional Logic](/reference/conditional-logic).
+</ParamField>
+
+## `LocalizedText` Type
+
+The `label` and `placeholder` properties accept a `LocalizedText` value. This can be either a plain string or a locale map.
+
+**Plain string** — used as-is for all locales:
+
+```yaml
+label: "Your name"
+```
+
+**Locale map** — keys are IETF language tags, values are translated strings:
+
+```yaml
+label:
+  en: "Your name"
+  es: "Tu nombre"
+  fr: "Votre nom"
+```
+
+### Resolution order
+
+When resolving a `LocalizedText` value for a given locale, the following order is used:
+
+1. Exact locale match (e.g. `en-GB`)
+2. Base locale match (e.g. `en`)
+3. Fallback to `en`
+4. First non-empty value in the map
+
+See [Localization](/reference/localization) for details on configuring form-level locale behavior.
+
+## Full Example
+
+A field using all shared properties:
+
+```yaml
+fields:
+  - id: company_name
+    type: short_text
+    label:
+      en: "Company name"
+      es: "Nombre de la empresa"
+    placeholder:
+      en: "Acme Corp"
+      es: "Acme Corp"
+    validators:
+      - type: required
+        message:
+          en: "Company name is required"
+          es: "El nombre de la empresa es obligatorio"
+      - type: max_length
+        value: 120
+    visible_when: "data.is_business === true"
+```
+
+In this example:
+
+- `id` — submission data will contain a `company_name` key.
+- `type` — renders as a single-line text input.
+- `label` / `placeholder` — localized for English and Spanish.
+- `validators` — the field is required and limited to 120 characters.
+- `visible_when` — the field only appears when the `is_business` field is `true`.

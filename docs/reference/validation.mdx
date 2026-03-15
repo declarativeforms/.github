@@ -1,0 +1,270 @@
+---
+title: Validation
+description: Validator types, field-type-specific behavior, and default error messages.
+---
+
+# Validation
+
+Validators enforce constraints on field values. Each field accepts a `validators` array containing one or more validator entries.
+
+See also: [Localization](/reference/localization) for `LocalizedText` used in custom messages, [Conditional Logic](/reference/conditional-logic) for expression syntax, [Templating](/reference/templating) for dynamic content in forms.
+
+---
+
+## Validator types
+
+### Required
+
+A string literal `"required"`. The field must have a non-empty value.
+
+```yaml
+validators:
+  - "required"
+```
+
+### Pattern
+
+Validates the field value against a regular expression.
+
+<ParamField body="type" type="string" required>
+  Must be `"pattern"`.
+</ParamField>
+<ParamField body="regex" type="string" required>
+  A regular expression pattern to test against the field value.
+</ParamField>
+<ParamField body="message" type="LocalizedText">
+  Custom error message. See [Localization](/reference/localization) for `LocalizedText`.
+</ParamField>
+
+```yaml
+validators:
+  - type: "pattern"
+    regex: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    message: "Please enter a valid email address."
+```
+
+### Min
+
+Enforces a minimum value. Behavior varies by [field type](#field-type-specific-behavior).
+
+<ParamField body="type" type="string" required>
+  Must be `"min"`.
+</ParamField>
+<ParamField body="value" type="number | string" required>
+  The minimum value. Type depends on the field type (number for numeric fields, string for date fields).
+</ParamField>
+<ParamField body="message" type="LocalizedText">
+  Custom error message. See [Localization](/reference/localization).
+</ParamField>
+
+```yaml
+validators:
+  - type: "min"
+    value: 18
+    message: "Must be at least 18."
+```
+
+### Max
+
+Enforces a maximum value. Behavior varies by [field type](#field-type-specific-behavior).
+
+<ParamField body="type" type="string" required>
+  Must be `"max"`.
+</ParamField>
+<ParamField body="value" type="number | string" required>
+  The maximum value. Type depends on the field type.
+</ParamField>
+<ParamField body="message" type="LocalizedText">
+  Custom error message. See [Localization](/reference/localization).
+</ParamField>
+
+```yaml
+validators:
+  - type: "max"
+    value: 100
+```
+
+### Min Length
+
+Enforces a minimum string length on the field value.
+
+<ParamField body="type" type="string" required>
+  Must be `"min_length"`.
+</ParamField>
+<ParamField body="value" type="number" required>
+  Minimum number of characters.
+</ParamField>
+<ParamField body="message" type="LocalizedText">
+  Custom error message. See [Localization](/reference/localization).
+</ParamField>
+
+```yaml
+validators:
+  - type: "min_length"
+    value: 8
+    message: "Password must be at least 8 characters."
+```
+
+### Max Length
+
+Enforces a maximum string length on the field value.
+
+<ParamField body="type" type="string" required>
+  Must be `"max_length"`.
+</ParamField>
+<ParamField body="value" type="number" required>
+  Maximum number of characters.
+</ParamField>
+<ParamField body="message" type="LocalizedText">
+  Custom error message. See [Localization](/reference/localization).
+</ParamField>
+
+```yaml
+validators:
+  - type: "max_length"
+    value: 280
+```
+
+### Expression
+
+Validates using a JavaScript expression. The expression has access to the `data` object containing all current field values. See [Conditional Logic](/reference/conditional-logic) for expression syntax details.
+
+<ParamField body="type" type="string" required>
+  Must be `"expression"`.
+</ParamField>
+<ParamField body="expression" type="string" required>
+  A JavaScript expression that returns a boolean. Access field values via `data.fieldId`.
+</ParamField>
+<ParamField body="message" type="LocalizedText" required>
+  Error message shown when the expression evaluates to `false`. **Required** for this validator type. See [Localization](/reference/localization).
+</ParamField>
+
+```yaml
+validators:
+  - type: "expression"
+    expression: "data.password === data.confirm_password"
+    message: "Passwords must match."
+```
+
+---
+
+## Field-type-specific behavior
+
+The `min` and `max` validators interpret their `value` differently depending on the field type.
+
+### `number`
+
+Numeric comparison against the field value. If no custom `pattern` validator is specified, a whole-number pattern (`^\d+$`) is automatically added.
+
+```yaml
+- id: "age"
+  type: "number"
+  label: "Age"
+  validators:
+    - "required"
+    - type: "min"
+      value: 0
+    - type: "max"
+      value: 120
+```
+
+### `date`
+
+Date string comparison.
+
+```yaml
+- id: "start_date"
+  type: "date"
+  label: "Start Date"
+  validators:
+    - type: "min"
+      value: "2024-01-01"
+    - type: "max"
+      value: "2025-12-31"
+```
+
+### `rating`
+
+Defines the rating range. Defaults: min = `1`, max = `5`. The `min` and `max` validators serve double duty — they both constrain valid values **and** determine which rating values are rendered.
+
+```yaml
+- id: "satisfaction"
+  type: "rating"
+  label: "How satisfied are you?"
+  validators:
+    - type: "min"
+      value: 1
+    - type: "max"
+      value: 10
+```
+
+### `file_upload`
+
+File count comparison — constrains how many files can be uploaded.
+
+```yaml
+- id: "documents"
+  type: "file_upload"
+  label: "Upload documents"
+  validators:
+    - type: "min"
+      value: 1
+    - type: "max"
+      value: 5
+```
+
+### `multiple_select`
+
+Selection count comparison — constrains how many options can be selected.
+
+```yaml
+- id: "toppings"
+  type: "multiple_select"
+  label: "Choose toppings"
+  options:
+    - label: "Cheese"
+      value: "cheese"
+    - label: "Pepperoni"
+      value: "pepperoni"
+    - label: "Mushrooms"
+      value: "mushrooms"
+  validators:
+    - type: "min"
+      value: 1
+    - type: "max"
+      value: 2
+```
+
+### `turnstile`
+
+Automatically adds `required` if not explicitly specified.
+
+```yaml
+- id: "captcha"
+  type: "turnstile"
+  # "required" is added automatically
+```
+
+---
+
+## Default error messages
+
+When a validator's `message` is omitted, these defaults are used. `{label}`, `{min}`, and `{max}` are replaced with the field's label and the validator's value.
+
+| Context | Default message |
+| --- | --- |
+| `required` | `{label} is required.` |
+| `pattern` | `{label} is invalid.` |
+| `min_length` | `{label} must be at least {min} characters.` |
+| `max_length` | `{label} must be at most {max} characters.` |
+| `number` min | `{label} must be at least {min}.` |
+| `number` max | `{label} must be at most {max}.` |
+| `date` min | `{label} must be on or after {min}.` |
+| `date` max | `{label} must be on or before {max}.` |
+| Whole number (auto-added) | `{label} must be a whole number.` |
+| `file_upload` min | `{label} requires at least {min} file(s).` |
+| `file_upload` max | `{label} allows at most {max} file(s).` |
+| `multiple_select` min | `{label} requires at least {min} selection(s).` |
+| `multiple_select` max | `{label} allows at most {max} selection(s).` |
+
+All custom messages support localization via `LocalizedText`. See [Localization](/reference/localization).

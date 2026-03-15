@@ -1,0 +1,44 @@
+---
+title: Hidden
+description: A non-visible field used to include pre-set values in submission data.
+---
+
+## Type
+
+```yaml
+type: hidden
+```
+
+## Properties
+
+For shared properties (`id`, `title`, `description`, `required`, `validators`, etc.), see [Shared Properties](/reference/fields/shared-properties).
+
+This field has no type-specific properties.
+
+## Behavior
+
+The field is **not visible** to the user. It is used to pass pre-set values — for example, from URL parameters or templating — into the submission data.
+
+<Note>
+  Hidden field values are excluded from email connection response tables when `include_responses` is enabled.
+</Note>
+
+## Submission Format
+
+`string` — The pre-set value.
+
+## Supported Validators
+
+None. Hidden fields are not validated.
+
+## Example
+
+```yaml
+- id: source
+  type: hidden
+  value: "{{url.utm_source}}"
+```
+
+## Related
+
+- [Templating](/reference/templating)
