@@ -17,13 +17,28 @@ sections:
         type: single_select
         label: "Question 1"
         options:
+          # String options use the same label and value.
           - "Option 1"
+          - "Option 2"
+          - "Option 3"
+        validators:
+          - required
+
+      - id: question_2
+        type: single_select
+        label: "Question 2"
+        options:
+          - label: "Option 1"
+            value: "option_1"
           - label: "Option 2"
             value: "option_2"
           - label: "Option 3"
             value: "option_3"
         validators:
           - required
+          - type: expression
+            expression: "data.question_2 !== 'option_3'"
+            message: "Choose an available option."
 
     next: done
 ```

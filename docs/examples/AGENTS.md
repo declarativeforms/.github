@@ -41,6 +41,8 @@ If you have not created a form before, start with [Create a form](/getting-start
 ```
 ```
 
+Only add a second non-YAML block when the task itself requires showing an output shape, such as a webhook payload or a final example URL.
+
 Do not add:
 
 - step-by-step walkthroughs
@@ -58,12 +60,14 @@ Each page should demonstrate exactly one idea.
 - Do not mix several new concepts into one example.
 - If a page is about sections, do not also teach branching, integrations, localization, or templating unless the task absolutely requires it.
 - If supporting YAML is required to make the example valid, keep it generic and do not discuss it unless it is the point of the page.
+- For topics with multiple meaningful variants, keep those variants in the same YAML example when that helps the reader understand the full authoring surface.
 
 Prefer examples that make the objective obvious.
 
 - Start simple and abstract when that improves clarity.
 - Use generic ids like `section_1` or `question_1` when realism would distract from the concept.
 - Use realistic business examples only when the feature needs real-world context to make sense.
+- Use plain titles, labels, and descriptions unless specificity materially improves the example.
 
 ## Writing Style
 
@@ -74,6 +78,7 @@ Be direct and quiet.
 - Let the YAML carry the explanation whenever possible.
 - Prefer YAML comments over prose when a small explanation is needed.
 - Do not use filler copy or narrative setup.
+- Keep comments directly tied to the behavior being taught.
 
 ## YAML Guidance
 
@@ -84,6 +89,8 @@ The YAML example is the page.
 - Use comments sparingly and only where they make the key behavior easier to understand.
 - Keep names, labels, and descriptions plain unless variation is necessary for the example.
 - Do not add extra fields, sections, or connections that are unrelated to the task.
+- Do not keep placeholder text like `Lorem ipsum` in example content.
+- Default to `section_1` and `question_1` style ids unless a more specific id materially improves clarity.
 
 When choosing between a partial snippet and a full form:
 

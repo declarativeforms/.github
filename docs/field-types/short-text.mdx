@@ -28,6 +28,9 @@ sections:
           - type: max_length
             value: 50
             message: "Enter no more than 50 characters."
+          - type: expression
+            expression: "data.question_1 !== 'blocked'"
+            message: "Use a different value."
 
     next: done
 ```

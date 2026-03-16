@@ -39,8 +39,12 @@ sections:
         type: address_country
         label: "Country"
         placeholder: "Country"
+        outputFormat: string # Can also be structured.
         validators:
           - required
+          - type: expression
+            expression: "data.question_4 !== 'AQ'"
+            message: "Choose a supported country."
 
     next: done
 ```

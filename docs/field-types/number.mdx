@@ -20,12 +20,18 @@ sections:
         validators:
           - required
           # If you omit a custom pattern, the runtime adds whole-number validation automatically.
+          - type: pattern
+            regex: "^\\d+$"
+            message: "Use whole numbers only."
           - type: min
             value: 1
             message: "Use a number greater than or equal to 1."
           - type: max
             value: 100
             message: "Use a number less than or equal to 100."
+          - type: expression
+            expression: "data.question_1 % 5 === 0"
+            message: "Use a number divisible by 5."
 
     next: done
 ```

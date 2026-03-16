@@ -43,6 +43,7 @@ Each page should stay focused on the field type.
 - If the field type has specific supported options, show them in the YAML.
 - Only keep shared properties when they are meaningful for how the field is actually used or rendered.
 - If a field type has meaningful variants, keep them in the same page by expanding the YAML rather than splitting the page.
+- Field-type completeness should cover field-specific properties and sensible validators, but should not try to showcase `visible_when`.
 
 ## YAML Guidance
 
@@ -55,6 +56,8 @@ The YAML example is the page.
 - Show field-specific properties and validator variants from the real implementation in `core`, but prefer sensible usage over merely accepted schema combinations.
 - Prefer one expanded YAML block over multiple smaller examples.
 - When a field supports different value shapes, show those variants directly in the YAML.
+- Include `expression` validators when they genuinely make sense for the field type.
+- Remove validators that are technically accepted by the schema but do not make practical sense for the field type.
 
 Examples:
 
@@ -66,6 +69,8 @@ Examples:
 - select-style pages should show both string options and `{ label, value }` options
 - validators should show `message` variants where the schema supports them
 - small enum-style differences should usually be explained with comments rather than duplicate example fields
+- select-style pages should use separate field variants when the `options` shape materially changes
+- enum-like differences such as `front` vs `rear` should use comments instead of duplicate fields
 
 ## Writing Style
 

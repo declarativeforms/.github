@@ -28,9 +28,18 @@ sections:
     next: done
 
 completion:
-  title: "Thanks for your submission"
-  message: "Thanks, {{data.question_1}}. We will reply to {{data.question_2}}."
+  # Completion text can be plain strings or localized objects.
+  title:
+    en: "Thanks for your submission"
+    fr: "Merci pour votre soumission"
+  message:
+    en: "Thanks, {{data.question_1}}. We will reply to {{data.question_2}}."
+    fr: "Merci, {{data.question_1}}. Nous repondrons a {{data.question_2}}."
   button:
-    label: "Go to example.com"
-    url: "https://example.com"
+    label:
+      en: "Go to example.com"
+      fr: "Aller sur example.com"
+    url:
+      en: "https://example.com/en"
+      fr: "https://example.com/fr"
 ```

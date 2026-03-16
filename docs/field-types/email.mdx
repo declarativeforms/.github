@@ -24,6 +24,9 @@ sections:
           - type: pattern
             regex: "^[^@\\s]+@example\\.com$"
             message: "Use an @example.com address."
+          - type: expression
+            expression: "data.question_1 !== 'blocked@example.com'"
+            message: "Use a different email address."
 
     next: done
 ```
