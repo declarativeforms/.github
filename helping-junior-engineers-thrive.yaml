@@ -2,6 +2,10 @@ version: 1
 title: "Helping Junior Engineers Thrive"
 description: "Share your experience to help junior engineers navigate today's market. 5 respondents will be selected to win a Takealot voucher!"
 
+
+measurements:
+  mixpanel: fffd6fab3138c0c0af6609cd986ece5e
+  
 completion:
   title: "Thank you, {{data.full_name}}!"
   message: "Your insights will help junior engineers navigate today's market. We appreciate you taking the time. If you're one of the 5 selected winners, we'll notify you via email."
