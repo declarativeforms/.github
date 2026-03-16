@@ -59,7 +59,8 @@
               "examples/send-submissions-to-email",
               "examples/localize-a-form",
               "examples/send-submissions-to-airtable",
-              "examples/set-a-form-start-and-end-date"
+              "examples/set-a-form-start-and-end-date",
+              "examples/prefill-data-using-query-parameters"
             ]
           }
         ]
