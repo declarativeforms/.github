@@ -52,7 +52,9 @@
             "pages": [
               "examples/add-another-section",
               "examples/add-conditional-navigation",
-              "examples/route-to-an-external-website"
+              "examples/route-to-an-external-website",
+              "examples/customize-the-thank-you-page",
+              "examples/send-submissions-to-a-webhook"
             ]
           }
         ]
