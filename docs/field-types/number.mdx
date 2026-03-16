@@ -1,0 +1,31 @@
+---
+title: "Number"
+---
+
+If you have not created a form before, start with [Create a form](/getting-started/create-a-form).
+
+```yaml form.yaml
+version: 1
+title: "Example form"
+description: "A comprehensive number example."
+
+sections:
+  - id: section_1
+    title: "Section 1"
+    fields:
+      - id: question_1
+        type: number
+        label: "Question 1"
+        placeholder: "10"
+        validators:
+          - required
+          # If you omit a custom pattern, the runtime adds whole-number validation automatically.
+          - type: min
+            value: 1
+            message: "Use a number greater than or equal to 1."
+          - type: max
+            value: 100
+            message: "Use a number less than or equal to 100."
+
+    next: done
+```

@@ -1,0 +1,33 @@
+---
+title: "Dropdown"
+---
+
+If you have not created a form before, start with [Create a form](/getting-started/create-a-form).
+
+```yaml form.yaml
+version: 1
+title: "Example form"
+description: "A comprehensive dropdown example."
+
+sections:
+  - id: section_1
+    title: "Section 1"
+    fields:
+      - id: question_1
+        type: dropdown
+        label: "Question 1"
+        placeholder: "Choose an option"
+        searchable: true
+        options:
+          # String options use the same value and label.
+          - "Option 1"
+          # Object options can define separate label and value pairs.
+          - label: "Option 2"
+            value: "option_2"
+          - label: "Option 3"
+            value: "option_3"
+        validators:
+          - required
+
+    next: done
+```

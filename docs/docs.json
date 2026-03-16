@@ -24,6 +24,30 @@
             ]
           },
           {
+            "group": "Field Types",
+            "pages": [
+              "field-types/index",
+              "field-types/short-text",
+              "field-types/long-text",
+              "field-types/email",
+              "field-types/number",
+              "field-types/date",
+              "field-types/url",
+              "field-types/mobile-number",
+              "field-types/dropdown",
+              "field-types/single-select",
+              "field-types/multiple-select",
+              "field-types/rating",
+              "field-types/address-fields",
+              "field-types/file-upload",
+              "field-types/signature",
+              "field-types/geolocation",
+              "field-types/camera",
+              "field-types/hidden",
+              "field-types/turnstile"
+            ]
+          },
+          {
             "group": "Examples",
             "pages": [
               "examples/add-another-section",
