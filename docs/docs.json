@@ -54,7 +54,12 @@
               "examples/add-conditional-navigation",
               "examples/route-to-an-external-website",
               "examples/customize-the-thank-you-page",
-              "examples/send-submissions-to-a-webhook"
+              "examples/send-submissions-to-a-webhook",
+              "examples/show-or-hide-a-field",
+              "examples/send-submissions-to-email",
+              "examples/localize-a-form",
+              "examples/send-submissions-to-airtable",
+              "examples/set-a-form-start-and-end-date"
             ]
           }
         ]
