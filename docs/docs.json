@@ -12,6 +12,11 @@
     "light": "#07C983",
     "dark": "#0D9373"
   },
+  "integrations": {
+    "mixpanel": {
+      "projectToken": "fffd6fab3138c0c0af6609cd986ece5e"
+    }
+  },
   "navigation": {
     "tabs": [
       {
