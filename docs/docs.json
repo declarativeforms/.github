@@ -26,7 +26,9 @@
           {
             "group": "Examples",
             "pages": [
-              "examples/add-another-section"
+              "examples/add-another-section",
+              "examples/add-conditional-navigation",
+              "examples/route-to-an-external-website"
             ]
           }
         ]
