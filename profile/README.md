@@ -1,61 +1,77 @@
+<div align="center">
+
 # Declarative Forms
 
-**Define forms in YAML. The platform renders the experience.**
+**Forms that live in your Git repo.**
 
-## What is Declarative Forms?
+Write a form as a YAML file, commit it to GitHub, and it renders as a live,
+hosted form. No visual builder. No vendor lock-in. Your forms are files you own.
 
-Declarative Forms is a developer-first alternative to visual form builders like Typeform, Google Forms, and JotForm. Instead of dragging and dropping in a visual editor, you define your form in a YAML file and the platform handles rendering, validation, submissions, and post-submit actions. Your form definitions live in GitHub, giving you version history, collaboration, and a repeatable workflow.
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-542EBC.svg)](https://github.com/declarativeforms/core/blob/main/LICENSE)
+[![Self-host with Docker](https://img.shields.io/badge/self--host-Docker%20Compose-0db7ed.svg)](https://github.com/declarativeforms/core#self-hosting)
 
-## Key Features
+[Try it on frms.dev](https://frms.dev) · [Source](https://github.com/declarativeforms/core) · [Schema reference](https://github.com/declarativeforms/core/blob/main/SCHEMA.md)
 
-- **18 field types** — text, email (with OTP verification), rating, file upload, address, geolocation, signature, hidden, and more
-- **Multi-step forms** — split forms into sections with controlled navigation and branching
-- **Conditional visibility** — show or hide fields based on previous answers
-- **Completion screens** — customize what users see after submitting, with data interpolation
-- **Post-submit actions** — send confirmation emails, trigger webhooks, and connect to external services
-- **Analytics** — built-in Mixpanel integration for tracking form interactions
-- **GitHub workflow** — forms are YAML files in your repo — edit, review, and deploy with your existing tools
+</div>
 
-## Quick Example
+---
+
+## Forms, the way you already ship software
+
+If you like Tally, Jotform, or Youform, you know the strengths of a good form
+builder. Declarative Forms is a different approach, for people who would rather
+treat a form like source code.
+
+- **Your forms are files, not rows in someone's database.** Diffable, reviewable, portable.
+- **Version control, for real.** Every change is a commit. Review edits in a pull request. Roll back with `git revert`.
+- **Preview any branch before it ships.** Add `?branch=my-edit` to a form URL to render that version.
+- **Own your responses.** Submissions go to your database. Files go to your storage. Nothing is trapped.
+- **Open source and self-hostable.** Run the whole stack with one Docker Compose file. Licensed under AGPL-3.0.
+
+The honest tradeoff: there is no drag-and-drop editor. You write YAML. If your
+team lives in Git, that is the point.
+
+## How it works
 
 ```yaml
+# contact.yaml, committed to your GitHub repo
 version: 1
-title: "Feedback"
-description: "Help us improve our product!"
-
+title: "Contact us"
 sections:
-  - id: section_1
-    title: "Section 1"
+  - id: contact
     fields:
-      - id: question_1
+      - id: email
         type: email
-        label: What's your email?
-        placeholder: hello@declarativeforms.com
-        validators:
-          - required
+        label: "Email address"
+        validators: [required]
+      - id: message
+        type: long_text
+        label: "How can we help?"
+        validators: [required]
     next: done
-
-connections:
-  - type: email
-    to: "{{data.question_1}}"
-    subject: Thanks for your submission
-    body: |
-      Hi {{data.question_1}}, we received your response.
 ```
 
-Save this as `feedback.yaml` in your repo, then open it at:
+Commit that file, then open your form:
 
 ```
-https://frms.dev/<org>/<repo>/feedback
+https://frms.dev/your-org/your-repo/contact
 ```
 
-## Who is it for?
+A commit is a deploy. That is the whole workflow.
 
-Declarative Forms is built for teams that manage multiple forms as part of an operational workflow or product experience. It is a strong fit when you need consistency across forms, want a structured and repeatable process for defining them, and prefer working in code over visual editors.
+## Explore
 
-## Links
+| | |
+| --- | --- |
+| **Try the hosted app** | [frms.dev](https://frms.dev) |
+| **Read the source and self-host** | [declarativeforms/core](https://github.com/declarativeforms/core) |
+| **Learn the form schema** | [SCHEMA.md](https://github.com/declarativeforms/core/blob/main/SCHEMA.md) |
+| **Get started** | [Quick start](https://github.com/declarativeforms/core#quick-start) |
 
-- [Documentation](https://docs.declarativeforms.com)
-- [Open the App](https://frms.dev)
-- [GitHub](https://github.com/declarativeforms)
-- [Support & Issues](https://github.com/declarativeforms/.github/issues)
+<div align="center">
+
+Built for teams who want their forms under the same review and history as their code.
+
+Licensed under [AGPL-3.0](https://github.com/declarativeforms/core/blob/main/LICENSE).
+
+</div>
