@@ -1,0 +1,63 @@
+version: 1
+title: "Community meetup feedback"
+description: "Tell us what worked and how we can improve the next meetup."
+
+theme:
+  primary: "#533afd"
+
+sections:
+  - id: attendee
+    title: "About you"
+    fields:
+      - id: full_name
+        type: short_text
+        label: "Your name"
+        placeholder: "Jane Smith"
+        validators:
+          - required
+
+      - id: email
+        type: email
+        label: "Email address"
+        placeholder: "jane@example.com"
+        validators:
+          - required
+
+      - id: role
+        type: single_select
+        label: "How did you attend?"
+        options:
+          - "Speaker"
+          - "Attendee"
+          - "Organiser"
+          - "Sponsor"
+        allow_other: true
+        validators:
+          - required
+    next: feedback
+
+  - id: feedback
+    title: "Your feedback"
+    fields:
+      - id: overall_rating
+        type: rating
+        label: "How would you rate the meetup?"
+        min_label: "Needs improvement"
+        max_label: "Excellent"
+        validators:
+          - required
+
+      - id: highlight
+        type: long_text
+        label: "What was the most valuable part?"
+        validators:
+          - required
+
+      - id: improvement
+        type: long_text
+        label: "What should we improve next time?"
+    next: done
+
+completion:
+  title: "Thanks, {{data.full_name}}!"
+  message: "Your feedback will help us make the next meetup better."
